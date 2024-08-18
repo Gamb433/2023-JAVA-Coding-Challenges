@@ -1,0 +1,675 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <title>Prikaz rezultatov testiranja</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <style>
+            .tableBase { border-collapse: collapse; }
+            .tableBase > tbody > tr > td { border: 1px solid black; padding: 7px;}
+            .tableResults { table-layout: fixed; border-spacing: 0px; border-collapse: separate; }
+            table#nasredini { margin-left:auto; margin-right:auto; }
+            table tbody td.hoverOk {background-color:#9F9; border: 1px solid #63B563; width: 15px; color: black; text-align: center; }
+            .hoverOk:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #63B563; }
+            .hoverOk:hover td { background: transparent; }
+            .hoverOk > a:link, .hoverOk > a:visited, .hoverOk > a:hover, .hoverOk > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverErr {background-color:#FFBF00; border: 1px solid #CB9800; width: 15px; color: black; text-align: center; }
+            .hoverErr:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #CB9800; }
+            .hoverErr:hover td { background: transparent; }
+            .hoverErr > a:link, .hoverErr > a:visited, .hoverErr > a:hover, .hoverErr > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverRuntime {background-color:#FF9; border: 1px solid #D8D87E; width: 15px; color: black; text-align: center; }
+            .hoverRuntime:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #D8D87E; }
+            .hoverRuntime:hover td { background: transparent; }
+            .hoverRuntime > a:link, .hoverRuntime > a:visited, .hoverRuntime > a:hover, .hoverRuntime > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverCompile {background-color:#C00000; border: 1px solid #710B0B; width: 15px; color: black; text-align: center; }
+            .hoverCompile:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #710B0B; }
+            .hoverCompile:hover td { background: transparent; }
+            .hoverCompile > a:link, .hoverCompile > a:visited, .hoverCompile > a:hover, .hoverCompile > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverMissing {background-color:#F0F0F0; border: 1px solid #ABABAB; width: 15px; color: black; text-align: center; }
+            .hoverMissing:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #ABABAB; }
+            .hoverMissing:hover td { background: transparent; }
+            .hoverMissing > a:link, .hoverMissing > a:visited, .hoverMissing > a:hover, .hoverMissing > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverTimeout {background-color:#B9F; border: 1px solid #9070CE; width: 15px; color: black; text-align: center; }
+            .hoverTimeout:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #9070CE; }
+            .hoverTimeout:hover td { background: transparent; }
+            .hoverTimeout > a:link, .hoverTimeout > a:visited, .hoverTimeout > a:hover, .hoverTimeout > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverImage {background-color:#D0E0F0; border: 1px solid #a6b3c0; width: 15px; color: black; text-align: center; }
+            .hoverImage:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #a6b3c0; }
+            .hoverImage:hover td { background: transparent; }
+            .hoverImage > a:link, .hoverImage > a:visited, .hoverImage > a:hover, .hoverImage > a:active { color: black; font-size: 0.9em; }
+            .tableCommon { border-collapse: collapse; }
+            .tableOK > tbody > tr > td { border: 1px solid #63B563; padding: 7px;}
+            .tableError > tbody > tr > td { border: 1px solid #CB9800; padding: 7px;}
+            .tableRuntime > tbody > tr > td { border: 1px solid #D8D87E; padding: 7px;}
+            .tableCompiler > tbody > tr > td { border: 1px solid #710B0B; padding: 7px;}
+            .tableMissing > tbody > tr > td { border: 1px solid #ABABAB; padding: 7px;}
+            .tableTimeout > tbody > tr > td { border: 1px solid #9070CE; padding: 7px;}
+            .tableImage > tbody > tr > td { border: 1px solid #a6b3c0; padding: 7px;}
+            .tableSummary { table-layout: fixed; }
+            .texttt { font-family: DejaVu Sans Mono, monospace; font-size: 0.8em; }
+            table.diff > tbody > tr > td { border: none; font-family: DejaVu Sans Mono, monospace}
+            .diff_add { color: green; font-family: DejaVu Sans Mono, monospace; }
+            .diff_sub { color: blue; font-family: DejaVu Sans Mono, monospace; }
+            .diff_chg { color: red; font-family: DejaVu Sans Mono, monospace; }
+            a { color: blue; text-decoration: none; height: 100%; width: 100%; vertical-align: middle; }
+            a:link { color: blue; text-decoration: none; }
+            a:link { color: blue; text-decoration: none; }
+            a:hover { color: blue; text-decoration: underline; }
+            body, td { font: normal normal 100%/1.0 DejaVu Sans, sans-serif; }
+            h1 { font-weight: bold; font-size: 150%; }
+            h2 { font-weight: normal; font-size: 125%; border-top: 1px solid black; border-bottom: 1px solid black; background: #DEF; padding: 5px; margin-top: 36px; margin-bottom: 36px}
+            .container{ margin: 0px auto; width: 70%; min-width: 700px; margin-top: 1.8cm; margin-bottom: 1.8cm; }
+            .rwordb{ color: blue; font-weight: bold; }
+            .rwordv{ color:#8000ff; font-weight: bold; }
+            .vcomment{ color: green; }
+            .bcomment{ color: green; }
+            .niz{ color:#a31515; }
+            .stevilo{ color:#ff8000; }
+            tab { padding-left: 4em; }
+            #grad1 {
+                background: -webkit-linear-gradient(left, #E0E0E0 , white);
+                background: -o-linear-gradient(right, #E0E0E0, white);
+                background: -moz-linear-gradient(right, #E0E0E0, white);
+                background: linear-gradient(to right, #E0E0E0 , white);
+            }
+            #grad2 {
+                background: -webkit-linear-gradient(left, #9F9 , white);
+                background: -o-linear-gradient(right, #9F9, white);
+                background: -moz-linear-gradient(right, #9F9, white);
+                background: linear-gradient(to right, #9F9 , white);
+            }
+            .capSlika { display:block; height: 25px; margin:0 auto; font-size: 1.0em; text-align: left; }
+            .dborder { padding: 0px; border: 1px solid #CACACA; }
+            .capText { display: block; margin:0 auto; font-size: 0.9em; text-align: left; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+        <a name="top"></a>
+        <h1 id="grad2" style="padding: 10px; border: 0px solid black; color: #000000;">Rezultati preverjanja <span style="color: #700000;">maksimumiPoStolpcih.java</span> (10/10)</h1>
+        <div style="height: 20px"></div>
+        <a name="summary"></a>
+        <h2>Povzetek rezultatov</h2>
+        <table id="nasredini" class="tableBase tableResults">
+            <tbody>
+                <tr>
+                <td class="hoverOk"><a href="#testcase1">1</a></td>
+                <td class="hoverOk"><a href="#testcase2">2</a></td>
+                <td class="hoverOk"><a href="#testcase3">3</a></td>
+                <td class="hoverOk"><a href="#testcase4">4</a></td>
+                <td class="hoverOk"><a href="#testcase5">5</a></td>
+                <td class="hoverOk"><a href="#testcase6">6</a></td>
+                <td class="hoverOk"><a href="#testcase7">7</a></td>
+                <td class="hoverOk"><a href="#testcase8">8</a></td>
+                <td class="hoverOk"><a href="#testcase9">9</a></td>
+                <td class="hoverOk"><a href="#testcase10">10</a></td>
+                </tr>
+                <tr></tr>
+            </tbody>
+        </table>
+        <div style="height: 20px"></div>
+        <h2>Rezultati</h2>
+        <a name="testcase1"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 1</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            5&nbsp;4<br/>
+10&nbsp;-6&nbsp;-5&nbsp;1<br/>
+0&nbsp;-1&nbsp;-7&nbsp;-3<br/>
+9&nbsp;5&nbsp;-4&nbsp;7<br/>
+8&nbsp;3&nbsp;-3&nbsp;7<br/>
+4&nbsp;2&nbsp;-6&nbsp;9<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            [10,&nbsp;5,&nbsp;-3,&nbsp;9]<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase2"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 2</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            1&nbsp;1<br/>
+-2<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            [-2]<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase3"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 3</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            4&nbsp;1<br/>
+-10<br/>
+-8<br/>
+-9<br/>
+-6<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            [-6]<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase4"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 4</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            1&nbsp;4<br/>
+-5&nbsp;6&nbsp;0&nbsp;-3<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            [-5,&nbsp;6,&nbsp;0,&nbsp;-3]<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase5"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 5</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            7&nbsp;3<br/>
+9&nbsp;-20&nbsp;-18<br/>
+-14&nbsp;-12&nbsp;-17<br/>
+-18&nbsp;13&nbsp;12<br/>
+-15&nbsp;0&nbsp;-16<br/>
+15&nbsp;-13&nbsp;19<br/>
+14&nbsp;2&nbsp;-6<br/>
+4&nbsp;9&nbsp;-14<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            [15,&nbsp;13,&nbsp;19]<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase6"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 6</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            7&nbsp;9<br/>
+13&nbsp;-13&nbsp;-7&nbsp;-11&nbsp;19&nbsp;-9&nbsp;-20&nbsp;-19&nbsp;-17<br/>
+-17&nbsp;-12&nbsp;-19&nbsp;-2&nbsp;-12&nbsp;17&nbsp;14&nbsp;16&nbsp;-20<br/>
+2&nbsp;-14&nbsp;3&nbsp;16&nbsp;-13&nbsp;-10&nbsp;-8&nbsp;8&nbsp;15<br/>
+16&nbsp;7&nbsp;12&nbsp;-18&nbsp;1&nbsp;0&nbsp;9&nbsp;-17&nbsp;-5<br/>
+17&nbsp;10&nbsp;1&nbsp;-15&nbsp;-19&nbsp;-6&nbsp;11&nbsp;4&nbsp;-17<br/>
+1&nbsp;6&nbsp;9&nbsp;8&nbsp;9&nbsp;11&nbsp;19&nbsp;9&nbsp;-17<br/>
+-18&nbsp;-17&nbsp;-14&nbsp;-15&nbsp;-9&nbsp;-19&nbsp;17&nbsp;6&nbsp;2<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            [17,&nbsp;10,&nbsp;12,&nbsp;16,&nbsp;19,&nbsp;17,&nbsp;19,&nbsp;16,&nbsp;15]<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase7"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 7</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            25&nbsp;12<br/>
+-24&nbsp;48&nbsp;34&nbsp;46&nbsp;1&nbsp;-14&nbsp;-47&nbsp;-50&nbsp;17&nbsp;10&nbsp;34&nbsp;-40<br/>
+-47&nbsp;0&nbsp;43&nbsp;-19&nbsp;24&nbsp;32&nbsp;-2&nbsp;-4&nbsp;49&nbsp;-42&nbsp;0&nbsp;8<br/>
+-1&nbsp;-41&nbsp;-33&nbsp;3&nbsp;21&nbsp;47&nbsp;-23&nbsp;1&nbsp;30&nbsp;26&nbsp;-36&nbsp;39<br/>
+-40&nbsp;27&nbsp;-3&nbsp;0&nbsp;-48&nbsp;16&nbsp;-44&nbsp;-11&nbsp;7&nbsp;5&nbsp;5&nbsp;35<br/>
+-43&nbsp;-27&nbsp;-43&nbsp;42&nbsp;-47&nbsp;33&nbsp;-36&nbsp;-26&nbsp;28&nbsp;12&nbsp;-24&nbsp;49<br/>
+-32&nbsp;15&nbsp;38&nbsp;-25&nbsp;-22&nbsp;-11&nbsp;31&nbsp;-35&nbsp;2&nbsp;31&nbsp;33&nbsp;-40<br/>
+12&nbsp;-27&nbsp;-7&nbsp;-44&nbsp;-24&nbsp;10&nbsp;-12&nbsp;37&nbsp;-1&nbsp;29&nbsp;0&nbsp;6<br/>
+-23&nbsp;-42&nbsp;35&nbsp;-26&nbsp;7&nbsp;29&nbsp;45&nbsp;-26&nbsp;-25&nbsp;3&nbsp;11&nbsp;-34<br/>
+17&nbsp;-27&nbsp;23&nbsp;18&nbsp;14&nbsp;24&nbsp;11&nbsp;-27&nbsp;44&nbsp;30&nbsp;43&nbsp;0<br/>
+6&nbsp;-31&nbsp;30&nbsp;-4&nbsp;-47&nbsp;13&nbsp;9&nbsp;13&nbsp;-37&nbsp;11&nbsp;-12&nbsp;6<br/>
+-5&nbsp;-34&nbsp;-46&nbsp;-37&nbsp;38&nbsp;-31&nbsp;0&nbsp;12&nbsp;32&nbsp;9&nbsp;33&nbsp;-22<br/>
+9&nbsp;8&nbsp;41&nbsp;-7&nbsp;-31&nbsp;31&nbsp;33&nbsp;17&nbsp;49&nbsp;21&nbsp;-5&nbsp;-47<br/>
+43&nbsp;16&nbsp;-46&nbsp;43&nbsp;31&nbsp;10&nbsp;-38&nbsp;-36&nbsp;44&nbsp;42&nbsp;-32&nbsp;26<br/>
+-37&nbsp;39&nbsp;-45&nbsp;-5&nbsp;28&nbsp;-10&nbsp;-49&nbsp;15&nbsp;5&nbsp;-36&nbsp;27&nbsp;-26<br/>
+-36&nbsp;46&nbsp;40&nbsp;0&nbsp;-32&nbsp;-34&nbsp;4&nbsp;36&nbsp;14&nbsp;43&nbsp;-11&nbsp;-46<br/>
+-27&nbsp;42&nbsp;-50&nbsp;-40&nbsp;18&nbsp;46&nbsp;-5&nbsp;-25&nbsp;49&nbsp;18&nbsp;24&nbsp;-33<br/>
+-24&nbsp;1&nbsp;30&nbsp;-14&nbsp;30&nbsp;30&nbsp;13&nbsp;5&nbsp;-19&nbsp;46&nbsp;-19&nbsp;20<br/>
+17&nbsp;42&nbsp;-7&nbsp;-12&nbsp;-35&nbsp;27&nbsp;-34&nbsp;-13&nbsp;47&nbsp;30&nbsp;49&nbsp;33<br/>
+37&nbsp;35&nbsp;47&nbsp;35&nbsp;16&nbsp;-29&nbsp;-15&nbsp;-6&nbsp;14&nbsp;43&nbsp;-6&nbsp;25<br/>
+35&nbsp;-19&nbsp;-22&nbsp;6&nbsp;1&nbsp;-31&nbsp;23&nbsp;39&nbsp;-46&nbsp;-1&nbsp;-4&nbsp;27<br/>
+-21&nbsp;38&nbsp;2&nbsp;-38&nbsp;-45&nbsp;-1&nbsp;-28&nbsp;48&nbsp;17&nbsp;17&nbsp;-37&nbsp;3<br/>
+42&nbsp;-42&nbsp;7&nbsp;-43&nbsp;25&nbsp;-34&nbsp;-3&nbsp;-23&nbsp;-11&nbsp;-37&nbsp;50&nbsp;50<br/>
+34&nbsp;-23&nbsp;49&nbsp;24&nbsp;19&nbsp;-4&nbsp;5&nbsp;27&nbsp;35&nbsp;-19&nbsp;1&nbsp;43<br/>
+21&nbsp;12&nbsp;-13&nbsp;10&nbsp;2&nbsp;1&nbsp;-44&nbsp;21&nbsp;24&nbsp;-13&nbsp;0&nbsp;-6<br/>
+49&nbsp;19&nbsp;-41&nbsp;20&nbsp;28&nbsp;28&nbsp;43&nbsp;-46&nbsp;-33&nbsp;-44&nbsp;-33&nbsp;-3<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            [49,&nbsp;48,&nbsp;49,&nbsp;46,&nbsp;38,&nbsp;47,&nbsp;45,&nbsp;48,&nbsp;49,&nbsp;46,&nbsp;50,&nbsp;50]<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase8"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 8</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            40&nbsp;40<br/>
+16&nbsp;-14&nbsp;-46&nbsp;-49&nbsp;2&nbsp;-7&nbsp;33&nbsp;-90&nbsp;64&nbsp;67&nbsp;87&nbsp;59&nbsp;97&nbsp;-93&nbsp;-48&nbsp;-46&nbsp;66&nbsp;-98&nbsp;63&nbsp;6&nbsp;-44&nbsp;89&nbsp;74&nbsp;-75&nbsp;-31&nbsp;18&nbsp;-43&nbsp;-26&nbsp;15&nbsp;-86&nbsp;-56&nbsp;25&nbsp;-16&nbsp;-56&nbsp;85&nbsp;-36&nbsp;87&nbsp;72&nbsp;45&nbsp;25<br/>
+12&nbsp;-43&nbsp;-53&nbsp;19&nbsp;35&nbsp;-32&nbsp;-73&nbsp;-46&nbsp;57&nbsp;-92&nbsp;-50&nbsp;75&nbsp;-4&nbsp;71&nbsp;95&nbsp;1&nbsp;66&nbsp;84&nbsp;25&nbsp;-99&nbsp;46&nbsp;-71&nbsp;-56&nbsp;-56&nbsp;-20&nbsp;53&nbsp;-77&nbsp;-52&nbsp;12&nbsp;5&nbsp;-64&nbsp;-24&nbsp;15&nbsp;-65&nbsp;29&nbsp;-78&nbsp;-70&nbsp;71&nbsp;19&nbsp;23<br/>
+8&nbsp;-53&nbsp;71&nbsp;-22&nbsp;33&nbsp;1&nbsp;-83&nbsp;-53&nbsp;2&nbsp;-7&nbsp;-68&nbsp;26&nbsp;75&nbsp;35&nbsp;-55&nbsp;-26&nbsp;11&nbsp;45&nbsp;-71&nbsp;2&nbsp;-6&nbsp;-18&nbsp;-93&nbsp;58&nbsp;-96&nbsp;-83&nbsp;85&nbsp;-60&nbsp;21&nbsp;-21&nbsp;89&nbsp;-74&nbsp;-17&nbsp;98&nbsp;-41&nbsp;-49&nbsp;96&nbsp;-95&nbsp;1&nbsp;41<br/>
+8&nbsp;34&nbsp;9&nbsp;-74&nbsp;58&nbsp;59&nbsp;89&nbsp;82&nbsp;41&nbsp;-67&nbsp;34&nbsp;-44&nbsp;-91&nbsp;3&nbsp;-64&nbsp;-78&nbsp;-73&nbsp;-98&nbsp;49&nbsp;22&nbsp;-66&nbsp;59&nbsp;23&nbsp;-33&nbsp;49&nbsp;21&nbsp;1&nbsp;-13&nbsp;59&nbsp;-46&nbsp;71&nbsp;42&nbsp;79&nbsp;16&nbsp;5&nbsp;100&nbsp;-64&nbsp;-83&nbsp;-28&nbsp;20<br/>
+84&nbsp;66&nbsp;59&nbsp;-10&nbsp;51&nbsp;32&nbsp;-91&nbsp;25&nbsp;-50&nbsp;33&nbsp;-28&nbsp;-61&nbsp;90&nbsp;28&nbsp;31&nbsp;2&nbsp;2&nbsp;-84&nbsp;-8&nbsp;11&nbsp;36&nbsp;-62&nbsp;-9&nbsp;67&nbsp;67&nbsp;-58&nbsp;-9&nbsp;-78&nbsp;52&nbsp;-32&nbsp;-88&nbsp;-62&nbsp;45&nbsp;1&nbsp;9&nbsp;-30&nbsp;-90&nbsp;82&nbsp;45&nbsp;57<br/>
+-89&nbsp;11&nbsp;31&nbsp;50&nbsp;-74&nbsp;82&nbsp;67&nbsp;-27&nbsp;-18&nbsp;7&nbsp;93&nbsp;38&nbsp;52&nbsp;-63&nbsp;13&nbsp;-62&nbsp;9&nbsp;-71&nbsp;-56&nbsp;46&nbsp;18&nbsp;-27&nbsp;41&nbsp;-72&nbsp;-54&nbsp;-81&nbsp;-48&nbsp;88&nbsp;51&nbsp;5&nbsp;-31&nbsp;33&nbsp;49&nbsp;81&nbsp;95&nbsp;-62&nbsp;-29&nbsp;84&nbsp;29&nbsp;33<br/>
+25&nbsp;-2&nbsp;-83&nbsp;9&nbsp;-82&nbsp;-68&nbsp;-8&nbsp;-39&nbsp;63&nbsp;-14&nbsp;-59&nbsp;-76&nbsp;97&nbsp;-54&nbsp;-46&nbsp;88&nbsp;-67&nbsp;-50&nbsp;15&nbsp;-5&nbsp;2&nbsp;-79&nbsp;-61&nbsp;-72&nbsp;29&nbsp;17&nbsp;95&nbsp;67&nbsp;26&nbsp;-50&nbsp;-44&nbsp;97&nbsp;-93&nbsp;-83&nbsp;-42&nbsp;-88&nbsp;-51&nbsp;-95&nbsp;59&nbsp;-59<br/>
+57&nbsp;40&nbsp;1&nbsp;-6&nbsp;38&nbsp;-66&nbsp;-59&nbsp;50&nbsp;-7&nbsp;-4&nbsp;92&nbsp;-13&nbsp;91&nbsp;-58&nbsp;87&nbsp;-45&nbsp;39&nbsp;-32&nbsp;-26&nbsp;-3&nbsp;82&nbsp;17&nbsp;11&nbsp;-41&nbsp;-31&nbsp;23&nbsp;-34&nbsp;-98&nbsp;-51&nbsp;-71&nbsp;45&nbsp;63&nbsp;-81&nbsp;93&nbsp;-30&nbsp;-51&nbsp;-65&nbsp;10&nbsp;-89&nbsp;-55<br/>
+51&nbsp;13&nbsp;16&nbsp;-34&nbsp;34&nbsp;-7&nbsp;-8&nbsp;-43&nbsp;27&nbsp;-38&nbsp;-24&nbsp;80&nbsp;39&nbsp;-53&nbsp;93&nbsp;-23&nbsp;63&nbsp;-1&nbsp;77&nbsp;47&nbsp;-61&nbsp;-46&nbsp;-72&nbsp;8&nbsp;-79&nbsp;0&nbsp;34&nbsp;44&nbsp;-57&nbsp;-65&nbsp;-47&nbsp;-84&nbsp;40&nbsp;15&nbsp;-72&nbsp;60&nbsp;-84&nbsp;-76&nbsp;50&nbsp;91<br/>
+81&nbsp;-12&nbsp;-56&nbsp;31&nbsp;-50&nbsp;39&nbsp;9&nbsp;4&nbsp;11&nbsp;48&nbsp;69&nbsp;21&nbsp;-54&nbsp;40&nbsp;-57&nbsp;-55&nbsp;14&nbsp;-18&nbsp;-85&nbsp;-7&nbsp;43&nbsp;-94&nbsp;-70&nbsp;82&nbsp;-51&nbsp;-31&nbsp;99&nbsp;-88&nbsp;-41&nbsp;-4&nbsp;-6&nbsp;95&nbsp;26&nbsp;-19&nbsp;78&nbsp;86&nbsp;-60&nbsp;44&nbsp;-61&nbsp;-8<br/>
+3&nbsp;62&nbsp;-83&nbsp;71&nbsp;-26&nbsp;37&nbsp;47&nbsp;-89&nbsp;30&nbsp;31&nbsp;-44&nbsp;27&nbsp;85&nbsp;31&nbsp;86&nbsp;-12&nbsp;11&nbsp;14&nbsp;92&nbsp;38&nbsp;5&nbsp;-97&nbsp;-30&nbsp;45&nbsp;92&nbsp;77&nbsp;23&nbsp;-72&nbsp;-72&nbsp;24&nbsp;-100&nbsp;-48&nbsp;-41&nbsp;-10&nbsp;-95&nbsp;-93&nbsp;63&nbsp;-30&nbsp;-5&nbsp;-87<br/>
+-7&nbsp;32&nbsp;90&nbsp;64&nbsp;-57&nbsp;1&nbsp;80&nbsp;-30&nbsp;78&nbsp;55&nbsp;85&nbsp;64&nbsp;-95&nbsp;-84&nbsp;65&nbsp;-60&nbsp;96&nbsp;5&nbsp;-21&nbsp;-76&nbsp;25&nbsp;-58&nbsp;45&nbsp;-18&nbsp;-62&nbsp;93&nbsp;-91&nbsp;60&nbsp;-93&nbsp;63&nbsp;-14&nbsp;-78&nbsp;90&nbsp;74&nbsp;39&nbsp;-75&nbsp;7&nbsp;93&nbsp;-25&nbsp;34<br/>
+-84&nbsp;-28&nbsp;-32&nbsp;55&nbsp;-1&nbsp;-6&nbsp;0&nbsp;77&nbsp;16&nbsp;35&nbsp;-100&nbsp;93&nbsp;-91&nbsp;86&nbsp;61&nbsp;-86&nbsp;68&nbsp;57&nbsp;-77&nbsp;-46&nbsp;-52&nbsp;97&nbsp;-55&nbsp;-45&nbsp;-47&nbsp;52&nbsp;-84&nbsp;-62&nbsp;-13&nbsp;-18&nbsp;1&nbsp;-77&nbsp;-100&nbsp;-62&nbsp;94&nbsp;-38&nbsp;24&nbsp;92&nbsp;53&nbsp;2<br/>
+12&nbsp;89&nbsp;-52&nbsp;-83&nbsp;65&nbsp;-84&nbsp;21&nbsp;-51&nbsp;97&nbsp;-59&nbsp;-46&nbsp;-93&nbsp;-71&nbsp;33&nbsp;-39&nbsp;12&nbsp;3&nbsp;-65&nbsp;27&nbsp;-14&nbsp;34&nbsp;99&nbsp;-58&nbsp;-92&nbsp;-27&nbsp;87&nbsp;49&nbsp;61&nbsp;36&nbsp;59&nbsp;52&nbsp;-72&nbsp;-14&nbsp;-70&nbsp;-69&nbsp;-82&nbsp;-98&nbsp;19&nbsp;45&nbsp;-8<br/>
+96&nbsp;43&nbsp;38&nbsp;53&nbsp;9&nbsp;-99&nbsp;-19&nbsp;76&nbsp;-42&nbsp;-34&nbsp;-74&nbsp;-44&nbsp;36&nbsp;-5&nbsp;89&nbsp;80&nbsp;-98&nbsp;81&nbsp;89&nbsp;-53&nbsp;-39&nbsp;75&nbsp;93&nbsp;55&nbsp;53&nbsp;-20&nbsp;71&nbsp;-36&nbsp;97&nbsp;-100&nbsp;18&nbsp;-67&nbsp;-41&nbsp;35&nbsp;98&nbsp;84&nbsp;-42&nbsp;-31&nbsp;72&nbsp;-95<br/>
+-16&nbsp;-26&nbsp;40&nbsp;6&nbsp;-32&nbsp;-18&nbsp;-94&nbsp;29&nbsp;57&nbsp;76&nbsp;-20&nbsp;71&nbsp;-28&nbsp;-12&nbsp;16&nbsp;31&nbsp;-28&nbsp;-90&nbsp;-26&nbsp;67&nbsp;-97&nbsp;-33&nbsp;-12&nbsp;-47&nbsp;-19&nbsp;46&nbsp;72&nbsp;78&nbsp;53&nbsp;-29&nbsp;-45&nbsp;86&nbsp;-84&nbsp;53&nbsp;-96&nbsp;45&nbsp;22&nbsp;-17&nbsp;-28&nbsp;2<br/>
+73&nbsp;21&nbsp;-72&nbsp;-79&nbsp;-76&nbsp;74&nbsp;93&nbsp;-40&nbsp;-91&nbsp;-57&nbsp;27&nbsp;58&nbsp;-25&nbsp;-85&nbsp;64&nbsp;42&nbsp;70&nbsp;-15&nbsp;-72&nbsp;8&nbsp;89&nbsp;-75&nbsp;71&nbsp;95&nbsp;65&nbsp;-74&nbsp;34&nbsp;-61&nbsp;1&nbsp;-40&nbsp;94&nbsp;55&nbsp;67&nbsp;-65&nbsp;-69&nbsp;4&nbsp;-38&nbsp;63&nbsp;5&nbsp;72<br/>
+-16&nbsp;16&nbsp;60&nbsp;-31&nbsp;70&nbsp;-90&nbsp;81&nbsp;-9&nbsp;2&nbsp;4&nbsp;93&nbsp;-34&nbsp;-33&nbsp;58&nbsp;-87&nbsp;57&nbsp;-90&nbsp;-38&nbsp;62&nbsp;-92&nbsp;-15&nbsp;56&nbsp;94&nbsp;63&nbsp;90&nbsp;12&nbsp;20&nbsp;-17&nbsp;48&nbsp;36&nbsp;18&nbsp;22&nbsp;34&nbsp;82&nbsp;36&nbsp;38&nbsp;-59&nbsp;66&nbsp;79&nbsp;-48<br/>
+77&nbsp;84&nbsp;11&nbsp;49&nbsp;-22&nbsp;9&nbsp;68&nbsp;62&nbsp;84&nbsp;39&nbsp;-87&nbsp;-92&nbsp;99&nbsp;-37&nbsp;85&nbsp;-10&nbsp;92&nbsp;40&nbsp;-41&nbsp;44&nbsp;77&nbsp;16&nbsp;-89&nbsp;-84&nbsp;-74&nbsp;-68&nbsp;56&nbsp;-23&nbsp;-51&nbsp;57&nbsp;14&nbsp;28&nbsp;-95&nbsp;-26&nbsp;-47&nbsp;95&nbsp;-86&nbsp;69&nbsp;-89&nbsp;93<br/>
+22&nbsp;-54&nbsp;47&nbsp;19&nbsp;-17&nbsp;-21&nbsp;11&nbsp;33&nbsp;47&nbsp;-55&nbsp;-60&nbsp;44&nbsp;75&nbsp;-70&nbsp;-10&nbsp;-14&nbsp;19&nbsp;21&nbsp;50&nbsp;62&nbsp;-3&nbsp;-35&nbsp;41&nbsp;31&nbsp;-37&nbsp;35&nbsp;-3&nbsp;-86&nbsp;-58&nbsp;76&nbsp;15&nbsp;-89&nbsp;-97&nbsp;19&nbsp;74&nbsp;57&nbsp;1&nbsp;-48&nbsp;29&nbsp;-86<br/>
+-2&nbsp;-84&nbsp;8&nbsp;-24&nbsp;67&nbsp;3&nbsp;-81&nbsp;-42&nbsp;-25&nbsp;13&nbsp;0&nbsp;5&nbsp;14&nbsp;-41&nbsp;-5&nbsp;25&nbsp;79&nbsp;61&nbsp;-97&nbsp;-69&nbsp;-77&nbsp;97&nbsp;-84&nbsp;13&nbsp;82&nbsp;73&nbsp;-31&nbsp;-89&nbsp;97&nbsp;-76&nbsp;48&nbsp;89&nbsp;54&nbsp;63&nbsp;-84&nbsp;-18&nbsp;38&nbsp;56&nbsp;0&nbsp;-55<br/>
+-68&nbsp;98&nbsp;-10&nbsp;-31&nbsp;15&nbsp;-26&nbsp;-81&nbsp;25&nbsp;19&nbsp;-8&nbsp;-79&nbsp;-54&nbsp;51&nbsp;-15&nbsp;-72&nbsp;-19&nbsp;40&nbsp;95&nbsp;-94&nbsp;-2&nbsp;-79&nbsp;47&nbsp;83&nbsp;-51&nbsp;50&nbsp;27&nbsp;-83&nbsp;-38&nbsp;80&nbsp;29&nbsp;-66&nbsp;-47&nbsp;72&nbsp;-42&nbsp;-76&nbsp;-88&nbsp;-72&nbsp;69&nbsp;-52&nbsp;45<br/>
+-30&nbsp;19&nbsp;95&nbsp;-33&nbsp;-44&nbsp;-21&nbsp;99&nbsp;96&nbsp;14&nbsp;88&nbsp;63&nbsp;-81&nbsp;50&nbsp;12&nbsp;96&nbsp;-4&nbsp;-91&nbsp;5&nbsp;-100&nbsp;13&nbsp;92&nbsp;-29&nbsp;-99&nbsp;-76&nbsp;-10&nbsp;-7&nbsp;89&nbsp;56&nbsp;55&nbsp;-48&nbsp;67&nbsp;99&nbsp;49&nbsp;30&nbsp;27&nbsp;-49&nbsp;-55&nbsp;74&nbsp;98&nbsp;86<br/>
+-5&nbsp;-29&nbsp;-59&nbsp;-49&nbsp;3&nbsp;37&nbsp;28&nbsp;50&nbsp;-77&nbsp;-62&nbsp;99&nbsp;30&nbsp;40&nbsp;-65&nbsp;48&nbsp;83&nbsp;44&nbsp;12&nbsp;-99&nbsp;-56&nbsp;35&nbsp;-42&nbsp;-50&nbsp;88&nbsp;-72&nbsp;-17&nbsp;67&nbsp;-83&nbsp;-100&nbsp;70&nbsp;-97&nbsp;47&nbsp;-20&nbsp;-47&nbsp;36&nbsp;1&nbsp;85&nbsp;-18&nbsp;87&nbsp;39<br/>
+-29&nbsp;-66&nbsp;-38&nbsp;-63&nbsp;65&nbsp;-19&nbsp;-85&nbsp;3&nbsp;-21&nbsp;-19&nbsp;1&nbsp;70&nbsp;-73&nbsp;62&nbsp;-68&nbsp;-2&nbsp;22&nbsp;35&nbsp;95&nbsp;47&nbsp;72&nbsp;64&nbsp;30&nbsp;-36&nbsp;47&nbsp;-97&nbsp;8&nbsp;-55&nbsp;-40&nbsp;5&nbsp;63&nbsp;-12&nbsp;50&nbsp;-34&nbsp;43&nbsp;62&nbsp;-23&nbsp;83&nbsp;-85&nbsp;-15<br/>
+23&nbsp;0&nbsp;17&nbsp;-11&nbsp;-1&nbsp;-77&nbsp;12&nbsp;6&nbsp;-23&nbsp;78&nbsp;-14&nbsp;100&nbsp;69&nbsp;-71&nbsp;98&nbsp;28&nbsp;-57&nbsp;-48&nbsp;-98&nbsp;5&nbsp;-4&nbsp;46&nbsp;-24&nbsp;-25&nbsp;92&nbsp;-17&nbsp;53&nbsp;36&nbsp;33&nbsp;72&nbsp;100&nbsp;70&nbsp;96&nbsp;98&nbsp;-42&nbsp;-64&nbsp;-55&nbsp;-49&nbsp;97&nbsp;-32<br/>
+-8&nbsp;17&nbsp;48&nbsp;66&nbsp;-23&nbsp;55&nbsp;-14&nbsp;-50&nbsp;-18&nbsp;-20&nbsp;-84&nbsp;-85&nbsp;-74&nbsp;-2&nbsp;92&nbsp;13&nbsp;39&nbsp;41&nbsp;-87&nbsp;-33&nbsp;79&nbsp;91&nbsp;-52&nbsp;-33&nbsp;-32&nbsp;-60&nbsp;74&nbsp;-88&nbsp;6&nbsp;-15&nbsp;-83&nbsp;-9&nbsp;-47&nbsp;-90&nbsp;-24&nbsp;88&nbsp;86&nbsp;94&nbsp;-1&nbsp;70<br/>
+9&nbsp;-77&nbsp;-29&nbsp;22&nbsp;-24&nbsp;20&nbsp;-15&nbsp;-56&nbsp;-14&nbsp;-14&nbsp;15&nbsp;97&nbsp;24&nbsp;76&nbsp;-55&nbsp;-8&nbsp;-93&nbsp;68&nbsp;-65&nbsp;21&nbsp;-32&nbsp;92&nbsp;63&nbsp;-50&nbsp;19&nbsp;-93&nbsp;-37&nbsp;48&nbsp;28&nbsp;83&nbsp;26&nbsp;74&nbsp;65&nbsp;95&nbsp;88&nbsp;-17&nbsp;64&nbsp;-3&nbsp;-70&nbsp;-65<br/>
+-98&nbsp;50&nbsp;22&nbsp;-6&nbsp;-2&nbsp;-29&nbsp;31&nbsp;64&nbsp;59&nbsp;-82&nbsp;-84&nbsp;-64&nbsp;35&nbsp;-37&nbsp;71&nbsp;39&nbsp;3&nbsp;82&nbsp;-28&nbsp;-47&nbsp;-25&nbsp;-75&nbsp;79&nbsp;66&nbsp;19&nbsp;-96&nbsp;53&nbsp;-36&nbsp;-80&nbsp;-40&nbsp;92&nbsp;6&nbsp;49&nbsp;-43&nbsp;25&nbsp;74&nbsp;-75&nbsp;-65&nbsp;9&nbsp;47<br/>
+17&nbsp;27&nbsp;-70&nbsp;-26&nbsp;43&nbsp;92&nbsp;-76&nbsp;64&nbsp;77&nbsp;41&nbsp;-27&nbsp;12&nbsp;-24&nbsp;-44&nbsp;-10&nbsp;16&nbsp;-74&nbsp;-14&nbsp;-39&nbsp;-94&nbsp;12&nbsp;10&nbsp;72&nbsp;12&nbsp;-13&nbsp;-99&nbsp;-47&nbsp;-89&nbsp;-38&nbsp;-68&nbsp;-6&nbsp;30&nbsp;-15&nbsp;69&nbsp;100&nbsp;97&nbsp;-32&nbsp;-15&nbsp;-80&nbsp;31<br/>
+80&nbsp;30&nbsp;-64&nbsp;-19&nbsp;47&nbsp;53&nbsp;-52&nbsp;-83&nbsp;70&nbsp;-78&nbsp;86&nbsp;11&nbsp;-40&nbsp;18&nbsp;100&nbsp;17&nbsp;-10&nbsp;-93&nbsp;72&nbsp;68&nbsp;-91&nbsp;72&nbsp;-54&nbsp;90&nbsp;-19&nbsp;-91&nbsp;-19&nbsp;9&nbsp;-93&nbsp;72&nbsp;-16&nbsp;-26&nbsp;-45&nbsp;9&nbsp;80&nbsp;6&nbsp;12&nbsp;-52&nbsp;43&nbsp;-19<br/>
+35&nbsp;-57&nbsp;99&nbsp;-92&nbsp;55&nbsp;77&nbsp;-26&nbsp;-54&nbsp;68&nbsp;-81&nbsp;29&nbsp;-25&nbsp;-45&nbsp;29&nbsp;45&nbsp;26&nbsp;-67&nbsp;6&nbsp;81&nbsp;85&nbsp;79&nbsp;38&nbsp;9&nbsp;60&nbsp;-35&nbsp;-21&nbsp;92&nbsp;-22&nbsp;-39&nbsp;-64&nbsp;-16&nbsp;96&nbsp;-14&nbsp;-64&nbsp;-49&nbsp;18&nbsp;-60&nbsp;-49&nbsp;-99&nbsp;79<br/>
+-44&nbsp;69&nbsp;-83&nbsp;-73&nbsp;65&nbsp;50&nbsp;-65&nbsp;67&nbsp;-19&nbsp;96&nbsp;56&nbsp;-98&nbsp;-22&nbsp;84&nbsp;-58&nbsp;-2&nbsp;41&nbsp;26&nbsp;91&nbsp;51&nbsp;-92&nbsp;-68&nbsp;67&nbsp;43&nbsp;66&nbsp;-79&nbsp;78&nbsp;-38&nbsp;-56&nbsp;-68&nbsp;37&nbsp;47&nbsp;-9&nbsp;-22&nbsp;-68&nbsp;-80&nbsp;-90&nbsp;46&nbsp;-12&nbsp;-36<br/>
+25&nbsp;-16&nbsp;29&nbsp;29&nbsp;23&nbsp;-94&nbsp;-60&nbsp;94&nbsp;56&nbsp;32&nbsp;58&nbsp;57&nbsp;31&nbsp;66&nbsp;-27&nbsp;11&nbsp;-28&nbsp;71&nbsp;-58&nbsp;37&nbsp;-56&nbsp;14&nbsp;-26&nbsp;15&nbsp;-16&nbsp;66&nbsp;-33&nbsp;-45&nbsp;34&nbsp;-2&nbsp;77&nbsp;2&nbsp;31&nbsp;-14&nbsp;1&nbsp;13&nbsp;-19&nbsp;-92&nbsp;-87&nbsp;-48<br/>
+100&nbsp;-6&nbsp;96&nbsp;75&nbsp;-44&nbsp;31&nbsp;58&nbsp;-39&nbsp;-3&nbsp;-18&nbsp;58&nbsp;75&nbsp;51&nbsp;73&nbsp;-37&nbsp;22&nbsp;-57&nbsp;-79&nbsp;41&nbsp;54&nbsp;-94&nbsp;-51&nbsp;-13&nbsp;-31&nbsp;38&nbsp;-7&nbsp;6&nbsp;92&nbsp;-43&nbsp;-6&nbsp;-92&nbsp;-67&nbsp;-98&nbsp;-3&nbsp;36&nbsp;-65&nbsp;59&nbsp;-41&nbsp;-57&nbsp;85<br/>
+-33&nbsp;-64&nbsp;-10&nbsp;81&nbsp;7&nbsp;-7&nbsp;-86&nbsp;-2&nbsp;18&nbsp;-25&nbsp;79&nbsp;18&nbsp;-99&nbsp;65&nbsp;77&nbsp;-60&nbsp;24&nbsp;-40&nbsp;12&nbsp;28&nbsp;41&nbsp;99&nbsp;-37&nbsp;73&nbsp;-13&nbsp;78&nbsp;93&nbsp;-80&nbsp;77&nbsp;68&nbsp;2&nbsp;-96&nbsp;-27&nbsp;7&nbsp;11&nbsp;-31&nbsp;-8&nbsp;80&nbsp;-32&nbsp;-98<br/>
+-82&nbsp;-52&nbsp;-9&nbsp;-69&nbsp;38&nbsp;-19&nbsp;-64&nbsp;67&nbsp;70&nbsp;64&nbsp;6&nbsp;68&nbsp;-85&nbsp;66&nbsp;62&nbsp;-44&nbsp;90&nbsp;-48&nbsp;-64&nbsp;65&nbsp;94&nbsp;15&nbsp;-67&nbsp;-34&nbsp;-64&nbsp;-70&nbsp;-19&nbsp;53&nbsp;-80&nbsp;15&nbsp;82&nbsp;41&nbsp;95&nbsp;-79&nbsp;-57&nbsp;-54&nbsp;-21&nbsp;31&nbsp;58&nbsp;49<br/>
+-54&nbsp;94&nbsp;-32&nbsp;91&nbsp;8&nbsp;-84&nbsp;-81&nbsp;-3&nbsp;74&nbsp;30&nbsp;-66&nbsp;4&nbsp;-97&nbsp;25&nbsp;-95&nbsp;6&nbsp;12&nbsp;65&nbsp;1&nbsp;-62&nbsp;-98&nbsp;62&nbsp;13&nbsp;85&nbsp;7&nbsp;-38&nbsp;42&nbsp;57&nbsp;51&nbsp;-55&nbsp;-57&nbsp;-19&nbsp;75&nbsp;9&nbsp;-9&nbsp;-97&nbsp;-97&nbsp;-38&nbsp;69&nbsp;36<br/>
+-71&nbsp;-86&nbsp;-72&nbsp;34&nbsp;49&nbsp;60&nbsp;100&nbsp;9&nbsp;-92&nbsp;-89&nbsp;-72&nbsp;-55&nbsp;-74&nbsp;-42&nbsp;75&nbsp;-36&nbsp;-92&nbsp;-11&nbsp;-76&nbsp;-55&nbsp;4&nbsp;14&nbsp;-86&nbsp;-84&nbsp;-51&nbsp;48&nbsp;21&nbsp;85&nbsp;-52&nbsp;63&nbsp;-47&nbsp;-64&nbsp;-48&nbsp;-91&nbsp;-88&nbsp;-99&nbsp;-45&nbsp;-78&nbsp;88&nbsp;28<br/>
+94&nbsp;34&nbsp;5&nbsp;-26&nbsp;-85&nbsp;41&nbsp;-8&nbsp;-58&nbsp;2&nbsp;-76&nbsp;-58&nbsp;21&nbsp;-60&nbsp;37&nbsp;-18&nbsp;-6&nbsp;27&nbsp;-56&nbsp;68&nbsp;49&nbsp;-46&nbsp;34&nbsp;-32&nbsp;-96&nbsp;-86&nbsp;100&nbsp;43&nbsp;3&nbsp;8&nbsp;85&nbsp;97&nbsp;77&nbsp;75&nbsp;-54&nbsp;24&nbsp;55&nbsp;-41&nbsp;-93&nbsp;-17&nbsp;30<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            [100,&nbsp;98,&nbsp;99,&nbsp;91,&nbsp;70,&nbsp;92,&nbsp;100,&nbsp;96,&nbsp;97,&nbsp;96,&nbsp;99,&nbsp;100,&nbsp;99,&nbsp;86,&nbsp;100,&nbsp;88,&nbsp;96,&nbsp;95,&nbsp;95,&nbsp;85,&nbsp;94,&nbsp;99,&nbsp;94,&nbsp;95,&nbsp;92,&nbsp;100,&nbsp;99,&nbsp;92,&nbsp;97,&nbsp;85,&nbsp;100,&nbsp;99,&nbsp;96,&nbsp;98,&nbsp;100,&nbsp;100,&nbsp;96,&nbsp;94,&nbsp;98,&nbsp;93]<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase9"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 9</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            50&nbsp;75<br/>
+36&nbsp;22&nbsp;-13&nbsp;-66&nbsp;43&nbsp;-26&nbsp;27&nbsp;-40&nbsp;3&nbsp;-46&nbsp;80&nbsp;20&nbsp;30&nbsp;0&nbsp;-23&nbsp;51&nbsp;-45&nbsp;52&nbsp;96&nbsp;-86&nbsp;6&nbsp;-6&nbsp;-39&nbsp;-43&nbsp;2&nbsp;93&nbsp;88&nbsp;-74&nbsp;22&nbsp;59&nbsp;-51&nbsp;-98&nbsp;-10&nbsp;-22&nbsp;-14&nbsp;68&nbsp;-6&nbsp;-71&nbsp;55&nbsp;98&nbsp;78&nbsp;68&nbsp;-66&nbsp;85&nbsp;12&nbsp;-61&nbsp;80&nbsp;-86&nbsp;-51&nbsp;21&nbsp;36&nbsp;-97&nbsp;25&nbsp;49&nbsp;-16&nbsp;-35&nbsp;-1&nbsp;40&nbsp;-72&nbsp;-5&nbsp;90&nbsp;65&nbsp;-5&nbsp;6&nbsp;7&nbsp;82&nbsp;76&nbsp;0&nbsp;-94&nbsp;14&nbsp;-31&nbsp;62&nbsp;43&nbsp;71&nbsp;20<br/>
+-6&nbsp;-54&nbsp;77&nbsp;-25&nbsp;-83&nbsp;-43&nbsp;92&nbsp;-1&nbsp;-31&nbsp;-96&nbsp;92&nbsp;-16&nbsp;-84&nbsp;-32&nbsp;-94&nbsp;74&nbsp;-3&nbsp;0&nbsp;96&nbsp;41&nbsp;60&nbsp;39&nbsp;81&nbsp;84&nbsp;-62&nbsp;-24&nbsp;-81&nbsp;83&nbsp;63&nbsp;57&nbsp;15&nbsp;-45&nbsp;71&nbsp;84&nbsp;-91&nbsp;-96&nbsp;44&nbsp;-63&nbsp;-37&nbsp;54&nbsp;54&nbsp;19&nbsp;14&nbsp;29&nbsp;43&nbsp;11&nbsp;-47&nbsp;-56&nbsp;22&nbsp;24&nbsp;-41&nbsp;91&nbsp;-11&nbsp;40&nbsp;54&nbsp;74&nbsp;4&nbsp;50&nbsp;92&nbsp;12&nbsp;-55&nbsp;99&nbsp;11&nbsp;38&nbsp;88&nbsp;33&nbsp;15&nbsp;8&nbsp;79&nbsp;-23&nbsp;49&nbsp;-4&nbsp;33&nbsp;43&nbsp;-69<br/>
+94&nbsp;-37&nbsp;-95&nbsp;-60&nbsp;-65&nbsp;35&nbsp;42&nbsp;94&nbsp;-97&nbsp;47&nbsp;-96&nbsp;-1&nbsp;-5&nbsp;25&nbsp;29&nbsp;-21&nbsp;-92&nbsp;-52&nbsp;-67&nbsp;86&nbsp;12&nbsp;-39&nbsp;-67&nbsp;-36&nbsp;-100&nbsp;-88&nbsp;4&nbsp;62&nbsp;64&nbsp;-100&nbsp;-91&nbsp;-82&nbsp;53&nbsp;-35&nbsp;22&nbsp;85&nbsp;-17&nbsp;-17&nbsp;-35&nbsp;93&nbsp;-33&nbsp;61&nbsp;77&nbsp;-83&nbsp;-98&nbsp;43&nbsp;42&nbsp;34&nbsp;26&nbsp;-26&nbsp;86&nbsp;4&nbsp;82&nbsp;-1&nbsp;-10&nbsp;-70&nbsp;-7&nbsp;-68&nbsp;-61&nbsp;86&nbsp;-21&nbsp;98&nbsp;15&nbsp;-21&nbsp;50&nbsp;82&nbsp;-47&nbsp;-69&nbsp;-66&nbsp;-46&nbsp;100&nbsp;-100&nbsp;-75&nbsp;62&nbsp;20<br/>
+28&nbsp;-39&nbsp;93&nbsp;36&nbsp;-4&nbsp;78&nbsp;-36&nbsp;26&nbsp;84&nbsp;73&nbsp;-38&nbsp;83&nbsp;-5&nbsp;-28&nbsp;77&nbsp;-10&nbsp;-70&nbsp;-84&nbsp;-98&nbsp;25&nbsp;20&nbsp;31&nbsp;-55&nbsp;-37&nbsp;-28&nbsp;-32&nbsp;47&nbsp;-35&nbsp;0&nbsp;61&nbsp;-29&nbsp;-77&nbsp;59&nbsp;38&nbsp;-3&nbsp;92&nbsp;-81&nbsp;21&nbsp;6&nbsp;-53&nbsp;32&nbsp;-20&nbsp;21&nbsp;63&nbsp;50&nbsp;26&nbsp;54&nbsp;-100&nbsp;52&nbsp;38&nbsp;-86&nbsp;14&nbsp;-45&nbsp;-84&nbsp;-69&nbsp;-55&nbsp;-47&nbsp;-100&nbsp;-46&nbsp;45&nbsp;-93&nbsp;-46&nbsp;-18&nbsp;26&nbsp;6&nbsp;60&nbsp;-16&nbsp;95&nbsp;59&nbsp;-38&nbsp;24&nbsp;-18&nbsp;15&nbsp;14&nbsp;-31<br/>
+-16&nbsp;64&nbsp;-2&nbsp;78&nbsp;-20&nbsp;44&nbsp;73&nbsp;82&nbsp;-63&nbsp;-31&nbsp;15&nbsp;-26&nbsp;-81&nbsp;-9&nbsp;-65&nbsp;-2&nbsp;-70&nbsp;-56&nbsp;34&nbsp;-83&nbsp;-79&nbsp;-81&nbsp;-71&nbsp;-41&nbsp;29&nbsp;84&nbsp;98&nbsp;62&nbsp;64&nbsp;-9&nbsp;-3&nbsp;56&nbsp;8&nbsp;-97&nbsp;36&nbsp;19&nbsp;-77&nbsp;-21&nbsp;-34&nbsp;2&nbsp;23&nbsp;-88&nbsp;-7&nbsp;-98&nbsp;41&nbsp;96&nbsp;-76&nbsp;-86&nbsp;-12&nbsp;16&nbsp;-35&nbsp;5&nbsp;69&nbsp;-84&nbsp;-10&nbsp;-13&nbsp;79&nbsp;-34&nbsp;95&nbsp;-35&nbsp;-57&nbsp;-63&nbsp;-10&nbsp;-5&nbsp;27&nbsp;0&nbsp;47&nbsp;-96&nbsp;-22&nbsp;90&nbsp;-92&nbsp;54&nbsp;41&nbsp;-69&nbsp;-100<br/>
+68&nbsp;-63&nbsp;-96&nbsp;21&nbsp;1&nbsp;-35&nbsp;-47&nbsp;78&nbsp;-43&nbsp;16&nbsp;-94&nbsp;-61&nbsp;-63&nbsp;-54&nbsp;-90&nbsp;45&nbsp;72&nbsp;8&nbsp;69&nbsp;-27&nbsp;-66&nbsp;48&nbsp;76&nbsp;41&nbsp;39&nbsp;83&nbsp;97&nbsp;68&nbsp;-67&nbsp;-82&nbsp;21&nbsp;63&nbsp;-59&nbsp;1&nbsp;-44&nbsp;40&nbsp;-23&nbsp;47&nbsp;-19&nbsp;12&nbsp;-61&nbsp;-62&nbsp;-65&nbsp;65&nbsp;20&nbsp;91&nbsp;36&nbsp;72&nbsp;-79&nbsp;6&nbsp;40&nbsp;42&nbsp;75&nbsp;60&nbsp;-78&nbsp;-76&nbsp;16&nbsp;-83&nbsp;-78&nbsp;-31&nbsp;38&nbsp;90&nbsp;78&nbsp;25&nbsp;-35&nbsp;50&nbsp;-73&nbsp;83&nbsp;87&nbsp;4&nbsp;-65&nbsp;9&nbsp;24&nbsp;84&nbsp;92<br/>
+28&nbsp;29&nbsp;-7&nbsp;-64&nbsp;-49&nbsp;37&nbsp;-94&nbsp;26&nbsp;48&nbsp;-5&nbsp;36&nbsp;8&nbsp;-72&nbsp;-27&nbsp;74&nbsp;-100&nbsp;-51&nbsp;-85&nbsp;85&nbsp;-72&nbsp;-46&nbsp;-79&nbsp;52&nbsp;19&nbsp;88&nbsp;-21&nbsp;-7&nbsp;-85&nbsp;-10&nbsp;19&nbsp;-58&nbsp;70&nbsp;22&nbsp;94&nbsp;15&nbsp;-97&nbsp;-23&nbsp;89&nbsp;-35&nbsp;30&nbsp;-64&nbsp;-6&nbsp;-49&nbsp;-11&nbsp;-34&nbsp;-72&nbsp;8&nbsp;98&nbsp;-47&nbsp;-89&nbsp;-7&nbsp;-12&nbsp;-32&nbsp;-59&nbsp;78&nbsp;-23&nbsp;-52&nbsp;93&nbsp;-23&nbsp;-79&nbsp;-72&nbsp;-85&nbsp;62&nbsp;-64&nbsp;59&nbsp;-67&nbsp;-69&nbsp;-66&nbsp;-73&nbsp;78&nbsp;-7&nbsp;36&nbsp;-23&nbsp;33&nbsp;-84<br/>
+-74&nbsp;-5&nbsp;-34&nbsp;-43&nbsp;87&nbsp;65&nbsp;-4&nbsp;-23&nbsp;-9&nbsp;45&nbsp;71&nbsp;-58&nbsp;-6&nbsp;-12&nbsp;-81&nbsp;19&nbsp;3&nbsp;-97&nbsp;-35&nbsp;-40&nbsp;-59&nbsp;43&nbsp;35&nbsp;11&nbsp;35&nbsp;-67&nbsp;95&nbsp;87&nbsp;-95&nbsp;58&nbsp;58&nbsp;-25&nbsp;22&nbsp;-14&nbsp;-98&nbsp;30&nbsp;-8&nbsp;-59&nbsp;52&nbsp;-1&nbsp;-11&nbsp;-24&nbsp;2&nbsp;28&nbsp;71&nbsp;-70&nbsp;67&nbsp;98&nbsp;47&nbsp;48&nbsp;61&nbsp;49&nbsp;35&nbsp;-10&nbsp;69&nbsp;-1&nbsp;53&nbsp;78&nbsp;54&nbsp;31&nbsp;94&nbsp;-46&nbsp;-16&nbsp;1&nbsp;-44&nbsp;91&nbsp;25&nbsp;48&nbsp;-48&nbsp;10&nbsp;55&nbsp;86&nbsp;-89&nbsp;-28&nbsp;-56<br/>
+12&nbsp;21&nbsp;-50&nbsp;71&nbsp;-56&nbsp;36&nbsp;17&nbsp;-57&nbsp;26&nbsp;-4&nbsp;56&nbsp;30&nbsp;-15&nbsp;-12&nbsp;56&nbsp;-53&nbsp;-77&nbsp;-26&nbsp;-42&nbsp;-31&nbsp;-62&nbsp;61&nbsp;-97&nbsp;-85&nbsp;-4&nbsp;-23&nbsp;9&nbsp;-25&nbsp;44&nbsp;-64&nbsp;-40&nbsp;25&nbsp;76&nbsp;-67&nbsp;-3&nbsp;20&nbsp;37&nbsp;89&nbsp;42&nbsp;-30&nbsp;51&nbsp;-6&nbsp;-70&nbsp;53&nbsp;88&nbsp;-13&nbsp;-17&nbsp;21&nbsp;54&nbsp;1&nbsp;-44&nbsp;-27&nbsp;-4&nbsp;-23&nbsp;19&nbsp;-46&nbsp;28&nbsp;14&nbsp;-24&nbsp;-36&nbsp;-14&nbsp;-99&nbsp;-16&nbsp;-19&nbsp;85&nbsp;37&nbsp;93&nbsp;60&nbsp;90&nbsp;3&nbsp;82&nbsp;-29&nbsp;65&nbsp;-50&nbsp;33<br/>
+-95&nbsp;61&nbsp;-62&nbsp;-86&nbsp;-39&nbsp;4&nbsp;73&nbsp;83&nbsp;37&nbsp;-7&nbsp;93&nbsp;81&nbsp;5&nbsp;-47&nbsp;-87&nbsp;34&nbsp;-42&nbsp;-92&nbsp;71&nbsp;13&nbsp;-73&nbsp;-53&nbsp;-70&nbsp;43&nbsp;69&nbsp;72&nbsp;-100&nbsp;77&nbsp;84&nbsp;-68&nbsp;82&nbsp;-50&nbsp;-79&nbsp;-61&nbsp;49&nbsp;10&nbsp;44&nbsp;25&nbsp;-47&nbsp;-23&nbsp;-31&nbsp;-49&nbsp;28&nbsp;34&nbsp;21&nbsp;-84&nbsp;-66&nbsp;-38&nbsp;-7&nbsp;63&nbsp;-67&nbsp;-19&nbsp;86&nbsp;-89&nbsp;1&nbsp;-54&nbsp;4&nbsp;72&nbsp;-70&nbsp;-80&nbsp;-39&nbsp;-3&nbsp;44&nbsp;-79&nbsp;94&nbsp;69&nbsp;60&nbsp;98&nbsp;83&nbsp;-89&nbsp;52&nbsp;-54&nbsp;41&nbsp;-41&nbsp;-7<br/>
+49&nbsp;-62&nbsp;-71&nbsp;94&nbsp;9&nbsp;-35&nbsp;30&nbsp;-67&nbsp;70&nbsp;86&nbsp;-63&nbsp;-37&nbsp;-96&nbsp;76&nbsp;-92&nbsp;-51&nbsp;0&nbsp;29&nbsp;36&nbsp;-36&nbsp;69&nbsp;-52&nbsp;37&nbsp;-38&nbsp;22&nbsp;-42&nbsp;-29&nbsp;69&nbsp;-25&nbsp;-28&nbsp;11&nbsp;-7&nbsp;-21&nbsp;-84&nbsp;-85&nbsp;-78&nbsp;-33&nbsp;23&nbsp;13&nbsp;-95&nbsp;15&nbsp;-78&nbsp;76&nbsp;91&nbsp;-42&nbsp;25&nbsp;-36&nbsp;25&nbsp;-100&nbsp;83&nbsp;26&nbsp;-24&nbsp;55&nbsp;91&nbsp;-85&nbsp;5&nbsp;1&nbsp;45&nbsp;73&nbsp;26&nbsp;-46&nbsp;81&nbsp;18&nbsp;42&nbsp;-9&nbsp;21&nbsp;43&nbsp;-11&nbsp;-45&nbsp;-63&nbsp;-8&nbsp;71&nbsp;50&nbsp;86&nbsp;-66<br/>
+72&nbsp;-17&nbsp;-94&nbsp;99&nbsp;-62&nbsp;13&nbsp;-87&nbsp;-12&nbsp;-38&nbsp;-64&nbsp;-5&nbsp;21&nbsp;7&nbsp;47&nbsp;-54&nbsp;87&nbsp;-50&nbsp;11&nbsp;-45&nbsp;-35&nbsp;95&nbsp;14&nbsp;-12&nbsp;-99&nbsp;46&nbsp;50&nbsp;-70&nbsp;58&nbsp;-31&nbsp;-91&nbsp;-99&nbsp;-44&nbsp;80&nbsp;-85&nbsp;18&nbsp;-57&nbsp;-49&nbsp;56&nbsp;3&nbsp;-38&nbsp;-64&nbsp;-32&nbsp;67&nbsp;52&nbsp;0&nbsp;5&nbsp;62&nbsp;-7&nbsp;-83&nbsp;57&nbsp;59&nbsp;83&nbsp;-49&nbsp;88&nbsp;85&nbsp;22&nbsp;52&nbsp;91&nbsp;-13&nbsp;-19&nbsp;22&nbsp;-30&nbsp;-43&nbsp;45&nbsp;25&nbsp;9&nbsp;-94&nbsp;-90&nbsp;-99&nbsp;-100&nbsp;68&nbsp;20&nbsp;53&nbsp;70&nbsp;13<br/>
+8&nbsp;-76&nbsp;46&nbsp;11&nbsp;90&nbsp;56&nbsp;-22&nbsp;10&nbsp;70&nbsp;-10&nbsp;61&nbsp;17&nbsp;93&nbsp;-100&nbsp;4&nbsp;-77&nbsp;70&nbsp;13&nbsp;-50&nbsp;81&nbsp;88&nbsp;5&nbsp;44&nbsp;-20&nbsp;-16&nbsp;-6&nbsp;76&nbsp;-22&nbsp;-86&nbsp;-28&nbsp;39&nbsp;44&nbsp;-89&nbsp;86&nbsp;-84&nbsp;3&nbsp;77&nbsp;-56&nbsp;1&nbsp;-57&nbsp;83&nbsp;-4&nbsp;56&nbsp;13&nbsp;-6&nbsp;7&nbsp;80&nbsp;-73&nbsp;-25&nbsp;77&nbsp;11&nbsp;34&nbsp;-19&nbsp;46&nbsp;90&nbsp;38&nbsp;50&nbsp;59&nbsp;-98&nbsp;-10&nbsp;-59&nbsp;79&nbsp;-54&nbsp;17&nbsp;-89&nbsp;95&nbsp;93&nbsp;51&nbsp;-89&nbsp;58&nbsp;33&nbsp;14&nbsp;-88&nbsp;-10&nbsp;97<br/>
+-26&nbsp;-53&nbsp;-63&nbsp;94&nbsp;-51&nbsp;9&nbsp;-34&nbsp;-13&nbsp;43&nbsp;13&nbsp;-93&nbsp;-17&nbsp;56&nbsp;-37&nbsp;-22&nbsp;54&nbsp;49&nbsp;81&nbsp;-9&nbsp;-72&nbsp;89&nbsp;-83&nbsp;90&nbsp;-8&nbsp;77&nbsp;77&nbsp;-40&nbsp;62&nbsp;89&nbsp;88&nbsp;27&nbsp;-8&nbsp;-52&nbsp;74&nbsp;-47&nbsp;6&nbsp;34&nbsp;90&nbsp;-30&nbsp;-85&nbsp;-14&nbsp;69&nbsp;-56&nbsp;-41&nbsp;-66&nbsp;3&nbsp;-14&nbsp;2&nbsp;7&nbsp;28&nbsp;12&nbsp;34&nbsp;82&nbsp;92&nbsp;40&nbsp;2&nbsp;-76&nbsp;-55&nbsp;99&nbsp;18&nbsp;-22&nbsp;-12&nbsp;53&nbsp;-21&nbsp;-60&nbsp;-49&nbsp;10&nbsp;26&nbsp;-96&nbsp;-94&nbsp;-3&nbsp;28&nbsp;-59&nbsp;99&nbsp;7<br/>
+-51&nbsp;89&nbsp;-79&nbsp;-66&nbsp;-2&nbsp;36&nbsp;66&nbsp;80&nbsp;32&nbsp;-19&nbsp;-84&nbsp;-16&nbsp;-82&nbsp;-37&nbsp;-19&nbsp;-28&nbsp;87&nbsp;-61&nbsp;52&nbsp;-21&nbsp;-25&nbsp;26&nbsp;28&nbsp;-83&nbsp;-55&nbsp;1&nbsp;-84&nbsp;72&nbsp;73&nbsp;-67&nbsp;-22&nbsp;3&nbsp;63&nbsp;-19&nbsp;71&nbsp;37&nbsp;53&nbsp;-2&nbsp;-76&nbsp;-60&nbsp;19&nbsp;13&nbsp;-52&nbsp;-46&nbsp;-40&nbsp;-25&nbsp;78&nbsp;-3&nbsp;19&nbsp;75&nbsp;57&nbsp;100&nbsp;26&nbsp;-53&nbsp;-85&nbsp;38&nbsp;14&nbsp;-58&nbsp;-24&nbsp;-25&nbsp;-33&nbsp;-56&nbsp;92&nbsp;-83&nbsp;40&nbsp;91&nbsp;-20&nbsp;-58&nbsp;-37&nbsp;-74&nbsp;-68&nbsp;-32&nbsp;-5&nbsp;-62&nbsp;22<br/>
+31&nbsp;59&nbsp;10&nbsp;95&nbsp;-59&nbsp;23&nbsp;80&nbsp;-80&nbsp;-28&nbsp;39&nbsp;79&nbsp;-82&nbsp;-88&nbsp;51&nbsp;60&nbsp;-13&nbsp;68&nbsp;-38&nbsp;95&nbsp;-58&nbsp;29&nbsp;-91&nbsp;-49&nbsp;59&nbsp;0&nbsp;2&nbsp;-73&nbsp;-86&nbsp;97&nbsp;66&nbsp;17&nbsp;0&nbsp;-74&nbsp;-4&nbsp;-50&nbsp;73&nbsp;38&nbsp;14&nbsp;24&nbsp;-85&nbsp;74&nbsp;-70&nbsp;95&nbsp;-73&nbsp;76&nbsp;-86&nbsp;-100&nbsp;5&nbsp;-54&nbsp;28&nbsp;-27&nbsp;40&nbsp;74&nbsp;-71&nbsp;-92&nbsp;72&nbsp;-62&nbsp;-4&nbsp;76&nbsp;50&nbsp;81&nbsp;-61&nbsp;-14&nbsp;91&nbsp;-90&nbsp;79&nbsp;89&nbsp;-47&nbsp;-87&nbsp;15&nbsp;-14&nbsp;64&nbsp;79&nbsp;-54&nbsp;3<br/>
+-51&nbsp;-46&nbsp;78&nbsp;31&nbsp;-89&nbsp;-81&nbsp;47&nbsp;-57&nbsp;-56&nbsp;-13&nbsp;-88&nbsp;-40&nbsp;31&nbsp;28&nbsp;82&nbsp;15&nbsp;-25&nbsp;90&nbsp;-36&nbsp;7&nbsp;-54&nbsp;12&nbsp;20&nbsp;78&nbsp;16&nbsp;-68&nbsp;-20&nbsp;-88&nbsp;52&nbsp;86&nbsp;35&nbsp;96&nbsp;86&nbsp;41&nbsp;-89&nbsp;-12&nbsp;100&nbsp;-3&nbsp;33&nbsp;66&nbsp;-10&nbsp;11&nbsp;83&nbsp;37&nbsp;-78&nbsp;19&nbsp;46&nbsp;-28&nbsp;-89&nbsp;59&nbsp;-61&nbsp;62&nbsp;-88&nbsp;87&nbsp;-15&nbsp;-32&nbsp;-42&nbsp;95&nbsp;-2&nbsp;24&nbsp;-29&nbsp;0&nbsp;-92&nbsp;90&nbsp;-68&nbsp;64&nbsp;99&nbsp;-96&nbsp;81&nbsp;-64&nbsp;-39&nbsp;-52&nbsp;78&nbsp;96&nbsp;-100<br/>
+34&nbsp;-92&nbsp;-46&nbsp;-56&nbsp;-73&nbsp;7&nbsp;-30&nbsp;-48&nbsp;-38&nbsp;-91&nbsp;-23&nbsp;72&nbsp;-68&nbsp;92&nbsp;78&nbsp;84&nbsp;34&nbsp;69&nbsp;65&nbsp;12&nbsp;-73&nbsp;-57&nbsp;-78&nbsp;69&nbsp;-59&nbsp;48&nbsp;-70&nbsp;4&nbsp;19&nbsp;-24&nbsp;81&nbsp;4&nbsp;30&nbsp;-95&nbsp;-53&nbsp;-51&nbsp;-48&nbsp;69&nbsp;-56&nbsp;36&nbsp;-54&nbsp;-70&nbsp;-86&nbsp;-97&nbsp;7&nbsp;12&nbsp;-33&nbsp;-22&nbsp;-50&nbsp;74&nbsp;58&nbsp;51&nbsp;33&nbsp;59&nbsp;-49&nbsp;41&nbsp;-37&nbsp;29&nbsp;-33&nbsp;59&nbsp;-75&nbsp;-63&nbsp;-92&nbsp;-6&nbsp;21&nbsp;-81&nbsp;53&nbsp;30&nbsp;-3&nbsp;-70&nbsp;53&nbsp;83&nbsp;13&nbsp;-91&nbsp;-100<br/>
+60&nbsp;-33&nbsp;34&nbsp;-11&nbsp;100&nbsp;19&nbsp;68&nbsp;-55&nbsp;-5&nbsp;67&nbsp;-42&nbsp;50&nbsp;31&nbsp;0&nbsp;75&nbsp;93&nbsp;-88&nbsp;79&nbsp;64&nbsp;3&nbsp;37&nbsp;30&nbsp;-7&nbsp;-66&nbsp;-1&nbsp;-72&nbsp;60&nbsp;-93&nbsp;-70&nbsp;8&nbsp;4&nbsp;-82&nbsp;-100&nbsp;-58&nbsp;43&nbsp;-48&nbsp;-76&nbsp;-52&nbsp;-69&nbsp;-16&nbsp;92&nbsp;-45&nbsp;25&nbsp;4&nbsp;81&nbsp;-77&nbsp;-50&nbsp;-86&nbsp;-91&nbsp;7&nbsp;72&nbsp;58&nbsp;-61&nbsp;86&nbsp;-80&nbsp;37&nbsp;-5&nbsp;84&nbsp;-45&nbsp;-7&nbsp;19&nbsp;-27&nbsp;-92&nbsp;25&nbsp;21&nbsp;11&nbsp;0&nbsp;18&nbsp;-81&nbsp;3&nbsp;-97&nbsp;-46&nbsp;100&nbsp;-62&nbsp;8<br/>
+35&nbsp;98&nbsp;39&nbsp;-17&nbsp;3&nbsp;-11&nbsp;-12&nbsp;98&nbsp;-38&nbsp;96&nbsp;52&nbsp;-65&nbsp;0&nbsp;-52&nbsp;54&nbsp;-32&nbsp;51&nbsp;-55&nbsp;-23&nbsp;22&nbsp;82&nbsp;-88&nbsp;-37&nbsp;-26&nbsp;1&nbsp;-75&nbsp;13&nbsp;17&nbsp;-37&nbsp;-87&nbsp;11&nbsp;-49&nbsp;-23&nbsp;-66&nbsp;-43&nbsp;-92&nbsp;87&nbsp;-98&nbsp;-28&nbsp;98&nbsp;69&nbsp;63&nbsp;14&nbsp;-11&nbsp;86&nbsp;-2&nbsp;13&nbsp;3&nbsp;-57&nbsp;60&nbsp;10&nbsp;24&nbsp;-13&nbsp;0&nbsp;48&nbsp;13&nbsp;26&nbsp;-88&nbsp;-66&nbsp;44&nbsp;-55&nbsp;-50&nbsp;-66&nbsp;46&nbsp;-48&nbsp;-93&nbsp;-18&nbsp;42&nbsp;-95&nbsp;-39&nbsp;-52&nbsp;-24&nbsp;-53&nbsp;-58&nbsp;-64<br/>
+33&nbsp;-54&nbsp;60&nbsp;69&nbsp;-15&nbsp;-42&nbsp;69&nbsp;-100&nbsp;-45&nbsp;54&nbsp;-41&nbsp;54&nbsp;-99&nbsp;100&nbsp;-42&nbsp;-29&nbsp;57&nbsp;92&nbsp;-43&nbsp;68&nbsp;-20&nbsp;37&nbsp;50&nbsp;37&nbsp;-83&nbsp;-24&nbsp;73&nbsp;11&nbsp;44&nbsp;-37&nbsp;-31&nbsp;63&nbsp;71&nbsp;-69&nbsp;-41&nbsp;-76&nbsp;-40&nbsp;39&nbsp;-100&nbsp;-50&nbsp;97&nbsp;-38&nbsp;23&nbsp;-100&nbsp;91&nbsp;11&nbsp;88&nbsp;60&nbsp;-32&nbsp;-59&nbsp;46&nbsp;5&nbsp;-75&nbsp;-45&nbsp;10&nbsp;38&nbsp;-14&nbsp;98&nbsp;-44&nbsp;-56&nbsp;-22&nbsp;-51&nbsp;2&nbsp;-69&nbsp;-83&nbsp;-40&nbsp;66&nbsp;88&nbsp;-6&nbsp;34&nbsp;59&nbsp;90&nbsp;-90&nbsp;-19&nbsp;-17<br/>
+-13&nbsp;-96&nbsp;31&nbsp;2&nbsp;51&nbsp;-21&nbsp;11&nbsp;-45&nbsp;-5&nbsp;1&nbsp;-87&nbsp;13&nbsp;-53&nbsp;37&nbsp;-70&nbsp;58&nbsp;-9&nbsp;85&nbsp;-97&nbsp;48&nbsp;23&nbsp;-2&nbsp;-53&nbsp;84&nbsp;-15&nbsp;-43&nbsp;-70&nbsp;-49&nbsp;85&nbsp;1&nbsp;-56&nbsp;-8&nbsp;-18&nbsp;72&nbsp;60&nbsp;1&nbsp;-40&nbsp;-16&nbsp;-93&nbsp;-43&nbsp;-82&nbsp;-4&nbsp;-58&nbsp;73&nbsp;40&nbsp;-79&nbsp;29&nbsp;1&nbsp;-70&nbsp;7&nbsp;-30&nbsp;14&nbsp;60&nbsp;81&nbsp;48&nbsp;-14&nbsp;44&nbsp;-71&nbsp;-32&nbsp;-21&nbsp;70&nbsp;49&nbsp;-47&nbsp;17&nbsp;85&nbsp;92&nbsp;37&nbsp;-84&nbsp;-38&nbsp;22&nbsp;-14&nbsp;56&nbsp;92&nbsp;-92&nbsp;-67<br/>
+-38&nbsp;-79&nbsp;-98&nbsp;5&nbsp;7&nbsp;-95&nbsp;19&nbsp;81&nbsp;-19&nbsp;62&nbsp;-12&nbsp;-59&nbsp;84&nbsp;59&nbsp;-11&nbsp;16&nbsp;24&nbsp;28&nbsp;-59&nbsp;33&nbsp;11&nbsp;66&nbsp;-83&nbsp;82&nbsp;61&nbsp;72&nbsp;39&nbsp;62&nbsp;-88&nbsp;61&nbsp;-13&nbsp;-59&nbsp;-18&nbsp;-8&nbsp;63&nbsp;-41&nbsp;15&nbsp;-30&nbsp;-93&nbsp;-69&nbsp;-52&nbsp;-98&nbsp;1&nbsp;61&nbsp;-82&nbsp;47&nbsp;91&nbsp;51&nbsp;-100&nbsp;-15&nbsp;-37&nbsp;-55&nbsp;-25&nbsp;21&nbsp;46&nbsp;-20&nbsp;-83&nbsp;30&nbsp;77&nbsp;-11&nbsp;-54&nbsp;-96&nbsp;74&nbsp;-56&nbsp;43&nbsp;-55&nbsp;6&nbsp;62&nbsp;52&nbsp;-75&nbsp;18&nbsp;-67&nbsp;2&nbsp;-48&nbsp;58<br/>
+48&nbsp;74&nbsp;76&nbsp;8&nbsp;-75&nbsp;68&nbsp;-56&nbsp;-83&nbsp;100&nbsp;6&nbsp;50&nbsp;-94&nbsp;-1&nbsp;-57&nbsp;68&nbsp;95&nbsp;-34&nbsp;-21&nbsp;-8&nbsp;70&nbsp;-33&nbsp;-75&nbsp;-61&nbsp;-14&nbsp;-47&nbsp;60&nbsp;59&nbsp;19&nbsp;95&nbsp;42&nbsp;-31&nbsp;34&nbsp;27&nbsp;70&nbsp;-19&nbsp;67&nbsp;32&nbsp;-85&nbsp;26&nbsp;38&nbsp;23&nbsp;-43&nbsp;-59&nbsp;15&nbsp;34&nbsp;77&nbsp;-1&nbsp;98&nbsp;69&nbsp;-11&nbsp;93&nbsp;95&nbsp;52&nbsp;-93&nbsp;-5&nbsp;2&nbsp;69&nbsp;42&nbsp;51&nbsp;-41&nbsp;19&nbsp;-38&nbsp;-64&nbsp;-15&nbsp;-77&nbsp;36&nbsp;79&nbsp;74&nbsp;-77&nbsp;58&nbsp;-6&nbsp;88&nbsp;54&nbsp;62&nbsp;-72<br/>
+2&nbsp;64&nbsp;62&nbsp;6&nbsp;55&nbsp;91&nbsp;12&nbsp;-78&nbsp;-67&nbsp;52&nbsp;1&nbsp;60&nbsp;-70&nbsp;22&nbsp;45&nbsp;97&nbsp;32&nbsp;56&nbsp;-98&nbsp;-10&nbsp;51&nbsp;-93&nbsp;-51&nbsp;1&nbsp;91&nbsp;70&nbsp;60&nbsp;-23&nbsp;94&nbsp;92&nbsp;-79&nbsp;70&nbsp;55&nbsp;-20&nbsp;72&nbsp;-75&nbsp;34&nbsp;30&nbsp;-78&nbsp;46&nbsp;27&nbsp;78&nbsp;-59&nbsp;-90&nbsp;53&nbsp;-91&nbsp;32&nbsp;-39&nbsp;-18&nbsp;18&nbsp;-18&nbsp;1&nbsp;85&nbsp;22&nbsp;61&nbsp;74&nbsp;-34&nbsp;3&nbsp;-82&nbsp;-98&nbsp;-7&nbsp;52&nbsp;-83&nbsp;51&nbsp;97&nbsp;-12&nbsp;-65&nbsp;77&nbsp;-76&nbsp;72&nbsp;92&nbsp;-99&nbsp;-12&nbsp;-4&nbsp;-33<br/>
+64&nbsp;-76&nbsp;97&nbsp;-100&nbsp;47&nbsp;-64&nbsp;8&nbsp;72&nbsp;-17&nbsp;-76&nbsp;-41&nbsp;-76&nbsp;97&nbsp;-51&nbsp;20&nbsp;97&nbsp;-40&nbsp;4&nbsp;-18&nbsp;23&nbsp;61&nbsp;-38&nbsp;-75&nbsp;-4&nbsp;-69&nbsp;29&nbsp;25&nbsp;-44&nbsp;-18&nbsp;-11&nbsp;70&nbsp;-27&nbsp;23&nbsp;-95&nbsp;40&nbsp;7&nbsp;-29&nbsp;-2&nbsp;98&nbsp;87&nbsp;27&nbsp;-2&nbsp;75&nbsp;28&nbsp;82&nbsp;3&nbsp;-28&nbsp;-85&nbsp;80&nbsp;28&nbsp;-80&nbsp;13&nbsp;37&nbsp;-47&nbsp;94&nbsp;49&nbsp;-59&nbsp;-31&nbsp;-57&nbsp;2&nbsp;7&nbsp;-30&nbsp;99&nbsp;-85&nbsp;69&nbsp;11&nbsp;-97&nbsp;-16&nbsp;-97&nbsp;-36&nbsp;-48&nbsp;40&nbsp;-80&nbsp;-59&nbsp;-93<br/>
+0&nbsp;80&nbsp;88&nbsp;-17&nbsp;-88&nbsp;-67&nbsp;85&nbsp;57&nbsp;33&nbsp;93&nbsp;55&nbsp;3&nbsp;-83&nbsp;-45&nbsp;59&nbsp;-70&nbsp;97&nbsp;-6&nbsp;-46&nbsp;-90&nbsp;-62&nbsp;-38&nbsp;17&nbsp;-83&nbsp;-30&nbsp;74&nbsp;30&nbsp;14&nbsp;-74&nbsp;-6&nbsp;-53&nbsp;50&nbsp;67&nbsp;-49&nbsp;-42&nbsp;16&nbsp;63&nbsp;18&nbsp;99&nbsp;-32&nbsp;-82&nbsp;11&nbsp;-14&nbsp;23&nbsp;59&nbsp;36&nbsp;45&nbsp;-74&nbsp;-9&nbsp;-30&nbsp;-99&nbsp;-39&nbsp;-3&nbsp;-8&nbsp;-26&nbsp;-35&nbsp;-32&nbsp;15&nbsp;-62&nbsp;100&nbsp;-74&nbsp;-22&nbsp;-11&nbsp;16&nbsp;55&nbsp;69&nbsp;-79&nbsp;13&nbsp;85&nbsp;97&nbsp;85&nbsp;78&nbsp;95&nbsp;66&nbsp;4<br/>
+63&nbsp;28&nbsp;5&nbsp;30&nbsp;62&nbsp;15&nbsp;-53&nbsp;64&nbsp;59&nbsp;-3&nbsp;-28&nbsp;77&nbsp;-49&nbsp;-32&nbsp;30&nbsp;46&nbsp;32&nbsp;9&nbsp;-52&nbsp;-85&nbsp;64&nbsp;40&nbsp;67&nbsp;-63&nbsp;52&nbsp;-41&nbsp;-49&nbsp;-19&nbsp;-18&nbsp;-58&nbsp;88&nbsp;39&nbsp;3&nbsp;42&nbsp;45&nbsp;-2&nbsp;92&nbsp;-4&nbsp;-60&nbsp;-70&nbsp;69&nbsp;-58&nbsp;-85&nbsp;-21&nbsp;-74&nbsp;59&nbsp;-36&nbsp;66&nbsp;11&nbsp;13&nbsp;-51&nbsp;54&nbsp;-2&nbsp;-18&nbsp;14&nbsp;95&nbsp;-65&nbsp;61&nbsp;-55&nbsp;71&nbsp;-99&nbsp;88&nbsp;-26&nbsp;74&nbsp;-10&nbsp;12&nbsp;71&nbsp;-28&nbsp;-81&nbsp;47&nbsp;-45&nbsp;71&nbsp;40&nbsp;-25&nbsp;-31<br/>
+38&nbsp;23&nbsp;-97&nbsp;-51&nbsp;-83&nbsp;-53&nbsp;-16&nbsp;-16&nbsp;-9&nbsp;-31&nbsp;-57&nbsp;24&nbsp;-91&nbsp;-9&nbsp;69&nbsp;-73&nbsp;-50&nbsp;57&nbsp;100&nbsp;57&nbsp;1&nbsp;89&nbsp;93&nbsp;-95&nbsp;58&nbsp;36&nbsp;-94&nbsp;49&nbsp;73&nbsp;30&nbsp;58&nbsp;-100&nbsp;-26&nbsp;42&nbsp;33&nbsp;30&nbsp;-79&nbsp;-25&nbsp;87&nbsp;-29&nbsp;52&nbsp;-38&nbsp;51&nbsp;71&nbsp;56&nbsp;37&nbsp;7&nbsp;-41&nbsp;-79&nbsp;35&nbsp;36&nbsp;40&nbsp;-61&nbsp;-93&nbsp;-71&nbsp;-73&nbsp;-32&nbsp;6&nbsp;-68&nbsp;-4&nbsp;-20&nbsp;54&nbsp;60&nbsp;91&nbsp;-43&nbsp;32&nbsp;91&nbsp;-37&nbsp;-40&nbsp;99&nbsp;51&nbsp;-51&nbsp;-56&nbsp;87&nbsp;-31<br/>
+95&nbsp;-39&nbsp;100&nbsp;96&nbsp;-38&nbsp;-39&nbsp;86&nbsp;-93&nbsp;-16&nbsp;28&nbsp;-11&nbsp;-17&nbsp;-1&nbsp;70&nbsp;80&nbsp;-67&nbsp;-100&nbsp;20&nbsp;-71&nbsp;-81&nbsp;-79&nbsp;-35&nbsp;-33&nbsp;88&nbsp;-8&nbsp;-88&nbsp;-70&nbsp;22&nbsp;-69&nbsp;-14&nbsp;26&nbsp;-18&nbsp;54&nbsp;3&nbsp;62&nbsp;-52&nbsp;5&nbsp;-40&nbsp;30&nbsp;-5&nbsp;67&nbsp;-49&nbsp;-88&nbsp;70&nbsp;-85&nbsp;-14&nbsp;84&nbsp;77&nbsp;-59&nbsp;44&nbsp;98&nbsp;-38&nbsp;-6&nbsp;-95&nbsp;-22&nbsp;-10&nbsp;30&nbsp;53&nbsp;63&nbsp;-7&nbsp;62&nbsp;20&nbsp;-1&nbsp;11&nbsp;12&nbsp;-26&nbsp;96&nbsp;17&nbsp;-78&nbsp;-2&nbsp;-89&nbsp;86&nbsp;1&nbsp;-55&nbsp;21<br/>
+35&nbsp;38&nbsp;-85&nbsp;55&nbsp;-30&nbsp;57&nbsp;-43&nbsp;-47&nbsp;81&nbsp;53&nbsp;-36&nbsp;37&nbsp;-31&nbsp;-25&nbsp;60&nbsp;-57&nbsp;-42&nbsp;19&nbsp;-83&nbsp;-48&nbsp;69&nbsp;17&nbsp;13&nbsp;-66&nbsp;-25&nbsp;41&nbsp;-11&nbsp;77&nbsp;32&nbsp;-89&nbsp;-75&nbsp;23&nbsp;-100&nbsp;-86&nbsp;-30&nbsp;-94&nbsp;-97&nbsp;81&nbsp;41&nbsp;57&nbsp;53&nbsp;75&nbsp;-99&nbsp;-99&nbsp;89&nbsp;-46&nbsp;97&nbsp;51&nbsp;-55&nbsp;-49&nbsp;-65&nbsp;-52&nbsp;-25&nbsp;73&nbsp;-8&nbsp;-30&nbsp;34&nbsp;6&nbsp;-25&nbsp;-81&nbsp;63&nbsp;-60&nbsp;-23&nbsp;79&nbsp;98&nbsp;-38&nbsp;-97&nbsp;62&nbsp;-98&nbsp;-60&nbsp;30&nbsp;81&nbsp;-76&nbsp;-6&nbsp;18<br/>
+-99&nbsp;-88&nbsp;-1&nbsp;17&nbsp;62&nbsp;-41&nbsp;-12&nbsp;-36&nbsp;65&nbsp;-41&nbsp;-28&nbsp;-65&nbsp;-91&nbsp;82&nbsp;-21&nbsp;-31&nbsp;-26&nbsp;-52&nbsp;60&nbsp;-32&nbsp;-22&nbsp;74&nbsp;73&nbsp;19&nbsp;-1&nbsp;-69&nbsp;6&nbsp;14&nbsp;-58&nbsp;-86&nbsp;-86&nbsp;-49&nbsp;-63&nbsp;-39&nbsp;14&nbsp;11&nbsp;54&nbsp;-81&nbsp;-76&nbsp;-61&nbsp;7&nbsp;-15&nbsp;-81&nbsp;61&nbsp;11&nbsp;56&nbsp;-58&nbsp;70&nbsp;63&nbsp;20&nbsp;71&nbsp;40&nbsp;90&nbsp;93&nbsp;14&nbsp;8&nbsp;10&nbsp;-69&nbsp;21&nbsp;92&nbsp;-54&nbsp;-54&nbsp;-56&nbsp;-60&nbsp;33&nbsp;-5&nbsp;94&nbsp;32&nbsp;66&nbsp;-88&nbsp;35&nbsp;53&nbsp;40&nbsp;41&nbsp;-11<br/>
+66&nbsp;24&nbsp;75&nbsp;37&nbsp;96&nbsp;-60&nbsp;32&nbsp;77&nbsp;76&nbsp;67&nbsp;63&nbsp;67&nbsp;44&nbsp;-51&nbsp;4&nbsp;32&nbsp;24&nbsp;70&nbsp;51&nbsp;6&nbsp;29&nbsp;32&nbsp;28&nbsp;8&nbsp;88&nbsp;-90&nbsp;-42&nbsp;-26&nbsp;-61&nbsp;-15&nbsp;-27&nbsp;14&nbsp;9&nbsp;-68&nbsp;20&nbsp;-52&nbsp;-46&nbsp;-78&nbsp;-8&nbsp;15&nbsp;11&nbsp;74&nbsp;18&nbsp;-96&nbsp;21&nbsp;65&nbsp;-72&nbsp;-61&nbsp;-40&nbsp;12&nbsp;6&nbsp;-23&nbsp;-92&nbsp;-58&nbsp;-65&nbsp;-23&nbsp;-56&nbsp;33&nbsp;-11&nbsp;42&nbsp;-6&nbsp;1&nbsp;-65&nbsp;48&nbsp;95&nbsp;19&nbsp;61&nbsp;-75&nbsp;1&nbsp;-26&nbsp;21&nbsp;53&nbsp;23&nbsp;33&nbsp;-5<br/>
+69&nbsp;74&nbsp;-43&nbsp;-41&nbsp;71&nbsp;29&nbsp;46&nbsp;6&nbsp;-87&nbsp;-40&nbsp;-6&nbsp;-20&nbsp;-9&nbsp;28&nbsp;-16&nbsp;30&nbsp;50&nbsp;-7&nbsp;-2&nbsp;81&nbsp;-82&nbsp;42&nbsp;15&nbsp;-32&nbsp;87&nbsp;61&nbsp;-9&nbsp;-42&nbsp;44&nbsp;47&nbsp;-57&nbsp;-69&nbsp;88&nbsp;-20&nbsp;-69&nbsp;21&nbsp;69&nbsp;-60&nbsp;-70&nbsp;70&nbsp;29&nbsp;-47&nbsp;91&nbsp;-96&nbsp;-79&nbsp;-3&nbsp;65&nbsp;63&nbsp;-25&nbsp;78&nbsp;-97&nbsp;-87&nbsp;-69&nbsp;-31&nbsp;60&nbsp;19&nbsp;-90&nbsp;70&nbsp;-85&nbsp;-13&nbsp;90&nbsp;47&nbsp;-76&nbsp;-78&nbsp;-31&nbsp;-98&nbsp;-66&nbsp;-70&nbsp;10&nbsp;3&nbsp;59&nbsp;-37&nbsp;1&nbsp;-3&nbsp;73<br/>
+45&nbsp;87&nbsp;62&nbsp;-56&nbsp;-3&nbsp;96&nbsp;68&nbsp;81&nbsp;-1&nbsp;63&nbsp;-88&nbsp;88&nbsp;24&nbsp;28&nbsp;-53&nbsp;-53&nbsp;-37&nbsp;64&nbsp;97&nbsp;56&nbsp;-80&nbsp;-59&nbsp;66&nbsp;-47&nbsp;-1&nbsp;77&nbsp;-33&nbsp;-88&nbsp;-88&nbsp;-87&nbsp;37&nbsp;16&nbsp;-9&nbsp;-48&nbsp;60&nbsp;23&nbsp;-17&nbsp;93&nbsp;85&nbsp;83&nbsp;17&nbsp;76&nbsp;80&nbsp;-60&nbsp;-28&nbsp;-76&nbsp;-81&nbsp;82&nbsp;89&nbsp;-9&nbsp;-17&nbsp;-89&nbsp;-57&nbsp;-86&nbsp;54&nbsp;-89&nbsp;-26&nbsp;-99&nbsp;70&nbsp;-9&nbsp;-88&nbsp;38&nbsp;-77&nbsp;-12&nbsp;48&nbsp;-42&nbsp;-4&nbsp;-13&nbsp;88&nbsp;75&nbsp;-24&nbsp;57&nbsp;24&nbsp;-100&nbsp;-79<br/>
+77&nbsp;90&nbsp;26&nbsp;-78&nbsp;-41&nbsp;-55&nbsp;-44&nbsp;-93&nbsp;33&nbsp;58&nbsp;54&nbsp;85&nbsp;79&nbsp;25&nbsp;90&nbsp;-11&nbsp;24&nbsp;15&nbsp;65&nbsp;-55&nbsp;6&nbsp;-92&nbsp;-21&nbsp;22&nbsp;-50&nbsp;5&nbsp;53&nbsp;-52&nbsp;-51&nbsp;72&nbsp;-81&nbsp;-17&nbsp;-1&nbsp;93&nbsp;-58&nbsp;39&nbsp;91&nbsp;-77&nbsp;54&nbsp;63&nbsp;33&nbsp;87&nbsp;-76&nbsp;-98&nbsp;-5&nbsp;-100&nbsp;-20&nbsp;-50&nbsp;-42&nbsp;-59&nbsp;46&nbsp;84&nbsp;-63&nbsp;-70&nbsp;75&nbsp;26&nbsp;-95&nbsp;25&nbsp;61&nbsp;31&nbsp;-30&nbsp;5&nbsp;23&nbsp;9&nbsp;9&nbsp;-100&nbsp;80&nbsp;-14&nbsp;-17&nbsp;-30&nbsp;-18&nbsp;-75&nbsp;45&nbsp;-99&nbsp;-2<br/>
+-55&nbsp;-92&nbsp;58&nbsp;-69&nbsp;-47&nbsp;45&nbsp;-33&nbsp;32&nbsp;-74&nbsp;74&nbsp;-73&nbsp;64&nbsp;95&nbsp;98&nbsp;-17&nbsp;-51&nbsp;29&nbsp;-99&nbsp;34&nbsp;9&nbsp;4&nbsp;-25&nbsp;42&nbsp;-15&nbsp;-51&nbsp;55&nbsp;-81&nbsp;-51&nbsp;-79&nbsp;52&nbsp;65&nbsp;-71&nbsp;47&nbsp;-22&nbsp;-37&nbsp;61&nbsp;81&nbsp;-25&nbsp;77&nbsp;29&nbsp;-75&nbsp;85&nbsp;-64&nbsp;33&nbsp;-20&nbsp;-41&nbsp;8&nbsp;-71&nbsp;-14&nbsp;63&nbsp;-49&nbsp;55&nbsp;-80&nbsp;3&nbsp;-15&nbsp;-84&nbsp;-98&nbsp;-7&nbsp;86&nbsp;19&nbsp;96&nbsp;30&nbsp;-83&nbsp;-39&nbsp;-37&nbsp;-24&nbsp;34&nbsp;100&nbsp;-29&nbsp;-88&nbsp;87&nbsp;-96&nbsp;88&nbsp;-54&nbsp;53<br/>
+-45&nbsp;36&nbsp;-61&nbsp;70&nbsp;-32&nbsp;-11&nbsp;92&nbsp;24&nbsp;21&nbsp;-20&nbsp;9&nbsp;98&nbsp;-5&nbsp;43&nbsp;-47&nbsp;24&nbsp;-40&nbsp;-7&nbsp;19&nbsp;72&nbsp;-75&nbsp;24&nbsp;95&nbsp;-57&nbsp;-22&nbsp;-45&nbsp;-80&nbsp;-49&nbsp;-25&nbsp;22&nbsp;51&nbsp;-86&nbsp;-56&nbsp;84&nbsp;-97&nbsp;27&nbsp;55&nbsp;-20&nbsp;-72&nbsp;76&nbsp;-55&nbsp;-89&nbsp;57&nbsp;-38&nbsp;52&nbsp;-77&nbsp;99&nbsp;-30&nbsp;70&nbsp;-26&nbsp;83&nbsp;83&nbsp;36&nbsp;16&nbsp;-95&nbsp;64&nbsp;92&nbsp;-59&nbsp;89&nbsp;94&nbsp;59&nbsp;-52&nbsp;-40&nbsp;-85&nbsp;95&nbsp;-43&nbsp;-40&nbsp;14&nbsp;97&nbsp;4&nbsp;24&nbsp;-9&nbsp;49&nbsp;22&nbsp;-8<br/>
+30&nbsp;65&nbsp;-55&nbsp;-98&nbsp;-71&nbsp;-20&nbsp;17&nbsp;-91&nbsp;-86&nbsp;84&nbsp;-44&nbsp;-46&nbsp;52&nbsp;-100&nbsp;-6&nbsp;57&nbsp;-65&nbsp;-34&nbsp;-84&nbsp;-70&nbsp;32&nbsp;-14&nbsp;30&nbsp;-77&nbsp;-63&nbsp;-80&nbsp;-38&nbsp;73&nbsp;82&nbsp;40&nbsp;25&nbsp;-14&nbsp;-45&nbsp;30&nbsp;44&nbsp;-34&nbsp;54&nbsp;-93&nbsp;16&nbsp;-32&nbsp;-14&nbsp;28&nbsp;-74&nbsp;29&nbsp;76&nbsp;20&nbsp;-35&nbsp;-73&nbsp;25&nbsp;33&nbsp;79&nbsp;16&nbsp;-56&nbsp;12&nbsp;-56&nbsp;-41&nbsp;-46&nbsp;85&nbsp;8&nbsp;-41&nbsp;-28&nbsp;-53&nbsp;66&nbsp;-71&nbsp;-73&nbsp;-87&nbsp;-97&nbsp;61&nbsp;-30&nbsp;-88&nbsp;99&nbsp;-42&nbsp;30&nbsp;16&nbsp;-78<br/>
+-93&nbsp;48&nbsp;-15&nbsp;-94&nbsp;69&nbsp;8&nbsp;-10&nbsp;26&nbsp;-63&nbsp;-97&nbsp;-94&nbsp;-25&nbsp;-58&nbsp;67&nbsp;-7&nbsp;73&nbsp;54&nbsp;1&nbsp;14&nbsp;100&nbsp;-73&nbsp;11&nbsp;-1&nbsp;-92&nbsp;-39&nbsp;-63&nbsp;-71&nbsp;68&nbsp;-50&nbsp;66&nbsp;-57&nbsp;-76&nbsp;4&nbsp;20&nbsp;-2&nbsp;22&nbsp;-21&nbsp;86&nbsp;14&nbsp;-27&nbsp;-96&nbsp;-5&nbsp;-7&nbsp;46&nbsp;50&nbsp;-84&nbsp;-82&nbsp;-31&nbsp;75&nbsp;90&nbsp;57&nbsp;58&nbsp;-6&nbsp;-99&nbsp;3&nbsp;-42&nbsp;63&nbsp;18&nbsp;91&nbsp;-34&nbsp;-55&nbsp;-75&nbsp;96&nbsp;-62&nbsp;3&nbsp;12&nbsp;-63&nbsp;69&nbsp;-53&nbsp;20&nbsp;-98&nbsp;67&nbsp;-92&nbsp;98&nbsp;-59<br/>
+-97&nbsp;16&nbsp;55&nbsp;56&nbsp;-67&nbsp;4&nbsp;-11&nbsp;-64&nbsp;34&nbsp;31&nbsp;-28&nbsp;31&nbsp;-7&nbsp;-63&nbsp;13&nbsp;-97&nbsp;-80&nbsp;68&nbsp;77&nbsp;-2&nbsp;78&nbsp;-51&nbsp;72&nbsp;-18&nbsp;52&nbsp;-4&nbsp;5&nbsp;89&nbsp;35&nbsp;60&nbsp;75&nbsp;53&nbsp;-66&nbsp;-13&nbsp;94&nbsp;-30&nbsp;4&nbsp;-96&nbsp;-7&nbsp;-57&nbsp;16&nbsp;-52&nbsp;-77&nbsp;-80&nbsp;-27&nbsp;68&nbsp;16&nbsp;47&nbsp;91&nbsp;89&nbsp;27&nbsp;36&nbsp;78&nbsp;-82&nbsp;-41&nbsp;13&nbsp;-5&nbsp;-44&nbsp;-34&nbsp;17&nbsp;-2&nbsp;78&nbsp;24&nbsp;14&nbsp;37&nbsp;85&nbsp;66&nbsp;-73&nbsp;19&nbsp;-22&nbsp;-71&nbsp;73&nbsp;-64&nbsp;-62&nbsp;-8<br/>
+11&nbsp;20&nbsp;97&nbsp;-3&nbsp;-8&nbsp;42&nbsp;37&nbsp;-84&nbsp;8&nbsp;-82&nbsp;66&nbsp;90&nbsp;32&nbsp;-69&nbsp;-71&nbsp;82&nbsp;-74&nbsp;-97&nbsp;-94&nbsp;94&nbsp;39&nbsp;63&nbsp;50&nbsp;88&nbsp;68&nbsp;8&nbsp;89&nbsp;72&nbsp;-34&nbsp;-39&nbsp;69&nbsp;63&nbsp;77&nbsp;30&nbsp;-43&nbsp;-85&nbsp;-7&nbsp;31&nbsp;-80&nbsp;35&nbsp;-12&nbsp;29&nbsp;31&nbsp;-91&nbsp;-21&nbsp;-41&nbsp;64&nbsp;-99&nbsp;2&nbsp;-76&nbsp;-99&nbsp;-59&nbsp;59&nbsp;6&nbsp;-33&nbsp;-34&nbsp;-76&nbsp;12&nbsp;23&nbsp;-76&nbsp;-1&nbsp;10&nbsp;83&nbsp;17&nbsp;2&nbsp;-7&nbsp;-2&nbsp;-38&nbsp;-11&nbsp;-40&nbsp;60&nbsp;-87&nbsp;-99&nbsp;84&nbsp;-24<br/>
+88&nbsp;-44&nbsp;-57&nbsp;69&nbsp;16&nbsp;97&nbsp;-78&nbsp;74&nbsp;81&nbsp;-35&nbsp;-5&nbsp;-29&nbsp;27&nbsp;72&nbsp;-7&nbsp;38&nbsp;39&nbsp;-84&nbsp;-5&nbsp;-96&nbsp;-82&nbsp;-65&nbsp;-22&nbsp;71&nbsp;59&nbsp;-74&nbsp;-86&nbsp;-61&nbsp;-61&nbsp;-71&nbsp;-78&nbsp;40&nbsp;-20&nbsp;-94&nbsp;-74&nbsp;-56&nbsp;-26&nbsp;-13&nbsp;-42&nbsp;0&nbsp;91&nbsp;-43&nbsp;-49&nbsp;-28&nbsp;-54&nbsp;-10&nbsp;49&nbsp;23&nbsp;36&nbsp;-87&nbsp;90&nbsp;77&nbsp;57&nbsp;-7&nbsp;40&nbsp;-22&nbsp;3&nbsp;-88&nbsp;-12&nbsp;-89&nbsp;2&nbsp;79&nbsp;59&nbsp;-64&nbsp;23&nbsp;-56&nbsp;-99&nbsp;-81&nbsp;21&nbsp;14&nbsp;74&nbsp;-99&nbsp;-73&nbsp;-87&nbsp;30<br/>
+16&nbsp;-36&nbsp;-67&nbsp;61&nbsp;-91&nbsp;-40&nbsp;-94&nbsp;-1&nbsp;74&nbsp;45&nbsp;-55&nbsp;94&nbsp;91&nbsp;53&nbsp;-62&nbsp;-29&nbsp;-39&nbsp;90&nbsp;97&nbsp;27&nbsp;11&nbsp;20&nbsp;-50&nbsp;91&nbsp;-35&nbsp;31&nbsp;52&nbsp;47&nbsp;43&nbsp;96&nbsp;-21&nbsp;-19&nbsp;-11&nbsp;-5&nbsp;92&nbsp;11&nbsp;-69&nbsp;58&nbsp;-4&nbsp;-83&nbsp;-26&nbsp;14&nbsp;-63&nbsp;79&nbsp;-97&nbsp;81&nbsp;62&nbsp;-11&nbsp;-78&nbsp;85&nbsp;-62&nbsp;84&nbsp;75&nbsp;-5&nbsp;73&nbsp;58&nbsp;-25&nbsp;-22&nbsp;-35&nbsp;-90&nbsp;77&nbsp;-44&nbsp;90&nbsp;-47&nbsp;-81&nbsp;18&nbsp;-1&nbsp;51&nbsp;-4&nbsp;6&nbsp;-26&nbsp;-61&nbsp;87&nbsp;-72&nbsp;-18<br/>
+-8&nbsp;74&nbsp;34&nbsp;17&nbsp;-34&nbsp;64&nbsp;-86&nbsp;47&nbsp;37&nbsp;-27&nbsp;50&nbsp;-46&nbsp;93&nbsp;-69&nbsp;56&nbsp;-85&nbsp;55&nbsp;10&nbsp;80&nbsp;53&nbsp;-77&nbsp;64&nbsp;-53&nbsp;-97&nbsp;-55&nbsp;-53&nbsp;26&nbsp;58&nbsp;26&nbsp;64&nbsp;94&nbsp;-5&nbsp;19&nbsp;-19&nbsp;-67&nbsp;-48&nbsp;-74&nbsp;-94&nbsp;46&nbsp;5&nbsp;-18&nbsp;39&nbsp;74&nbsp;-93&nbsp;37&nbsp;-49&nbsp;90&nbsp;35&nbsp;-16&nbsp;-74&nbsp;-12&nbsp;-19&nbsp;-85&nbsp;91&nbsp;-86&nbsp;-75&nbsp;-89&nbsp;38&nbsp;37&nbsp;-49&nbsp;87&nbsp;93&nbsp;-14&nbsp;23&nbsp;-60&nbsp;-14&nbsp;74&nbsp;-8&nbsp;-65&nbsp;-73&nbsp;-75&nbsp;-21&nbsp;-49&nbsp;49&nbsp;76<br/>
+87&nbsp;-93&nbsp;9&nbsp;77&nbsp;-18&nbsp;-47&nbsp;-32&nbsp;-76&nbsp;-34&nbsp;-68&nbsp;-54&nbsp;-75&nbsp;29&nbsp;8&nbsp;97&nbsp;92&nbsp;40&nbsp;-45&nbsp;7&nbsp;48&nbsp;-87&nbsp;87&nbsp;-14&nbsp;-76&nbsp;-25&nbsp;-96&nbsp;64&nbsp;-14&nbsp;36&nbsp;-26&nbsp;-61&nbsp;52&nbsp;-99&nbsp;27&nbsp;37&nbsp;79&nbsp;-96&nbsp;-60&nbsp;-33&nbsp;-30&nbsp;77&nbsp;-48&nbsp;66&nbsp;83&nbsp;33&nbsp;56&nbsp;33&nbsp;-13&nbsp;-85&nbsp;28&nbsp;-66&nbsp;-11&nbsp;4&nbsp;30&nbsp;62&nbsp;4&nbsp;-88&nbsp;-96&nbsp;83&nbsp;-63&nbsp;-50&nbsp;-45&nbsp;41&nbsp;27&nbsp;8&nbsp;78&nbsp;43&nbsp;49&nbsp;44&nbsp;-56&nbsp;-14&nbsp;85&nbsp;-25&nbsp;-97&nbsp;97<br/>
+-61&nbsp;37&nbsp;90&nbsp;87&nbsp;-11&nbsp;91&nbsp;79&nbsp;-48&nbsp;13&nbsp;4&nbsp;-46&nbsp;-12&nbsp;-6&nbsp;-59&nbsp;-63&nbsp;49&nbsp;-26&nbsp;35&nbsp;-70&nbsp;-17&nbsp;74&nbsp;-55&nbsp;74&nbsp;-1&nbsp;-5&nbsp;49&nbsp;-77&nbsp;-19&nbsp;-48&nbsp;-31&nbsp;-68&nbsp;-36&nbsp;-44&nbsp;-3&nbsp;58&nbsp;55&nbsp;89&nbsp;-41&nbsp;80&nbsp;69&nbsp;59&nbsp;-61&nbsp;-100&nbsp;-81&nbsp;-3&nbsp;-10&nbsp;-35&nbsp;-44&nbsp;61&nbsp;-88&nbsp;75&nbsp;65&nbsp;49&nbsp;22&nbsp;83&nbsp;-61&nbsp;-90&nbsp;-38&nbsp;55&nbsp;9&nbsp;-98&nbsp;-82&nbsp;-98&nbsp;-31&nbsp;70&nbsp;5&nbsp;-21&nbsp;85&nbsp;-94&nbsp;-38&nbsp;-21&nbsp;-30&nbsp;-4&nbsp;-80&nbsp;-53<br/>
+64&nbsp;93&nbsp;37&nbsp;32&nbsp;68&nbsp;28&nbsp;-70&nbsp;20&nbsp;30&nbsp;31&nbsp;-93&nbsp;84&nbsp;23&nbsp;-31&nbsp;78&nbsp;57&nbsp;-50&nbsp;-97&nbsp;85&nbsp;-85&nbsp;-8&nbsp;-17&nbsp;-58&nbsp;17&nbsp;-99&nbsp;10&nbsp;-94&nbsp;-64&nbsp;-15&nbsp;37&nbsp;-36&nbsp;-57&nbsp;-7&nbsp;-65&nbsp;-90&nbsp;27&nbsp;90&nbsp;6&nbsp;99&nbsp;-66&nbsp;58&nbsp;-81&nbsp;71&nbsp;-39&nbsp;55&nbsp;34&nbsp;15&nbsp;-82&nbsp;-42&nbsp;-80&nbsp;-56&nbsp;-59&nbsp;-93&nbsp;-8&nbsp;-36&nbsp;-70&nbsp;76&nbsp;67&nbsp;59&nbsp;69&nbsp;-75&nbsp;9&nbsp;-44&nbsp;-76&nbsp;-95&nbsp;-94&nbsp;28&nbsp;-30&nbsp;15&nbsp;-18&nbsp;36&nbsp;-4&nbsp;94&nbsp;92&nbsp;-75<br/>
+13&nbsp;56&nbsp;-25&nbsp;-29&nbsp;-14&nbsp;10&nbsp;-56&nbsp;-42&nbsp;56&nbsp;99&nbsp;-3&nbsp;21&nbsp;-100&nbsp;33&nbsp;-69&nbsp;10&nbsp;-65&nbsp;2&nbsp;93&nbsp;25&nbsp;88&nbsp;-16&nbsp;-43&nbsp;54&nbsp;54&nbsp;-28&nbsp;51&nbsp;-89&nbsp;89&nbsp;-66&nbsp;-57&nbsp;40&nbsp;-42&nbsp;35&nbsp;-46&nbsp;57&nbsp;100&nbsp;-22&nbsp;-79&nbsp;-46&nbsp;-2&nbsp;-90&nbsp;-46&nbsp;-29&nbsp;-99&nbsp;5&nbsp;-32&nbsp;-35&nbsp;-3&nbsp;12&nbsp;-60&nbsp;-74&nbsp;-78&nbsp;13&nbsp;68&nbsp;11&nbsp;-61&nbsp;-30&nbsp;-90&nbsp;-23&nbsp;100&nbsp;-20&nbsp;37&nbsp;-73&nbsp;-45&nbsp;44&nbsp;90&nbsp;-72&nbsp;-20&nbsp;-48&nbsp;8&nbsp;-90&nbsp;-31&nbsp;23&nbsp;-67<br/>
+-21&nbsp;95&nbsp;-74&nbsp;-67&nbsp;-69&nbsp;50&nbsp;-33&nbsp;23&nbsp;-87&nbsp;36&nbsp;-85&nbsp;-50&nbsp;47&nbsp;72&nbsp;-18&nbsp;60&nbsp;-27&nbsp;7&nbsp;-21&nbsp;46&nbsp;-52&nbsp;96&nbsp;69&nbsp;86&nbsp;-79&nbsp;-33&nbsp;7&nbsp;9&nbsp;-42&nbsp;21&nbsp;-99&nbsp;19&nbsp;-31&nbsp;-6&nbsp;57&nbsp;37&nbsp;66&nbsp;-58&nbsp;17&nbsp;9&nbsp;-53&nbsp;47&nbsp;24&nbsp;90&nbsp;-12&nbsp;16&nbsp;-71&nbsp;70&nbsp;-43&nbsp;74&nbsp;41&nbsp;-17&nbsp;89&nbsp;-33&nbsp;-7&nbsp;22&nbsp;36&nbsp;38&nbsp;-70&nbsp;70&nbsp;97&nbsp;-18&nbsp;42&nbsp;56&nbsp;-6&nbsp;37&nbsp;-19&nbsp;-34&nbsp;66&nbsp;89&nbsp;9&nbsp;57&nbsp;57&nbsp;78&nbsp;32<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            [95,&nbsp;98,&nbsp;100,&nbsp;99,&nbsp;100,&nbsp;97,&nbsp;92,&nbsp;98,&nbsp;100,&nbsp;99,&nbsp;93,&nbsp;98,&nbsp;97,&nbsp;100,&nbsp;97,&nbsp;97,&nbsp;97,&nbsp;92,&nbsp;100,&nbsp;100,&nbsp;95,&nbsp;96,&nbsp;95,&nbsp;91,&nbsp;91,&nbsp;93,&nbsp;98,&nbsp;89,&nbsp;97,&nbsp;96,&nbsp;94,&nbsp;96,&nbsp;88,&nbsp;94,&nbsp;94,&nbsp;92,&nbsp;100,&nbsp;93,&nbsp;99,&nbsp;98,&nbsp;97,&nbsp;87,&nbsp;95,&nbsp;91,&nbsp;91,&nbsp;96,&nbsp;99,&nbsp;98,&nbsp;91,&nbsp;90,&nbsp;98,&nbsp;100,&nbsp;90,&nbsp;93,&nbsp;94,&nbsp;95,&nbsp;92,&nbsp;98,&nbsp;99,&nbsp;100,&nbsp;100,&nbsp;99,&nbsp;99,&nbsp;91,&nbsp;98,&nbsp;95,&nbsp;99,&nbsp;100,&nbsp;97,&nbsp;99,&nbsp;100,&nbsp;90,&nbsp;100,&nbsp;99,&nbsp;97]<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase10"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 10</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            90&nbsp;80<br/>
+24&nbsp;98&nbsp;-100&nbsp;76&nbsp;-84&nbsp;-60&nbsp;-97&nbsp;-2&nbsp;-90&nbsp;58&nbsp;99&nbsp;26&nbsp;-46&nbsp;71&nbsp;45&nbsp;-5&nbsp;-15&nbsp;40&nbsp;-74&nbsp;69&nbsp;-85&nbsp;-31&nbsp;-47&nbsp;-65&nbsp;83&nbsp;-16&nbsp;-20&nbsp;66&nbsp;-25&nbsp;-87&nbsp;3&nbsp;59&nbsp;12&nbsp;9&nbsp;-35&nbsp;82&nbsp;34&nbsp;32&nbsp;30&nbsp;85&nbsp;-9&nbsp;20&nbsp;86&nbsp;9&nbsp;-4&nbsp;-93&nbsp;-61&nbsp;83&nbsp;-5&nbsp;47&nbsp;25&nbsp;89&nbsp;49&nbsp;-69&nbsp;23&nbsp;43&nbsp;83&nbsp;56&nbsp;23&nbsp;-29&nbsp;12&nbsp;45&nbsp;68&nbsp;-4&nbsp;-44&nbsp;-11&nbsp;24&nbsp;-2&nbsp;92&nbsp;22&nbsp;-98&nbsp;-63&nbsp;93&nbsp;-89&nbsp;88&nbsp;-8&nbsp;46&nbsp;-44&nbsp;-21&nbsp;-20<br/>
+-81&nbsp;57&nbsp;-84&nbsp;-88&nbsp;-78&nbsp;-19&nbsp;10&nbsp;-87&nbsp;-85&nbsp;-81&nbsp;-46&nbsp;-5&nbsp;-51&nbsp;-70&nbsp;82&nbsp;29&nbsp;-69&nbsp;-22&nbsp;-17&nbsp;34&nbsp;68&nbsp;41&nbsp;20&nbsp;-89&nbsp;-44&nbsp;-85&nbsp;9&nbsp;59&nbsp;33&nbsp;-27&nbsp;-85&nbsp;4&nbsp;-22&nbsp;92&nbsp;-20&nbsp;4&nbsp;-66&nbsp;47&nbsp;92&nbsp;60&nbsp;88&nbsp;27&nbsp;44&nbsp;46&nbsp;12&nbsp;-71&nbsp;-2&nbsp;58&nbsp;-44&nbsp;-16&nbsp;-73&nbsp;17&nbsp;59&nbsp;-88&nbsp;-41&nbsp;49&nbsp;-97&nbsp;22&nbsp;32&nbsp;-91&nbsp;82&nbsp;54&nbsp;-68&nbsp;5&nbsp;39&nbsp;-25&nbsp;-11&nbsp;-49&nbsp;-73&nbsp;-85&nbsp;74&nbsp;-26&nbsp;-64&nbsp;70&nbsp;-37&nbsp;-25&nbsp;-36&nbsp;11&nbsp;-75&nbsp;23<br/>
+86&nbsp;-44&nbsp;-83&nbsp;-99&nbsp;31&nbsp;-87&nbsp;-40&nbsp;-84&nbsp;-78&nbsp;26&nbsp;-90&nbsp;61&nbsp;-64&nbsp;40&nbsp;10&nbsp;92&nbsp;70&nbsp;-54&nbsp;-26&nbsp;93&nbsp;70&nbsp;-92&nbsp;90&nbsp;-35&nbsp;76&nbsp;47&nbsp;-21&nbsp;-59&nbsp;38&nbsp;-3&nbsp;41&nbsp;-34&nbsp;52&nbsp;-63&nbsp;-82&nbsp;-15&nbsp;59&nbsp;-67&nbsp;93&nbsp;-49&nbsp;3&nbsp;-54&nbsp;-26&nbsp;20&nbsp;32&nbsp;-57&nbsp;-67&nbsp;-81&nbsp;43&nbsp;-33&nbsp;80&nbsp;-62&nbsp;89&nbsp;-92&nbsp;65&nbsp;53&nbsp;-73&nbsp;57&nbsp;36&nbsp;-60&nbsp;15&nbsp;-90&nbsp;-37&nbsp;-65&nbsp;-47&nbsp;46&nbsp;66&nbsp;-83&nbsp;-79&nbsp;39&nbsp;-90&nbsp;-65&nbsp;-21&nbsp;15&nbsp;-66&nbsp;8&nbsp;-18&nbsp;-78&nbsp;79&nbsp;87<br/>
+63&nbsp;63&nbsp;97&nbsp;-24&nbsp;-33&nbsp;20&nbsp;-74&nbsp;-97&nbsp;58&nbsp;49&nbsp;-7&nbsp;-89&nbsp;-39&nbsp;-97&nbsp;-77&nbsp;-19&nbsp;79&nbsp;50&nbsp;-100&nbsp;-19&nbsp;-45&nbsp;88&nbsp;-88&nbsp;-95&nbsp;69&nbsp;-90&nbsp;-93&nbsp;-75&nbsp;-79&nbsp;89&nbsp;-59&nbsp;37&nbsp;96&nbsp;-15&nbsp;-10&nbsp;79&nbsp;51&nbsp;59&nbsp;32&nbsp;50&nbsp;5&nbsp;-91&nbsp;-96&nbsp;27&nbsp;-21&nbsp;-75&nbsp;-22&nbsp;-70&nbsp;81&nbsp;-41&nbsp;-33&nbsp;60&nbsp;83&nbsp;26&nbsp;21&nbsp;-91&nbsp;-46&nbsp;44&nbsp;-90&nbsp;94&nbsp;11&nbsp;31&nbsp;94&nbsp;-90&nbsp;-5&nbsp;-75&nbsp;-56&nbsp;40&nbsp;-70&nbsp;-63&nbsp;99&nbsp;-32&nbsp;30&nbsp;29&nbsp;-43&nbsp;-11&nbsp;-85&nbsp;-93&nbsp;12&nbsp;-70<br/>
+-43&nbsp;-85&nbsp;-79&nbsp;-53&nbsp;86&nbsp;-81&nbsp;5&nbsp;2&nbsp;29&nbsp;-12&nbsp;-80&nbsp;86&nbsp;69&nbsp;-33&nbsp;59&nbsp;-35&nbsp;82&nbsp;77&nbsp;-39&nbsp;45&nbsp;-48&nbsp;-90&nbsp;22&nbsp;44&nbsp;100&nbsp;-68&nbsp;-5&nbsp;88&nbsp;-46&nbsp;10&nbsp;82&nbsp;-47&nbsp;99&nbsp;-70&nbsp;-7&nbsp;-42&nbsp;15&nbsp;39&nbsp;-57&nbsp;-51&nbsp;4&nbsp;-76&nbsp;-84&nbsp;100&nbsp;64&nbsp;-69&nbsp;-69&nbsp;-17&nbsp;-77&nbsp;-35&nbsp;76&nbsp;44&nbsp;15&nbsp;-82&nbsp;-53&nbsp;-62&nbsp;50&nbsp;71&nbsp;37&nbsp;-54&nbsp;35&nbsp;94&nbsp;94&nbsp;-38&nbsp;94&nbsp;-31&nbsp;-36&nbsp;48&nbsp;-18&nbsp;-64&nbsp;75&nbsp;-46&nbsp;-31&nbsp;-58&nbsp;78&nbsp;57&nbsp;-98&nbsp;-95&nbsp;74&nbsp;-62<br/>
+94&nbsp;-13&nbsp;71&nbsp;-80&nbsp;59&nbsp;0&nbsp;84&nbsp;-4&nbsp;68&nbsp;14&nbsp;-98&nbsp;7&nbsp;95&nbsp;54&nbsp;36&nbsp;91&nbsp;86&nbsp;89&nbsp;6&nbsp;16&nbsp;97&nbsp;16&nbsp;31&nbsp;14&nbsp;-44&nbsp;86&nbsp;75&nbsp;96&nbsp;68&nbsp;80&nbsp;7&nbsp;90&nbsp;-51&nbsp;45&nbsp;31&nbsp;27&nbsp;-87&nbsp;14&nbsp;-8&nbsp;36&nbsp;21&nbsp;-30&nbsp;51&nbsp;22&nbsp;-18&nbsp;-99&nbsp;76&nbsp;-43&nbsp;22&nbsp;87&nbsp;37&nbsp;-90&nbsp;83&nbsp;89&nbsp;-41&nbsp;-64&nbsp;69&nbsp;-6&nbsp;41&nbsp;-56&nbsp;-90&nbsp;66&nbsp;72&nbsp;-64&nbsp;6&nbsp;-27&nbsp;63&nbsp;46&nbsp;56&nbsp;90&nbsp;25&nbsp;4&nbsp;45&nbsp;40&nbsp;-38&nbsp;9&nbsp;6&nbsp;-26&nbsp;19&nbsp;-72<br/>
+69&nbsp;-21&nbsp;-82&nbsp;3&nbsp;15&nbsp;45&nbsp;76&nbsp;-37&nbsp;-56&nbsp;-24&nbsp;92&nbsp;-77&nbsp;-91&nbsp;-15&nbsp;87&nbsp;84&nbsp;-50&nbsp;42&nbsp;-57&nbsp;-7&nbsp;-73&nbsp;55&nbsp;-93&nbsp;88&nbsp;64&nbsp;-77&nbsp;-17&nbsp;-23&nbsp;-86&nbsp;-67&nbsp;16&nbsp;-45&nbsp;10&nbsp;85&nbsp;85&nbsp;95&nbsp;-66&nbsp;96&nbsp;57&nbsp;44&nbsp;-96&nbsp;-70&nbsp;42&nbsp;3&nbsp;-89&nbsp;7&nbsp;-30&nbsp;53&nbsp;7&nbsp;11&nbsp;-85&nbsp;-31&nbsp;74&nbsp;90&nbsp;26&nbsp;88&nbsp;-95&nbsp;90&nbsp;60&nbsp;-98&nbsp;36&nbsp;7&nbsp;82&nbsp;35&nbsp;-53&nbsp;7&nbsp;-5&nbsp;72&nbsp;84&nbsp;-70&nbsp;74&nbsp;58&nbsp;35&nbsp;-47&nbsp;-3&nbsp;70&nbsp;38&nbsp;-52&nbsp;48&nbsp;82<br/>
+82&nbsp;-64&nbsp;29&nbsp;-57&nbsp;-22&nbsp;12&nbsp;-26&nbsp;21&nbsp;-83&nbsp;76&nbsp;97&nbsp;95&nbsp;45&nbsp;94&nbsp;26&nbsp;-19&nbsp;68&nbsp;-42&nbsp;63&nbsp;56&nbsp;-40&nbsp;-40&nbsp;-95&nbsp;11&nbsp;-87&nbsp;29&nbsp;-34&nbsp;84&nbsp;-90&nbsp;8&nbsp;-50&nbsp;17&nbsp;29&nbsp;-54&nbsp;-97&nbsp;30&nbsp;-21&nbsp;-2&nbsp;86&nbsp;-9&nbsp;-14&nbsp;-33&nbsp;-45&nbsp;45&nbsp;-85&nbsp;-51&nbsp;-7&nbsp;30&nbsp;56&nbsp;-44&nbsp;22&nbsp;-60&nbsp;96&nbsp;12&nbsp;-68&nbsp;-25&nbsp;-51&nbsp;-82&nbsp;-2&nbsp;43&nbsp;-97&nbsp;-48&nbsp;-6&nbsp;-42&nbsp;-15&nbsp;-9&nbsp;-67&nbsp;-53&nbsp;97&nbsp;44&nbsp;-62&nbsp;-65&nbsp;44&nbsp;-79&nbsp;-49&nbsp;34&nbsp;89&nbsp;44&nbsp;-15&nbsp;-40<br/>
+-73&nbsp;-64&nbsp;-44&nbsp;-2&nbsp;-11&nbsp;-5&nbsp;-74&nbsp;26&nbsp;-100&nbsp;59&nbsp;83&nbsp;-58&nbsp;-68&nbsp;22&nbsp;-94&nbsp;-23&nbsp;9&nbsp;55&nbsp;-6&nbsp;-90&nbsp;-21&nbsp;22&nbsp;-27&nbsp;55&nbsp;-86&nbsp;-50&nbsp;87&nbsp;37&nbsp;-30&nbsp;41&nbsp;-3&nbsp;-17&nbsp;39&nbsp;5&nbsp;-24&nbsp;-47&nbsp;4&nbsp;-59&nbsp;61&nbsp;15&nbsp;44&nbsp;-21&nbsp;39&nbsp;73&nbsp;53&nbsp;-24&nbsp;-71&nbsp;48&nbsp;3&nbsp;89&nbsp;87&nbsp;30&nbsp;40&nbsp;-98&nbsp;10&nbsp;-61&nbsp;-28&nbsp;63&nbsp;67&nbsp;81&nbsp;-92&nbsp;46&nbsp;-44&nbsp;57&nbsp;-17&nbsp;-88&nbsp;31&nbsp;43&nbsp;93&nbsp;80&nbsp;-22&nbsp;81&nbsp;50&nbsp;40&nbsp;92&nbsp;30&nbsp;10&nbsp;23&nbsp;28&nbsp;1<br/>
+78&nbsp;92&nbsp;-48&nbsp;14&nbsp;41&nbsp;-35&nbsp;-54&nbsp;88&nbsp;45&nbsp;-100&nbsp;74&nbsp;-36&nbsp;-77&nbsp;72&nbsp;80&nbsp;41&nbsp;-74&nbsp;-64&nbsp;-62&nbsp;26&nbsp;-43&nbsp;68&nbsp;55&nbsp;-28&nbsp;-10&nbsp;-90&nbsp;-24&nbsp;77&nbsp;-18&nbsp;94&nbsp;-12&nbsp;60&nbsp;-99&nbsp;91&nbsp;-50&nbsp;-12&nbsp;-54&nbsp;-94&nbsp;-13&nbsp;-47&nbsp;-22&nbsp;61&nbsp;-97&nbsp;-35&nbsp;27&nbsp;-89&nbsp;47&nbsp;56&nbsp;-15&nbsp;100&nbsp;30&nbsp;86&nbsp;40&nbsp;-20&nbsp;85&nbsp;71&nbsp;-17&nbsp;93&nbsp;45&nbsp;-69&nbsp;-17&nbsp;40&nbsp;5&nbsp;0&nbsp;-39&nbsp;39&nbsp;-50&nbsp;50&nbsp;-9&nbsp;50&nbsp;-51&nbsp;48&nbsp;-51&nbsp;67&nbsp;-93&nbsp;69&nbsp;10&nbsp;-27&nbsp;-94&nbsp;35<br/>
+-78&nbsp;-15&nbsp;-71&nbsp;70&nbsp;56&nbsp;-52&nbsp;-93&nbsp;-11&nbsp;-73&nbsp;21&nbsp;82&nbsp;95&nbsp;6&nbsp;90&nbsp;-32&nbsp;-12&nbsp;-40&nbsp;14&nbsp;-68&nbsp;-99&nbsp;-79&nbsp;-94&nbsp;12&nbsp;-99&nbsp;70&nbsp;32&nbsp;45&nbsp;-75&nbsp;-36&nbsp;92&nbsp;-73&nbsp;-88&nbsp;75&nbsp;38&nbsp;7&nbsp;21&nbsp;95&nbsp;52&nbsp;85&nbsp;58&nbsp;-39&nbsp;-28&nbsp;-95&nbsp;-95&nbsp;0&nbsp;-93&nbsp;-71&nbsp;-67&nbsp;28&nbsp;55&nbsp;-28&nbsp;64&nbsp;21&nbsp;-86&nbsp;12&nbsp;-72&nbsp;-71&nbsp;-22&nbsp;95&nbsp;23&nbsp;2&nbsp;90&nbsp;54&nbsp;20&nbsp;60&nbsp;41&nbsp;-94&nbsp;-22&nbsp;-84&nbsp;-82&nbsp;-61&nbsp;100&nbsp;40&nbsp;58&nbsp;-90&nbsp;67&nbsp;-56&nbsp;-97&nbsp;-87&nbsp;-40<br/>
+-3&nbsp;55&nbsp;1&nbsp;34&nbsp;-86&nbsp;-88&nbsp;74&nbsp;-26&nbsp;9&nbsp;-41&nbsp;-25&nbsp;-20&nbsp;-46&nbsp;21&nbsp;-85&nbsp;-12&nbsp;-89&nbsp;-39&nbsp;-67&nbsp;60&nbsp;-58&nbsp;9&nbsp;-66&nbsp;39&nbsp;44&nbsp;-93&nbsp;96&nbsp;-72&nbsp;45&nbsp;62&nbsp;36&nbsp;32&nbsp;-27&nbsp;18&nbsp;20&nbsp;19&nbsp;62&nbsp;-72&nbsp;-13&nbsp;41&nbsp;-64&nbsp;-63&nbsp;-40&nbsp;48&nbsp;51&nbsp;33&nbsp;-81&nbsp;66&nbsp;-20&nbsp;24&nbsp;53&nbsp;51&nbsp;77&nbsp;-76&nbsp;-1&nbsp;18&nbsp;49&nbsp;42&nbsp;-84&nbsp;-48&nbsp;49&nbsp;-12&nbsp;-78&nbsp;7&nbsp;71&nbsp;-23&nbsp;39&nbsp;-2&nbsp;-71&nbsp;5&nbsp;-43&nbsp;97&nbsp;-52&nbsp;25&nbsp;20&nbsp;66&nbsp;-32&nbsp;57&nbsp;-33&nbsp;66<br/>
+-22&nbsp;-55&nbsp;-59&nbsp;43&nbsp;-22&nbsp;-19&nbsp;-28&nbsp;-53&nbsp;65&nbsp;-76&nbsp;2&nbsp;-100&nbsp;38&nbsp;26&nbsp;-53&nbsp;60&nbsp;-100&nbsp;14&nbsp;-80&nbsp;48&nbsp;-83&nbsp;16&nbsp;5&nbsp;76&nbsp;60&nbsp;45&nbsp;-24&nbsp;-99&nbsp;-14&nbsp;-45&nbsp;35&nbsp;-59&nbsp;88&nbsp;-54&nbsp;75&nbsp;-44&nbsp;-67&nbsp;-92&nbsp;80&nbsp;-54&nbsp;74&nbsp;9&nbsp;21&nbsp;8&nbsp;-81&nbsp;-99&nbsp;33&nbsp;31&nbsp;-16&nbsp;-25&nbsp;-48&nbsp;99&nbsp;-13&nbsp;75&nbsp;49&nbsp;44&nbsp;14&nbsp;-8&nbsp;64&nbsp;-25&nbsp;94&nbsp;-33&nbsp;-9&nbsp;-56&nbsp;-29&nbsp;34&nbsp;55&nbsp;78&nbsp;-95&nbsp;-47&nbsp;73&nbsp;71&nbsp;-74&nbsp;71&nbsp;-38&nbsp;55&nbsp;-81&nbsp;-62&nbsp;-40&nbsp;-97<br/>
+-91&nbsp;-88&nbsp;-37&nbsp;-79&nbsp;13&nbsp;-90&nbsp;23&nbsp;-1&nbsp;-88&nbsp;23&nbsp;1&nbsp;21&nbsp;-46&nbsp;30&nbsp;-24&nbsp;83&nbsp;74&nbsp;12&nbsp;98&nbsp;-29&nbsp;-60&nbsp;-70&nbsp;52&nbsp;39&nbsp;86&nbsp;29&nbsp;-19&nbsp;-36&nbsp;86&nbsp;5&nbsp;15&nbsp;-88&nbsp;-31&nbsp;-23&nbsp;-22&nbsp;30&nbsp;15&nbsp;11&nbsp;81&nbsp;-67&nbsp;-51&nbsp;-83&nbsp;-5&nbsp;48&nbsp;86&nbsp;-76&nbsp;32&nbsp;13&nbsp;-67&nbsp;-45&nbsp;16&nbsp;79&nbsp;81&nbsp;-88&nbsp;51&nbsp;-55&nbsp;-19&nbsp;30&nbsp;57&nbsp;-2&nbsp;-27&nbsp;77&nbsp;59&nbsp;-46&nbsp;31&nbsp;36&nbsp;-94&nbsp;-98&nbsp;-27&nbsp;-33&nbsp;-74&nbsp;25&nbsp;20&nbsp;8&nbsp;-76&nbsp;-69&nbsp;-34&nbsp;58&nbsp;26&nbsp;-2<br/>
+-100&nbsp;-39&nbsp;-82&nbsp;48&nbsp;-26&nbsp;-90&nbsp;85&nbsp;77&nbsp;-18&nbsp;-39&nbsp;-64&nbsp;64&nbsp;-93&nbsp;-97&nbsp;-70&nbsp;8&nbsp;46&nbsp;86&nbsp;-100&nbsp;-29&nbsp;44&nbsp;-76&nbsp;54&nbsp;51&nbsp;-57&nbsp;78&nbsp;-86&nbsp;95&nbsp;27&nbsp;-83&nbsp;90&nbsp;83&nbsp;-21&nbsp;-86&nbsp;-44&nbsp;9&nbsp;71&nbsp;-21&nbsp;-75&nbsp;0&nbsp;75&nbsp;-24&nbsp;99&nbsp;-49&nbsp;-88&nbsp;62&nbsp;11&nbsp;68&nbsp;-47&nbsp;-2&nbsp;38&nbsp;-26&nbsp;-42&nbsp;39&nbsp;-50&nbsp;-100&nbsp;89&nbsp;44&nbsp;-11&nbsp;37&nbsp;-71&nbsp;-91&nbsp;-4&nbsp;-29&nbsp;15&nbsp;13&nbsp;53&nbsp;-29&nbsp;-61&nbsp;-25&nbsp;32&nbsp;-3&nbsp;-39&nbsp;47&nbsp;-27&nbsp;-75&nbsp;-7&nbsp;-63&nbsp;8&nbsp;23<br/>
+8&nbsp;29&nbsp;30&nbsp;46&nbsp;-87&nbsp;0&nbsp;26&nbsp;84&nbsp;-47&nbsp;21&nbsp;82&nbsp;30&nbsp;61&nbsp;-100&nbsp;-56&nbsp;-27&nbsp;31&nbsp;-19&nbsp;27&nbsp;30&nbsp;57&nbsp;-4&nbsp;28&nbsp;-27&nbsp;0&nbsp;66&nbsp;-51&nbsp;80&nbsp;-70&nbsp;29&nbsp;74&nbsp;10&nbsp;-73&nbsp;0&nbsp;-78&nbsp;73&nbsp;-63&nbsp;85&nbsp;-10&nbsp;84&nbsp;-53&nbsp;-43&nbsp;-56&nbsp;-31&nbsp;-46&nbsp;55&nbsp;73&nbsp;10&nbsp;41&nbsp;-96&nbsp;88&nbsp;68&nbsp;83&nbsp;17&nbsp;-60&nbsp;56&nbsp;-19&nbsp;68&nbsp;4&nbsp;-89&nbsp;-25&nbsp;-13&nbsp;-6&nbsp;95&nbsp;-99&nbsp;-33&nbsp;5&nbsp;-34&nbsp;-85&nbsp;-67&nbsp;-7&nbsp;2&nbsp;-55&nbsp;-28&nbsp;11&nbsp;-7&nbsp;-92&nbsp;-27&nbsp;-19&nbsp;62<br/>
+12&nbsp;40&nbsp;55&nbsp;5&nbsp;85&nbsp;18&nbsp;-64&nbsp;8&nbsp;87&nbsp;69&nbsp;50&nbsp;-44&nbsp;70&nbsp;100&nbsp;-28&nbsp;-2&nbsp;58&nbsp;-35&nbsp;-19&nbsp;-15&nbsp;-88&nbsp;32&nbsp;27&nbsp;99&nbsp;-55&nbsp;13&nbsp;77&nbsp;-48&nbsp;-52&nbsp;-87&nbsp;-16&nbsp;-54&nbsp;27&nbsp;-22&nbsp;61&nbsp;5&nbsp;-56&nbsp;1&nbsp;67&nbsp;-15&nbsp;-80&nbsp;5&nbsp;-24&nbsp;98&nbsp;17&nbsp;53&nbsp;6&nbsp;46&nbsp;-41&nbsp;32&nbsp;-54&nbsp;41&nbsp;55&nbsp;62&nbsp;-69&nbsp;-97&nbsp;-37&nbsp;-27&nbsp;-51&nbsp;11&nbsp;-15&nbsp;97&nbsp;31&nbsp;-71&nbsp;-26&nbsp;-64&nbsp;-51&nbsp;-94&nbsp;62&nbsp;87&nbsp;18&nbsp;-7&nbsp;-90&nbsp;5&nbsp;17&nbsp;27&nbsp;100&nbsp;31&nbsp;36&nbsp;-37<br/>
+-35&nbsp;-56&nbsp;35&nbsp;-71&nbsp;-78&nbsp;55&nbsp;38&nbsp;51&nbsp;73&nbsp;5&nbsp;83&nbsp;62&nbsp;-57&nbsp;80&nbsp;-18&nbsp;-3&nbsp;-98&nbsp;-84&nbsp;15&nbsp;39&nbsp;-92&nbsp;82&nbsp;8&nbsp;29&nbsp;-36&nbsp;-98&nbsp;44&nbsp;69&nbsp;-33&nbsp;-4&nbsp;31&nbsp;-74&nbsp;16&nbsp;27&nbsp;90&nbsp;73&nbsp;-45&nbsp;-90&nbsp;82&nbsp;23&nbsp;65&nbsp;49&nbsp;9&nbsp;26&nbsp;-52&nbsp;-21&nbsp;-87&nbsp;55&nbsp;72&nbsp;20&nbsp;85&nbsp;-21&nbsp;-98&nbsp;-34&nbsp;-40&nbsp;-19&nbsp;-45&nbsp;-39&nbsp;-64&nbsp;-16&nbsp;57&nbsp;46&nbsp;3&nbsp;-46&nbsp;-36&nbsp;-53&nbsp;-89&nbsp;34&nbsp;-52&nbsp;-51&nbsp;80&nbsp;-18&nbsp;-55&nbsp;-52&nbsp;-33&nbsp;97&nbsp;-14&nbsp;73&nbsp;85&nbsp;77<br/>
+-76&nbsp;27&nbsp;79&nbsp;-97&nbsp;86&nbsp;-17&nbsp;-3&nbsp;-42&nbsp;25&nbsp;66&nbsp;98&nbsp;-9&nbsp;-36&nbsp;31&nbsp;-34&nbsp;-24&nbsp;1&nbsp;-51&nbsp;-39&nbsp;74&nbsp;-90&nbsp;74&nbsp;42&nbsp;7&nbsp;13&nbsp;-76&nbsp;5&nbsp;89&nbsp;26&nbsp;79&nbsp;64&nbsp;-88&nbsp;-83&nbsp;37&nbsp;100&nbsp;-30&nbsp;-44&nbsp;95&nbsp;23&nbsp;-42&nbsp;67&nbsp;-42&nbsp;-65&nbsp;-62&nbsp;-95&nbsp;-84&nbsp;-100&nbsp;-5&nbsp;-51&nbsp;-51&nbsp;41&nbsp;-49&nbsp;98&nbsp;66&nbsp;47&nbsp;68&nbsp;-95&nbsp;49&nbsp;-63&nbsp;-22&nbsp;-10&nbsp;80&nbsp;-78&nbsp;-93&nbsp;28&nbsp;-63&nbsp;80&nbsp;-42&nbsp;-92&nbsp;86&nbsp;-65&nbsp;1&nbsp;-8&nbsp;-8&nbsp;-2&nbsp;1&nbsp;3&nbsp;18&nbsp;-95&nbsp;-59<br/>
+3&nbsp;58&nbsp;75&nbsp;48&nbsp;-28&nbsp;-46&nbsp;26&nbsp;-18&nbsp;-37&nbsp;13&nbsp;-79&nbsp;-37&nbsp;83&nbsp;-30&nbsp;88&nbsp;54&nbsp;-34&nbsp;91&nbsp;22&nbsp;-43&nbsp;5&nbsp;23&nbsp;-16&nbsp;11&nbsp;82&nbsp;-28&nbsp;-38&nbsp;-17&nbsp;-25&nbsp;31&nbsp;7&nbsp;37&nbsp;-62&nbsp;72&nbsp;20&nbsp;-53&nbsp;26&nbsp;57&nbsp;62&nbsp;-73&nbsp;83&nbsp;0&nbsp;66&nbsp;-78&nbsp;62&nbsp;-69&nbsp;-6&nbsp;31&nbsp;35&nbsp;56&nbsp;59&nbsp;74&nbsp;-27&nbsp;79&nbsp;-53&nbsp;-10&nbsp;-39&nbsp;-28&nbsp;-97&nbsp;70&nbsp;31&nbsp;56&nbsp;13&nbsp;32&nbsp;-39&nbsp;6&nbsp;1&nbsp;-82&nbsp;66&nbsp;-65&nbsp;-6&nbsp;43&nbsp;-34&nbsp;1&nbsp;97&nbsp;85&nbsp;47&nbsp;-13&nbsp;-88&nbsp;58<br/>
+-12&nbsp;91&nbsp;30&nbsp;25&nbsp;2&nbsp;-71&nbsp;-41&nbsp;90&nbsp;88&nbsp;3&nbsp;-24&nbsp;-70&nbsp;-89&nbsp;76&nbsp;-50&nbsp;-13&nbsp;74&nbsp;31&nbsp;61&nbsp;82&nbsp;75&nbsp;-72&nbsp;-57&nbsp;20&nbsp;-43&nbsp;-73&nbsp;-78&nbsp;10&nbsp;-13&nbsp;-50&nbsp;-71&nbsp;19&nbsp;-1&nbsp;59&nbsp;37&nbsp;-52&nbsp;-83&nbsp;78&nbsp;-72&nbsp;-79&nbsp;-38&nbsp;-90&nbsp;-34&nbsp;68&nbsp;79&nbsp;71&nbsp;28&nbsp;-46&nbsp;-59&nbsp;-70&nbsp;-87&nbsp;-79&nbsp;17&nbsp;54&nbsp;-60&nbsp;-73&nbsp;-62&nbsp;-17&nbsp;-69&nbsp;-49&nbsp;74&nbsp;-20&nbsp;-47&nbsp;4&nbsp;-27&nbsp;46&nbsp;63&nbsp;-37&nbsp;46&nbsp;-19&nbsp;14&nbsp;61&nbsp;62&nbsp;28&nbsp;52&nbsp;-28&nbsp;81&nbsp;70&nbsp;40&nbsp;-71<br/>
+7&nbsp;-42&nbsp;5&nbsp;-78&nbsp;52&nbsp;-2&nbsp;-70&nbsp;48&nbsp;41&nbsp;-96&nbsp;-29&nbsp;80&nbsp;9&nbsp;-24&nbsp;48&nbsp;29&nbsp;-60&nbsp;-97&nbsp;29&nbsp;-62&nbsp;-52&nbsp;15&nbsp;-33&nbsp;0&nbsp;28&nbsp;95&nbsp;10&nbsp;71&nbsp;-96&nbsp;78&nbsp;-60&nbsp;-12&nbsp;76&nbsp;-7&nbsp;-97&nbsp;7&nbsp;30&nbsp;33&nbsp;14&nbsp;-33&nbsp;98&nbsp;-1&nbsp;36&nbsp;-42&nbsp;-8&nbsp;77&nbsp;33&nbsp;-97&nbsp;73&nbsp;56&nbsp;-44&nbsp;13&nbsp;54&nbsp;-88&nbsp;23&nbsp;-10&nbsp;-40&nbsp;-29&nbsp;-71&nbsp;-84&nbsp;-91&nbsp;73&nbsp;-84&nbsp;98&nbsp;-89&nbsp;25&nbsp;-29&nbsp;-71&nbsp;-94&nbsp;31&nbsp;-100&nbsp;-34&nbsp;14&nbsp;25&nbsp;-49&nbsp;-85&nbsp;-86&nbsp;17&nbsp;-68&nbsp;-88<br/>
+-99&nbsp;28&nbsp;-50&nbsp;-26&nbsp;-66&nbsp;-48&nbsp;18&nbsp;-26&nbsp;85&nbsp;4&nbsp;49&nbsp;72&nbsp;88&nbsp;-58&nbsp;-84&nbsp;85&nbsp;-32&nbsp;-41&nbsp;49&nbsp;37&nbsp;-31&nbsp;31&nbsp;-79&nbsp;40&nbsp;-11&nbsp;-23&nbsp;41&nbsp;-36&nbsp;49&nbsp;-38&nbsp;-40&nbsp;-74&nbsp;30&nbsp;33&nbsp;-82&nbsp;-26&nbsp;8&nbsp;47&nbsp;51&nbsp;-74&nbsp;26&nbsp;38&nbsp;49&nbsp;-41&nbsp;30&nbsp;-83&nbsp;-50&nbsp;-42&nbsp;99&nbsp;-28&nbsp;-6&nbsp;-7&nbsp;-80&nbsp;-16&nbsp;40&nbsp;-45&nbsp;65&nbsp;12&nbsp;5&nbsp;-60&nbsp;-22&nbsp;-81&nbsp;-24&nbsp;34&nbsp;95&nbsp;-84&nbsp;91&nbsp;-22&nbsp;-10&nbsp;-9&nbsp;29&nbsp;60&nbsp;94&nbsp;-39&nbsp;5&nbsp;68&nbsp;62&nbsp;35&nbsp;3&nbsp;-61<br/>
+-35&nbsp;98&nbsp;65&nbsp;3&nbsp;-43&nbsp;66&nbsp;-97&nbsp;-94&nbsp;-43&nbsp;-41&nbsp;-46&nbsp;-80&nbsp;-92&nbsp;-65&nbsp;-13&nbsp;-55&nbsp;-12&nbsp;49&nbsp;-30&nbsp;6&nbsp;-84&nbsp;-52&nbsp;-70&nbsp;-36&nbsp;60&nbsp;-16&nbsp;-71&nbsp;96&nbsp;-7&nbsp;-14&nbsp;91&nbsp;89&nbsp;36&nbsp;-10&nbsp;18&nbsp;-64&nbsp;62&nbsp;82&nbsp;-2&nbsp;32&nbsp;63&nbsp;-38&nbsp;-55&nbsp;-37&nbsp;-43&nbsp;39&nbsp;49&nbsp;-60&nbsp;-30&nbsp;-76&nbsp;83&nbsp;-35&nbsp;-76&nbsp;54&nbsp;-34&nbsp;5&nbsp;-24&nbsp;43&nbsp;97&nbsp;6&nbsp;-53&nbsp;-79&nbsp;60&nbsp;5&nbsp;-78&nbsp;42&nbsp;-63&nbsp;-32&nbsp;-56&nbsp;60&nbsp;-85&nbsp;63&nbsp;-74&nbsp;-4&nbsp;-85&nbsp;97&nbsp;46&nbsp;-94&nbsp;-48&nbsp;-17<br/>
+68&nbsp;45&nbsp;-94&nbsp;-50&nbsp;-31&nbsp;34&nbsp;81&nbsp;0&nbsp;23&nbsp;-42&nbsp;-25&nbsp;12&nbsp;-2&nbsp;-51&nbsp;-2&nbsp;9&nbsp;-68&nbsp;32&nbsp;15&nbsp;-26&nbsp;-99&nbsp;-37&nbsp;-31&nbsp;96&nbsp;73&nbsp;92&nbsp;13&nbsp;100&nbsp;23&nbsp;100&nbsp;-23&nbsp;86&nbsp;46&nbsp;97&nbsp;-16&nbsp;18&nbsp;10&nbsp;-44&nbsp;80&nbsp;33&nbsp;22&nbsp;79&nbsp;-58&nbsp;-84&nbsp;-26&nbsp;84&nbsp;63&nbsp;27&nbsp;68&nbsp;-82&nbsp;40&nbsp;-63&nbsp;65&nbsp;-92&nbsp;35&nbsp;-84&nbsp;-100&nbsp;-7&nbsp;85&nbsp;23&nbsp;-67&nbsp;13&nbsp;-61&nbsp;40&nbsp;-40&nbsp;-72&nbsp;-89&nbsp;36&nbsp;90&nbsp;70&nbsp;6&nbsp;-75&nbsp;40&nbsp;-76&nbsp;-96&nbsp;-94&nbsp;66&nbsp;98&nbsp;96&nbsp;96<br/>
+43&nbsp;-94&nbsp;-47&nbsp;-80&nbsp;75&nbsp;33&nbsp;70&nbsp;-57&nbsp;27&nbsp;-98&nbsp;-7&nbsp;54&nbsp;58&nbsp;28&nbsp;19&nbsp;3&nbsp;-63&nbsp;-5&nbsp;82&nbsp;3&nbsp;-7&nbsp;95&nbsp;77&nbsp;71&nbsp;-10&nbsp;-88&nbsp;38&nbsp;-49&nbsp;-83&nbsp;77&nbsp;-41&nbsp;81&nbsp;-48&nbsp;24&nbsp;44&nbsp;-81&nbsp;32&nbsp;71&nbsp;35&nbsp;30&nbsp;39&nbsp;49&nbsp;98&nbsp;-91&nbsp;-87&nbsp;-59&nbsp;72&nbsp;78&nbsp;54&nbsp;53&nbsp;-97&nbsp;83&nbsp;1&nbsp;-62&nbsp;-1&nbsp;93&nbsp;-45&nbsp;-66&nbsp;11&nbsp;31&nbsp;57&nbsp;-54&nbsp;-89&nbsp;-73&nbsp;62&nbsp;46&nbsp;-46&nbsp;-11&nbsp;99&nbsp;-26&nbsp;-48&nbsp;-68&nbsp;5&nbsp;55&nbsp;-98&nbsp;87&nbsp;64&nbsp;-41&nbsp;95&nbsp;36<br/>
+76&nbsp;47&nbsp;63&nbsp;19&nbsp;-93&nbsp;67&nbsp;42&nbsp;99&nbsp;59&nbsp;90&nbsp;-85&nbsp;21&nbsp;-36&nbsp;28&nbsp;-11&nbsp;-33&nbsp;-81&nbsp;65&nbsp;99&nbsp;-45&nbsp;-26&nbsp;37&nbsp;19&nbsp;-44&nbsp;-16&nbsp;-50&nbsp;-96&nbsp;93&nbsp;50&nbsp;96&nbsp;-100&nbsp;64&nbsp;-77&nbsp;-47&nbsp;32&nbsp;-86&nbsp;27&nbsp;-77&nbsp;75&nbsp;11&nbsp;-76&nbsp;88&nbsp;-42&nbsp;1&nbsp;-29&nbsp;100&nbsp;38&nbsp;59&nbsp;47&nbsp;-31&nbsp;11&nbsp;10&nbsp;75&nbsp;34&nbsp;94&nbsp;10&nbsp;87&nbsp;40&nbsp;-72&nbsp;-26&nbsp;-56&nbsp;-93&nbsp;-36&nbsp;-75&nbsp;-86&nbsp;70&nbsp;88&nbsp;32&nbsp;37&nbsp;1&nbsp;91&nbsp;2&nbsp;83&nbsp;-19&nbsp;-47&nbsp;10&nbsp;-30&nbsp;29&nbsp;29&nbsp;78<br/>
+-72&nbsp;-58&nbsp;62&nbsp;85&nbsp;-12&nbsp;-53&nbsp;61&nbsp;56&nbsp;-88&nbsp;-53&nbsp;14&nbsp;71&nbsp;-43&nbsp;74&nbsp;-76&nbsp;-34&nbsp;61&nbsp;-4&nbsp;52&nbsp;-57&nbsp;38&nbsp;5&nbsp;87&nbsp;-20&nbsp;26&nbsp;21&nbsp;-7&nbsp;-43&nbsp;-61&nbsp;40&nbsp;-10&nbsp;7&nbsp;-33&nbsp;-12&nbsp;-71&nbsp;-69&nbsp;22&nbsp;95&nbsp;61&nbsp;89&nbsp;-52&nbsp;-32&nbsp;100&nbsp;-16&nbsp;-21&nbsp;28&nbsp;-59&nbsp;36&nbsp;25&nbsp;-14&nbsp;-66&nbsp;95&nbsp;81&nbsp;-42&nbsp;-17&nbsp;-38&nbsp;25&nbsp;-45&nbsp;-96&nbsp;-91&nbsp;68&nbsp;-95&nbsp;-89&nbsp;74&nbsp;-26&nbsp;-69&nbsp;54&nbsp;59&nbsp;1&nbsp;-19&nbsp;-39&nbsp;4&nbsp;79&nbsp;-70&nbsp;89&nbsp;80&nbsp;-68&nbsp;5&nbsp;61&nbsp;18<br/>
+14&nbsp;-90&nbsp;-66&nbsp;7&nbsp;16&nbsp;61&nbsp;40&nbsp;-61&nbsp;-93&nbsp;30&nbsp;-36&nbsp;-56&nbsp;30&nbsp;25&nbsp;24&nbsp;88&nbsp;95&nbsp;-31&nbsp;-46&nbsp;56&nbsp;-92&nbsp;10&nbsp;77&nbsp;1&nbsp;33&nbsp;-60&nbsp;12&nbsp;11&nbsp;36&nbsp;65&nbsp;61&nbsp;-11&nbsp;24&nbsp;-58&nbsp;-73&nbsp;-71&nbsp;38&nbsp;5&nbsp;96&nbsp;68&nbsp;89&nbsp;48&nbsp;-53&nbsp;99&nbsp;16&nbsp;-47&nbsp;-42&nbsp;29&nbsp;11&nbsp;-35&nbsp;-19&nbsp;16&nbsp;-90&nbsp;62&nbsp;8&nbsp;88&nbsp;30&nbsp;-12&nbsp;67&nbsp;31&nbsp;-44&nbsp;24&nbsp;57&nbsp;76&nbsp;29&nbsp;-26&nbsp;45&nbsp;-40&nbsp;25&nbsp;-26&nbsp;23&nbsp;82&nbsp;-33&nbsp;-85&nbsp;-75&nbsp;15&nbsp;-68&nbsp;-63&nbsp;-35&nbsp;-13<br/>
+39&nbsp;30&nbsp;-81&nbsp;73&nbsp;-36&nbsp;-37&nbsp;-23&nbsp;58&nbsp;93&nbsp;63&nbsp;50&nbsp;-77&nbsp;4&nbsp;-37&nbsp;-57&nbsp;34&nbsp;76&nbsp;-29&nbsp;93&nbsp;26&nbsp;-81&nbsp;64&nbsp;-63&nbsp;59&nbsp;33&nbsp;-98&nbsp;-59&nbsp;37&nbsp;-77&nbsp;-94&nbsp;-46&nbsp;-100&nbsp;30&nbsp;7&nbsp;90&nbsp;30&nbsp;-21&nbsp;6&nbsp;-70&nbsp;100&nbsp;-26&nbsp;49&nbsp;94&nbsp;10&nbsp;-92&nbsp;-60&nbsp;39&nbsp;44&nbsp;27&nbsp;45&nbsp;-74&nbsp;46&nbsp;66&nbsp;-41&nbsp;37&nbsp;7&nbsp;-59&nbsp;-98&nbsp;100&nbsp;-29&nbsp;-50&nbsp;-58&nbsp;5&nbsp;-66&nbsp;49&nbsp;60&nbsp;-97&nbsp;-31&nbsp;-1&nbsp;-26&nbsp;28&nbsp;95&nbsp;80&nbsp;-95&nbsp;39&nbsp;69&nbsp;56&nbsp;18&nbsp;41&nbsp;76<br/>
+63&nbsp;21&nbsp;-43&nbsp;0&nbsp;62&nbsp;-4&nbsp;-13&nbsp;46&nbsp;99&nbsp;77&nbsp;-74&nbsp;-79&nbsp;-99&nbsp;22&nbsp;-81&nbsp;-18&nbsp;21&nbsp;71&nbsp;50&nbsp;96&nbsp;96&nbsp;36&nbsp;98&nbsp;62&nbsp;25&nbsp;-16&nbsp;-11&nbsp;1&nbsp;-18&nbsp;-43&nbsp;19&nbsp;59&nbsp;-81&nbsp;-83&nbsp;-18&nbsp;96&nbsp;-73&nbsp;-99&nbsp;39&nbsp;-89&nbsp;65&nbsp;-2&nbsp;92&nbsp;15&nbsp;59&nbsp;0&nbsp;-11&nbsp;64&nbsp;1&nbsp;-88&nbsp;-39&nbsp;-62&nbsp;5&nbsp;19&nbsp;22&nbsp;-6&nbsp;-78&nbsp;54&nbsp;46&nbsp;-93&nbsp;-62&nbsp;-33&nbsp;49&nbsp;46&nbsp;70&nbsp;62&nbsp;-58&nbsp;-88&nbsp;78&nbsp;-40&nbsp;30&nbsp;-56&nbsp;-33&nbsp;-100&nbsp;16&nbsp;3&nbsp;-33&nbsp;-53&nbsp;69&nbsp;-83<br/>
+52&nbsp;-78&nbsp;-22&nbsp;6&nbsp;-1&nbsp;-87&nbsp;2&nbsp;-50&nbsp;21&nbsp;-67&nbsp;85&nbsp;9&nbsp;-16&nbsp;-28&nbsp;-74&nbsp;77&nbsp;-61&nbsp;-98&nbsp;-3&nbsp;19&nbsp;-97&nbsp;79&nbsp;43&nbsp;87&nbsp;-19&nbsp;3&nbsp;-13&nbsp;27&nbsp;-12&nbsp;99&nbsp;71&nbsp;-13&nbsp;29&nbsp;100&nbsp;100&nbsp;27&nbsp;13&nbsp;65&nbsp;57&nbsp;-96&nbsp;37&nbsp;-41&nbsp;-65&nbsp;-5&nbsp;-23&nbsp;-79&nbsp;-68&nbsp;43&nbsp;-58&nbsp;-82&nbsp;-24&nbsp;20&nbsp;-64&nbsp;52&nbsp;-81&nbsp;-16&nbsp;46&nbsp;41&nbsp;31&nbsp;-90&nbsp;-19&nbsp;19&nbsp;-79&nbsp;89&nbsp;-30&nbsp;90&nbsp;-94&nbsp;65&nbsp;-3&nbsp;62&nbsp;54&nbsp;15&nbsp;51&nbsp;79&nbsp;-35&nbsp;-56&nbsp;62&nbsp;38&nbsp;83&nbsp;-53<br/>
+45&nbsp;-49&nbsp;-91&nbsp;-39&nbsp;-14&nbsp;55&nbsp;82&nbsp;31&nbsp;-23&nbsp;-71&nbsp;76&nbsp;-25&nbsp;-26&nbsp;-72&nbsp;2&nbsp;8&nbsp;72&nbsp;42&nbsp;54&nbsp;6&nbsp;-65&nbsp;37&nbsp;63&nbsp;69&nbsp;86&nbsp;12&nbsp;-7&nbsp;-28&nbsp;-50&nbsp;1&nbsp;72&nbsp;42&nbsp;-31&nbsp;-69&nbsp;-36&nbsp;-45&nbsp;14&nbsp;-69&nbsp;71&nbsp;18&nbsp;39&nbsp;-1&nbsp;38&nbsp;-86&nbsp;24&nbsp;-88&nbsp;-97&nbsp;26&nbsp;-39&nbsp;-16&nbsp;-4&nbsp;-77&nbsp;49&nbsp;35&nbsp;93&nbsp;-96&nbsp;70&nbsp;92&nbsp;-56&nbsp;38&nbsp;83&nbsp;-33&nbsp;15&nbsp;-27&nbsp;-51&nbsp;-92&nbsp;-39&nbsp;-41&nbsp;-66&nbsp;-78&nbsp;16&nbsp;10&nbsp;-20&nbsp;7&nbsp;-86&nbsp;-44&nbsp;-63&nbsp;-64&nbsp;77&nbsp;-64<br/>
+-25&nbsp;-27&nbsp;100&nbsp;87&nbsp;-100&nbsp;-5&nbsp;-67&nbsp;35&nbsp;27&nbsp;83&nbsp;-38&nbsp;42&nbsp;22&nbsp;-90&nbsp;-20&nbsp;68&nbsp;-22&nbsp;68&nbsp;-31&nbsp;-76&nbsp;-26&nbsp;10&nbsp;83&nbsp;-98&nbsp;62&nbsp;-33&nbsp;-62&nbsp;11&nbsp;39&nbsp;36&nbsp;-88&nbsp;-45&nbsp;28&nbsp;37&nbsp;-59&nbsp;76&nbsp;-48&nbsp;-14&nbsp;67&nbsp;-57&nbsp;91&nbsp;32&nbsp;-58&nbsp;36&nbsp;64&nbsp;-17&nbsp;-34&nbsp;-3&nbsp;-16&nbsp;66&nbsp;36&nbsp;-35&nbsp;-28&nbsp;-12&nbsp;81&nbsp;-50&nbsp;47&nbsp;14&nbsp;-67&nbsp;-78&nbsp;35&nbsp;59&nbsp;-98&nbsp;-15&nbsp;-93&nbsp;50&nbsp;36&nbsp;84&nbsp;-56&nbsp;-86&nbsp;-42&nbsp;-2&nbsp;48&nbsp;-1&nbsp;-55&nbsp;-67&nbsp;-92&nbsp;-94&nbsp;57&nbsp;-11<br/>
+21&nbsp;-39&nbsp;72&nbsp;70&nbsp;-23&nbsp;-76&nbsp;-92&nbsp;-33&nbsp;75&nbsp;95&nbsp;72&nbsp;-32&nbsp;90&nbsp;-83&nbsp;88&nbsp;39&nbsp;36&nbsp;90&nbsp;-37&nbsp;-19&nbsp;31&nbsp;-7&nbsp;90&nbsp;44&nbsp;-44&nbsp;20&nbsp;-80&nbsp;4&nbsp;-36&nbsp;-9&nbsp;48&nbsp;38&nbsp;-58&nbsp;-83&nbsp;2&nbsp;93&nbsp;16&nbsp;23&nbsp;-86&nbsp;90&nbsp;75&nbsp;58&nbsp;57&nbsp;77&nbsp;2&nbsp;91&nbsp;49&nbsp;-18&nbsp;94&nbsp;71&nbsp;-34&nbsp;45&nbsp;68&nbsp;11&nbsp;-1&nbsp;42&nbsp;-59&nbsp;-64&nbsp;-81&nbsp;100&nbsp;60&nbsp;-61&nbsp;94&nbsp;-66&nbsp;-14&nbsp;-68&nbsp;-5&nbsp;-100&nbsp;5&nbsp;-60&nbsp;95&nbsp;-97&nbsp;52&nbsp;-26&nbsp;-85&nbsp;88&nbsp;-43&nbsp;22&nbsp;9&nbsp;50<br/>
+-82&nbsp;-100&nbsp;11&nbsp;-27&nbsp;25&nbsp;-72&nbsp;-41&nbsp;-10&nbsp;92&nbsp;-3&nbsp;94&nbsp;-66&nbsp;-41&nbsp;-83&nbsp;47&nbsp;0&nbsp;-32&nbsp;92&nbsp;-49&nbsp;-62&nbsp;77&nbsp;69&nbsp;-82&nbsp;-25&nbsp;-23&nbsp;69&nbsp;76&nbsp;-49&nbsp;-14&nbsp;-95&nbsp;62&nbsp;25&nbsp;-52&nbsp;-93&nbsp;-62&nbsp;-91&nbsp;12&nbsp;30&nbsp;65&nbsp;51&nbsp;0&nbsp;-95&nbsp;-81&nbsp;67&nbsp;-60&nbsp;-41&nbsp;1&nbsp;-81&nbsp;97&nbsp;2&nbsp;-96&nbsp;-71&nbsp;21&nbsp;-24&nbsp;-67&nbsp;51&nbsp;2&nbsp;27&nbsp;-33&nbsp;78&nbsp;63&nbsp;-99&nbsp;47&nbsp;59&nbsp;48&nbsp;80&nbsp;-68&nbsp;59&nbsp;-27&nbsp;66&nbsp;0&nbsp;64&nbsp;-90&nbsp;-92&nbsp;23&nbsp;-56&nbsp;-98&nbsp;-18&nbsp;39&nbsp;-9<br/>
+0&nbsp;-51&nbsp;-37&nbsp;12&nbsp;-87&nbsp;78&nbsp;60&nbsp;-39&nbsp;56&nbsp;25&nbsp;-33&nbsp;-35&nbsp;17&nbsp;-38&nbsp;48&nbsp;77&nbsp;36&nbsp;-18&nbsp;-41&nbsp;-2&nbsp;46&nbsp;56&nbsp;44&nbsp;-71&nbsp;78&nbsp;65&nbsp;16&nbsp;-41&nbsp;-12&nbsp;-21&nbsp;22&nbsp;-80&nbsp;4&nbsp;-96&nbsp;-88&nbsp;71&nbsp;96&nbsp;73&nbsp;-52&nbsp;-5&nbsp;-73&nbsp;-52&nbsp;-24&nbsp;3&nbsp;0&nbsp;-2&nbsp;27&nbsp;77&nbsp;34&nbsp;57&nbsp;-19&nbsp;-80&nbsp;32&nbsp;37&nbsp;-38&nbsp;55&nbsp;94&nbsp;-37&nbsp;-8&nbsp;62&nbsp;-76&nbsp;58&nbsp;64&nbsp;82&nbsp;64&nbsp;19&nbsp;97&nbsp;10&nbsp;12&nbsp;93&nbsp;42&nbsp;-58&nbsp;78&nbsp;62&nbsp;34&nbsp;-99&nbsp;10&nbsp;-29&nbsp;62&nbsp;-58<br/>
+-52&nbsp;-24&nbsp;90&nbsp;-20&nbsp;-18&nbsp;9&nbsp;-95&nbsp;-21&nbsp;39&nbsp;-34&nbsp;-26&nbsp;42&nbsp;-51&nbsp;-62&nbsp;16&nbsp;-43&nbsp;5&nbsp;-32&nbsp;54&nbsp;96&nbsp;37&nbsp;-19&nbsp;-80&nbsp;82&nbsp;62&nbsp;83&nbsp;-5&nbsp;-22&nbsp;-99&nbsp;-97&nbsp;99&nbsp;-36&nbsp;-49&nbsp;-78&nbsp;-62&nbsp;74&nbsp;-16&nbsp;67&nbsp;-31&nbsp;-92&nbsp;-55&nbsp;-77&nbsp;64&nbsp;86&nbsp;-3&nbsp;86&nbsp;-98&nbsp;-48&nbsp;-91&nbsp;28&nbsp;-91&nbsp;-30&nbsp;69&nbsp;40&nbsp;40&nbsp;42&nbsp;-89&nbsp;-60&nbsp;-67&nbsp;6&nbsp;-44&nbsp;96&nbsp;97&nbsp;-29&nbsp;-23&nbsp;41&nbsp;86&nbsp;82&nbsp;-37&nbsp;-65&nbsp;0&nbsp;-53&nbsp;59&nbsp;-50&nbsp;36&nbsp;-22&nbsp;-19&nbsp;-78&nbsp;-62&nbsp;57<br/>
+-57&nbsp;29&nbsp;99&nbsp;-45&nbsp;-19&nbsp;79&nbsp;-33&nbsp;-91&nbsp;40&nbsp;42&nbsp;-42&nbsp;58&nbsp;40&nbsp;-87&nbsp;-87&nbsp;-60&nbsp;36&nbsp;-47&nbsp;85&nbsp;-8&nbsp;-17&nbsp;-88&nbsp;79&nbsp;-83&nbsp;-57&nbsp;30&nbsp;90&nbsp;44&nbsp;-26&nbsp;15&nbsp;-82&nbsp;69&nbsp;98&nbsp;-98&nbsp;89&nbsp;60&nbsp;-78&nbsp;66&nbsp;32&nbsp;30&nbsp;-70&nbsp;84&nbsp;-61&nbsp;34&nbsp;-25&nbsp;-69&nbsp;-81&nbsp;-99&nbsp;-75&nbsp;81&nbsp;-72&nbsp;-20&nbsp;86&nbsp;0&nbsp;-94&nbsp;50&nbsp;96&nbsp;-33&nbsp;68&nbsp;50&nbsp;-31&nbsp;1&nbsp;-57&nbsp;33&nbsp;21&nbsp;-22&nbsp;-37&nbsp;54&nbsp;85&nbsp;-55&nbsp;92&nbsp;-24&nbsp;50&nbsp;-88&nbsp;63&nbsp;56&nbsp;15&nbsp;-34&nbsp;100&nbsp;84<br/>
+-6&nbsp;90&nbsp;83&nbsp;-75&nbsp;-65&nbsp;90&nbsp;71&nbsp;71&nbsp;89&nbsp;-78&nbsp;22&nbsp;93&nbsp;94&nbsp;-28&nbsp;70&nbsp;-43&nbsp;44&nbsp;22&nbsp;94&nbsp;-71&nbsp;97&nbsp;5&nbsp;79&nbsp;67&nbsp;-70&nbsp;-31&nbsp;-1&nbsp;93&nbsp;28&nbsp;59&nbsp;11&nbsp;-17&nbsp;-76&nbsp;28&nbsp;19&nbsp;74&nbsp;16&nbsp;-92&nbsp;-38&nbsp;-26&nbsp;42&nbsp;-16&nbsp;100&nbsp;-69&nbsp;69&nbsp;-48&nbsp;57&nbsp;-57&nbsp;-89&nbsp;-81&nbsp;-83&nbsp;-47&nbsp;-20&nbsp;0&nbsp;-96&nbsp;-74&nbsp;28&nbsp;42&nbsp;-22&nbsp;76&nbsp;88&nbsp;84&nbsp;-60&nbsp;83&nbsp;3&nbsp;67&nbsp;-59&nbsp;-47&nbsp;-79&nbsp;88&nbsp;-85&nbsp;13&nbsp;-37&nbsp;35&nbsp;-94&nbsp;58&nbsp;-16&nbsp;9&nbsp;-78&nbsp;35<br/>
+60&nbsp;47&nbsp;16&nbsp;-9&nbsp;41&nbsp;-83&nbsp;-52&nbsp;25&nbsp;-86&nbsp;-31&nbsp;-51&nbsp;-69&nbsp;13&nbsp;94&nbsp;68&nbsp;31&nbsp;30&nbsp;50&nbsp;-74&nbsp;-20&nbsp;18&nbsp;70&nbsp;-77&nbsp;-55&nbsp;-57&nbsp;86&nbsp;-18&nbsp;-77&nbsp;19&nbsp;-19&nbsp;57&nbsp;10&nbsp;47&nbsp;-67&nbsp;3&nbsp;3&nbsp;18&nbsp;3&nbsp;30&nbsp;28&nbsp;56&nbsp;59&nbsp;-4&nbsp;-6&nbsp;33&nbsp;4&nbsp;74&nbsp;28&nbsp;-51&nbsp;-28&nbsp;-43&nbsp;-49&nbsp;69&nbsp;19&nbsp;90&nbsp;6&nbsp;69&nbsp;-52&nbsp;13&nbsp;79&nbsp;-29&nbsp;93&nbsp;-76&nbsp;-39&nbsp;-71&nbsp;-7&nbsp;22&nbsp;35&nbsp;44&nbsp;80&nbsp;-5&nbsp;25&nbsp;-48&nbsp;-80&nbsp;-81&nbsp;-13&nbsp;88&nbsp;-48&nbsp;74&nbsp;99<br/>
+52&nbsp;-3&nbsp;5&nbsp;-62&nbsp;-55&nbsp;-94&nbsp;-61&nbsp;-12&nbsp;26&nbsp;-19&nbsp;-64&nbsp;99&nbsp;54&nbsp;-81&nbsp;-74&nbsp;-64&nbsp;-59&nbsp;-7&nbsp;68&nbsp;-58&nbsp;-48&nbsp;-19&nbsp;24&nbsp;19&nbsp;-1&nbsp;-93&nbsp;67&nbsp;97&nbsp;39&nbsp;51&nbsp;18&nbsp;-16&nbsp;-76&nbsp;24&nbsp;-75&nbsp;-49&nbsp;-76&nbsp;-51&nbsp;24&nbsp;11&nbsp;28&nbsp;-14&nbsp;-33&nbsp;77&nbsp;6&nbsp;52&nbsp;-59&nbsp;-36&nbsp;-17&nbsp;65&nbsp;86&nbsp;-45&nbsp;-8&nbsp;25&nbsp;45&nbsp;-7&nbsp;-28&nbsp;-38&nbsp;-40&nbsp;23&nbsp;68&nbsp;46&nbsp;58&nbsp;-27&nbsp;100&nbsp;80&nbsp;-44&nbsp;32&nbsp;9&nbsp;-29&nbsp;-63&nbsp;76&nbsp;30&nbsp;-96&nbsp;24&nbsp;29&nbsp;-87&nbsp;38&nbsp;71&nbsp;-46<br/>
+34&nbsp;5&nbsp;-72&nbsp;12&nbsp;18&nbsp;92&nbsp;-64&nbsp;56&nbsp;31&nbsp;-64&nbsp;-4&nbsp;-48&nbsp;-98&nbsp;-81&nbsp;-91&nbsp;8&nbsp;97&nbsp;62&nbsp;-9&nbsp;-57&nbsp;-80&nbsp;46&nbsp;16&nbsp;-24&nbsp;24&nbsp;77&nbsp;-42&nbsp;61&nbsp;58&nbsp;-61&nbsp;-84&nbsp;60&nbsp;61&nbsp;82&nbsp;-6&nbsp;-30&nbsp;74&nbsp;4&nbsp;49&nbsp;-74&nbsp;27&nbsp;62&nbsp;89&nbsp;72&nbsp;23&nbsp;-39&nbsp;86&nbsp;-81&nbsp;-53&nbsp;-77&nbsp;74&nbsp;-11&nbsp;91&nbsp;6&nbsp;33&nbsp;77&nbsp;-60&nbsp;7&nbsp;84&nbsp;88&nbsp;77&nbsp;-13&nbsp;-36&nbsp;-79&nbsp;-16&nbsp;-75&nbsp;60&nbsp;-79&nbsp;-13&nbsp;-25&nbsp;-77&nbsp;-65&nbsp;3&nbsp;-7&nbsp;41&nbsp;-1&nbsp;-19&nbsp;70&nbsp;-78&nbsp;14<br/>
+-65&nbsp;55&nbsp;-16&nbsp;-10&nbsp;-12&nbsp;3&nbsp;-74&nbsp;-60&nbsp;-22&nbsp;63&nbsp;74&nbsp;-2&nbsp;-59&nbsp;-29&nbsp;-25&nbsp;-48&nbsp;91&nbsp;-43&nbsp;-76&nbsp;-90&nbsp;-82&nbsp;-79&nbsp;92&nbsp;-29&nbsp;-91&nbsp;19&nbsp;-14&nbsp;81&nbsp;15&nbsp;61&nbsp;-34&nbsp;45&nbsp;-80&nbsp;66&nbsp;-86&nbsp;-35&nbsp;98&nbsp;-3&nbsp;-61&nbsp;15&nbsp;28&nbsp;39&nbsp;16&nbsp;74&nbsp;14&nbsp;86&nbsp;5&nbsp;30&nbsp;6&nbsp;88&nbsp;58&nbsp;-100&nbsp;-82&nbsp;100&nbsp;-86&nbsp;-63&nbsp;-79&nbsp;75&nbsp;79&nbsp;79&nbsp;-74&nbsp;-78&nbsp;-87&nbsp;26&nbsp;74&nbsp;-77&nbsp;54&nbsp;4&nbsp;76&nbsp;-82&nbsp;-87&nbsp;-24&nbsp;-52&nbsp;81&nbsp;13&nbsp;17&nbsp;99&nbsp;93&nbsp;78&nbsp;90<br/>
+82&nbsp;-12&nbsp;-23&nbsp;-46&nbsp;44&nbsp;-32&nbsp;-27&nbsp;-58&nbsp;36&nbsp;-40&nbsp;-46&nbsp;-30&nbsp;-86&nbsp;-32&nbsp;8&nbsp;-90&nbsp;-9&nbsp;73&nbsp;-37&nbsp;-26&nbsp;65&nbsp;-7&nbsp;-5&nbsp;64&nbsp;74&nbsp;-38&nbsp;55&nbsp;-42&nbsp;-51&nbsp;87&nbsp;-42&nbsp;-37&nbsp;-64&nbsp;94&nbsp;-35&nbsp;-51&nbsp;-41&nbsp;-8&nbsp;10&nbsp;57&nbsp;79&nbsp;-29&nbsp;-33&nbsp;-82&nbsp;-71&nbsp;-97&nbsp;18&nbsp;-54&nbsp;-37&nbsp;-22&nbsp;-74&nbsp;-73&nbsp;56&nbsp;26&nbsp;-4&nbsp;-15&nbsp;19&nbsp;-53&nbsp;53&nbsp;13&nbsp;-93&nbsp;-8&nbsp;-48&nbsp;-29&nbsp;-11&nbsp;-66&nbsp;-87&nbsp;-88&nbsp;22&nbsp;-42&nbsp;3&nbsp;-5&nbsp;14&nbsp;4&nbsp;76&nbsp;47&nbsp;-75&nbsp;-25&nbsp;-10&nbsp;7<br/>
+48&nbsp;-91&nbsp;-68&nbsp;-59&nbsp;60&nbsp;-31&nbsp;-91&nbsp;-99&nbsp;-42&nbsp;-44&nbsp;-42&nbsp;54&nbsp;72&nbsp;-29&nbsp;68&nbsp;18&nbsp;4&nbsp;-68&nbsp;74&nbsp;7&nbsp;54&nbsp;60&nbsp;-50&nbsp;31&nbsp;-40&nbsp;10&nbsp;17&nbsp;88&nbsp;29&nbsp;-35&nbsp;-20&nbsp;69&nbsp;41&nbsp;-13&nbsp;-56&nbsp;-43&nbsp;83&nbsp;-39&nbsp;19&nbsp;89&nbsp;-72&nbsp;49&nbsp;60&nbsp;-47&nbsp;-49&nbsp;-93&nbsp;64&nbsp;81&nbsp;-66&nbsp;61&nbsp;49&nbsp;86&nbsp;-100&nbsp;44&nbsp;67&nbsp;-13&nbsp;-28&nbsp;30&nbsp;-46&nbsp;21&nbsp;3&nbsp;-21&nbsp;65&nbsp;-69&nbsp;59&nbsp;34&nbsp;-72&nbsp;45&nbsp;67&nbsp;76&nbsp;13&nbsp;-98&nbsp;70&nbsp;94&nbsp;66&nbsp;80&nbsp;48&nbsp;-5&nbsp;84&nbsp;10<br/>
+66&nbsp;-6&nbsp;56&nbsp;-1&nbsp;30&nbsp;32&nbsp;-12&nbsp;58&nbsp;67&nbsp;76&nbsp;-12&nbsp;81&nbsp;-73&nbsp;-100&nbsp;68&nbsp;18&nbsp;-95&nbsp;94&nbsp;-36&nbsp;-12&nbsp;13&nbsp;-70&nbsp;-33&nbsp;-72&nbsp;-29&nbsp;55&nbsp;66&nbsp;-15&nbsp;-89&nbsp;48&nbsp;-66&nbsp;-91&nbsp;38&nbsp;-43&nbsp;-76&nbsp;-54&nbsp;79&nbsp;-46&nbsp;-87&nbsp;94&nbsp;42&nbsp;-27&nbsp;-84&nbsp;89&nbsp;45&nbsp;-23&nbsp;-39&nbsp;2&nbsp;79&nbsp;74&nbsp;94&nbsp;66&nbsp;42&nbsp;-67&nbsp;-8&nbsp;69&nbsp;13&nbsp;69&nbsp;-56&nbsp;-10&nbsp;-22&nbsp;-77&nbsp;55&nbsp;62&nbsp;-83&nbsp;1&nbsp;-28&nbsp;91&nbsp;60&nbsp;82&nbsp;-1&nbsp;-19&nbsp;-96&nbsp;30&nbsp;11&nbsp;50&nbsp;-75&nbsp;-27&nbsp;97&nbsp;42<br/>
+20&nbsp;-72&nbsp;-100&nbsp;-52&nbsp;-42&nbsp;12&nbsp;74&nbsp;-40&nbsp;-4&nbsp;-41&nbsp;-86&nbsp;-63&nbsp;75&nbsp;49&nbsp;-17&nbsp;-69&nbsp;53&nbsp;-37&nbsp;54&nbsp;-4&nbsp;15&nbsp;10&nbsp;89&nbsp;57&nbsp;43&nbsp;77&nbsp;33&nbsp;94&nbsp;-5&nbsp;64&nbsp;53&nbsp;-86&nbsp;60&nbsp;-73&nbsp;-7&nbsp;-7&nbsp;-38&nbsp;-94&nbsp;64&nbsp;82&nbsp;-1&nbsp;42&nbsp;93&nbsp;47&nbsp;-38&nbsp;-42&nbsp;-81&nbsp;21&nbsp;-24&nbsp;4&nbsp;-28&nbsp;-65&nbsp;-87&nbsp;78&nbsp;-76&nbsp;53&nbsp;-85&nbsp;-75&nbsp;36&nbsp;-60&nbsp;39&nbsp;-26&nbsp;-63&nbsp;-34&nbsp;26&nbsp;56&nbsp;53&nbsp;-71&nbsp;37&nbsp;-87&nbsp;15&nbsp;13&nbsp;-100&nbsp;-42&nbsp;77&nbsp;4&nbsp;71&nbsp;-4&nbsp;41&nbsp;24<br/>
+-31&nbsp;-59&nbsp;-72&nbsp;-48&nbsp;29&nbsp;46&nbsp;86&nbsp;17&nbsp;58&nbsp;-90&nbsp;32&nbsp;-25&nbsp;-59&nbsp;13&nbsp;-42&nbsp;-6&nbsp;55&nbsp;-7&nbsp;-50&nbsp;52&nbsp;92&nbsp;-69&nbsp;-17&nbsp;-24&nbsp;47&nbsp;-22&nbsp;-91&nbsp;-30&nbsp;66&nbsp;4&nbsp;-67&nbsp;-28&nbsp;-59&nbsp;-39&nbsp;24&nbsp;9&nbsp;-9&nbsp;-21&nbsp;25&nbsp;-3&nbsp;81&nbsp;63&nbsp;-88&nbsp;-60&nbsp;96&nbsp;31&nbsp;-82&nbsp;61&nbsp;-5&nbsp;-4&nbsp;18&nbsp;-43&nbsp;100&nbsp;1&nbsp;-66&nbsp;69&nbsp;-57&nbsp;64&nbsp;-26&nbsp;-47&nbsp;-52&nbsp;-22&nbsp;-70&nbsp;18&nbsp;-72&nbsp;-7&nbsp;58&nbsp;-27&nbsp;48&nbsp;56&nbsp;-95&nbsp;-22&nbsp;-8&nbsp;42&nbsp;-88&nbsp;7&nbsp;6&nbsp;44&nbsp;52&nbsp;85<br/>
+-60&nbsp;84&nbsp;94&nbsp;43&nbsp;-60&nbsp;2&nbsp;46&nbsp;-39&nbsp;80&nbsp;40&nbsp;-82&nbsp;-32&nbsp;-93&nbsp;83&nbsp;-67&nbsp;-34&nbsp;-11&nbsp;-8&nbsp;-18&nbsp;-90&nbsp;-44&nbsp;38&nbsp;-45&nbsp;11&nbsp;-30&nbsp;30&nbsp;99&nbsp;15&nbsp;28&nbsp;-48&nbsp;-64&nbsp;-66&nbsp;53&nbsp;-1&nbsp;43&nbsp;-12&nbsp;-87&nbsp;45&nbsp;61&nbsp;-49&nbsp;-35&nbsp;97&nbsp;-25&nbsp;-48&nbsp;-9&nbsp;34&nbsp;-42&nbsp;18&nbsp;60&nbsp;24&nbsp;-34&nbsp;31&nbsp;-77&nbsp;-47&nbsp;66&nbsp;33&nbsp;-53&nbsp;44&nbsp;-31&nbsp;-67&nbsp;28&nbsp;12&nbsp;-56&nbsp;-20&nbsp;75&nbsp;54&nbsp;-23&nbsp;-80&nbsp;39&nbsp;-23&nbsp;14&nbsp;61&nbsp;84&nbsp;-37&nbsp;82&nbsp;84&nbsp;-41&nbsp;76&nbsp;-15&nbsp;-97<br/>
+35&nbsp;54&nbsp;70&nbsp;-12&nbsp;31&nbsp;27&nbsp;50&nbsp;1&nbsp;-65&nbsp;56&nbsp;98&nbsp;77&nbsp;-80&nbsp;99&nbsp;64&nbsp;-14&nbsp;90&nbsp;82&nbsp;-73&nbsp;-55&nbsp;-87&nbsp;-59&nbsp;-70&nbsp;-64&nbsp;-45&nbsp;28&nbsp;71&nbsp;-90&nbsp;-28&nbsp;-99&nbsp;-22&nbsp;11&nbsp;99&nbsp;25&nbsp;-38&nbsp;95&nbsp;81&nbsp;-26&nbsp;-10&nbsp;3&nbsp;-91&nbsp;-10&nbsp;-39&nbsp;28&nbsp;83&nbsp;17&nbsp;-21&nbsp;77&nbsp;9&nbsp;-50&nbsp;-97&nbsp;-61&nbsp;23&nbsp;-68&nbsp;-59&nbsp;-96&nbsp;87&nbsp;46&nbsp;-58&nbsp;67&nbsp;4&nbsp;54&nbsp;8&nbsp;-8&nbsp;-93&nbsp;20&nbsp;30&nbsp;17&nbsp;73&nbsp;-75&nbsp;-21&nbsp;64&nbsp;45&nbsp;54&nbsp;29&nbsp;56&nbsp;1&nbsp;-26&nbsp;-86&nbsp;25<br/>
+-22&nbsp;78&nbsp;78&nbsp;-15&nbsp;82&nbsp;20&nbsp;-51&nbsp;33&nbsp;18&nbsp;-37&nbsp;-47&nbsp;59&nbsp;-38&nbsp;40&nbsp;13&nbsp;89&nbsp;-89&nbsp;13&nbsp;-40&nbsp;52&nbsp;-62&nbsp;9&nbsp;39&nbsp;67&nbsp;0&nbsp;74&nbsp;46&nbsp;73&nbsp;-22&nbsp;95&nbsp;65&nbsp;-69&nbsp;-71&nbsp;80&nbsp;-33&nbsp;-5&nbsp;85&nbsp;-91&nbsp;61&nbsp;-33&nbsp;-90&nbsp;-55&nbsp;10&nbsp;-90&nbsp;-58&nbsp;-95&nbsp;-77&nbsp;42&nbsp;-20&nbsp;-59&nbsp;98&nbsp;-16&nbsp;-49&nbsp;-3&nbsp;98&nbsp;-31&nbsp;-16&nbsp;-37&nbsp;29&nbsp;-12&nbsp;4&nbsp;-97&nbsp;-24&nbsp;47&nbsp;-60&nbsp;-42&nbsp;-83&nbsp;-57&nbsp;-99&nbsp;3&nbsp;75&nbsp;10&nbsp;-63&nbsp;29&nbsp;13&nbsp;-42&nbsp;-32&nbsp;-67&nbsp;-97&nbsp;11<br/>
+65&nbsp;-23&nbsp;-63&nbsp;2&nbsp;59&nbsp;7&nbsp;46&nbsp;99&nbsp;-47&nbsp;-99&nbsp;17&nbsp;-76&nbsp;54&nbsp;-7&nbsp;10&nbsp;57&nbsp;-65&nbsp;38&nbsp;-99&nbsp;40&nbsp;42&nbsp;-78&nbsp;10&nbsp;-84&nbsp;73&nbsp;-68&nbsp;-16&nbsp;56&nbsp;47&nbsp;66&nbsp;64&nbsp;-25&nbsp;-64&nbsp;67&nbsp;-55&nbsp;-44&nbsp;-76&nbsp;-58&nbsp;22&nbsp;-58&nbsp;55&nbsp;-65&nbsp;-85&nbsp;-79&nbsp;25&nbsp;50&nbsp;-17&nbsp;-25&nbsp;-12&nbsp;-35&nbsp;-4&nbsp;-60&nbsp;-59&nbsp;16&nbsp;71&nbsp;-18&nbsp;-34&nbsp;8&nbsp;-97&nbsp;-75&nbsp;16&nbsp;56&nbsp;-42&nbsp;-49&nbsp;-29&nbsp;-50&nbsp;-51&nbsp;47&nbsp;-42&nbsp;-82&nbsp;27&nbsp;91&nbsp;67&nbsp;98&nbsp;4&nbsp;-40&nbsp;-76&nbsp;-37&nbsp;45&nbsp;-53<br/>
+10&nbsp;91&nbsp;10&nbsp;79&nbsp;46&nbsp;36&nbsp;37&nbsp;43&nbsp;99&nbsp;34&nbsp;44&nbsp;0&nbsp;21&nbsp;-77&nbsp;-10&nbsp;-96&nbsp;15&nbsp;86&nbsp;-6&nbsp;-6&nbsp;-4&nbsp;24&nbsp;-59&nbsp;92&nbsp;53&nbsp;-81&nbsp;-36&nbsp;99&nbsp;63&nbsp;48&nbsp;81&nbsp;-29&nbsp;-6&nbsp;47&nbsp;11&nbsp;-91&nbsp;96&nbsp;-45&nbsp;-95&nbsp;100&nbsp;62&nbsp;1&nbsp;-37&nbsp;-49&nbsp;59&nbsp;3&nbsp;-44&nbsp;91&nbsp;35&nbsp;27&nbsp;-17&nbsp;-60&nbsp;23&nbsp;64&nbsp;-42&nbsp;-47&nbsp;90&nbsp;7&nbsp;50&nbsp;-77&nbsp;-37&nbsp;-28&nbsp;49&nbsp;85&nbsp;31&nbsp;-33&nbsp;82&nbsp;-28&nbsp;66&nbsp;49&nbsp;-59&nbsp;-53&nbsp;-97&nbsp;-91&nbsp;-22&nbsp;-54&nbsp;88&nbsp;28&nbsp;61&nbsp;73<br/>
+12&nbsp;82&nbsp;-92&nbsp;34&nbsp;-90&nbsp;-62&nbsp;44&nbsp;-4&nbsp;-82&nbsp;88&nbsp;-51&nbsp;-8&nbsp;79&nbsp;-83&nbsp;23&nbsp;70&nbsp;68&nbsp;82&nbsp;5&nbsp;-45&nbsp;76&nbsp;64&nbsp;-42&nbsp;8&nbsp;-32&nbsp;3&nbsp;-64&nbsp;-26&nbsp;-1&nbsp;-25&nbsp;-34&nbsp;73&nbsp;-59&nbsp;23&nbsp;13&nbsp;63&nbsp;88&nbsp;-9&nbsp;-82&nbsp;1&nbsp;64&nbsp;0&nbsp;-72&nbsp;-80&nbsp;84&nbsp;-97&nbsp;21&nbsp;-19&nbsp;-97&nbsp;79&nbsp;6&nbsp;-18&nbsp;-32&nbsp;56&nbsp;83&nbsp;54&nbsp;29&nbsp;-53&nbsp;-92&nbsp;64&nbsp;45&nbsp;-29&nbsp;65&nbsp;79&nbsp;60&nbsp;-40&nbsp;-98&nbsp;-45&nbsp;67&nbsp;-71&nbsp;-43&nbsp;29&nbsp;-8&nbsp;39&nbsp;-65&nbsp;83&nbsp;-67&nbsp;-42&nbsp;71&nbsp;55<br/>
+-23&nbsp;61&nbsp;-54&nbsp;83&nbsp;39&nbsp;36&nbsp;10&nbsp;-26&nbsp;-29&nbsp;100&nbsp;95&nbsp;93&nbsp;8&nbsp;-85&nbsp;-25&nbsp;-40&nbsp;-46&nbsp;-73&nbsp;36&nbsp;-100&nbsp;-30&nbsp;-6&nbsp;1&nbsp;-83&nbsp;31&nbsp;34&nbsp;-72&nbsp;-12&nbsp;80&nbsp;-83&nbsp;-49&nbsp;-81&nbsp;97&nbsp;19&nbsp;89&nbsp;25&nbsp;32&nbsp;88&nbsp;79&nbsp;62&nbsp;42&nbsp;72&nbsp;-94&nbsp;-46&nbsp;63&nbsp;67&nbsp;88&nbsp;-69&nbsp;70&nbsp;89&nbsp;-15&nbsp;85&nbsp;-88&nbsp;34&nbsp;45&nbsp;2&nbsp;81&nbsp;41&nbsp;55&nbsp;43&nbsp;69&nbsp;-37&nbsp;26&nbsp;-38&nbsp;81&nbsp;-11&nbsp;-41&nbsp;26&nbsp;-56&nbsp;-38&nbsp;-32&nbsp;84&nbsp;91&nbsp;-12&nbsp;-38&nbsp;-84&nbsp;-51&nbsp;-11&nbsp;-18&nbsp;-27<br/>
+43&nbsp;-44&nbsp;-98&nbsp;38&nbsp;-74&nbsp;-47&nbsp;41&nbsp;24&nbsp;81&nbsp;-32&nbsp;13&nbsp;48&nbsp;67&nbsp;-79&nbsp;-18&nbsp;79&nbsp;62&nbsp;81&nbsp;66&nbsp;-99&nbsp;-32&nbsp;-33&nbsp;62&nbsp;-25&nbsp;-91&nbsp;19&nbsp;2&nbsp;-35&nbsp;-71&nbsp;-38&nbsp;67&nbsp;-45&nbsp;-30&nbsp;75&nbsp;-44&nbsp;49&nbsp;23&nbsp;-20&nbsp;28&nbsp;77&nbsp;-46&nbsp;28&nbsp;73&nbsp;-26&nbsp;42&nbsp;72&nbsp;77&nbsp;-26&nbsp;-89&nbsp;-1&nbsp;23&nbsp;-38&nbsp;79&nbsp;-56&nbsp;16&nbsp;-85&nbsp;-27&nbsp;98&nbsp;-45&nbsp;67&nbsp;-89&nbsp;95&nbsp;-6&nbsp;-76&nbsp;62&nbsp;36&nbsp;-70&nbsp;-36&nbsp;-99&nbsp;-13&nbsp;-78&nbsp;62&nbsp;46&nbsp;-94&nbsp;-47&nbsp;15&nbsp;-65&nbsp;-10&nbsp;-86&nbsp;-69<br/>
+37&nbsp;60&nbsp;92&nbsp;-32&nbsp;2&nbsp;5&nbsp;-56&nbsp;-44&nbsp;64&nbsp;-47&nbsp;-14&nbsp;-42&nbsp;45&nbsp;48&nbsp;-76&nbsp;17&nbsp;-35&nbsp;12&nbsp;27&nbsp;-43&nbsp;73&nbsp;56&nbsp;-71&nbsp;-53&nbsp;-76&nbsp;9&nbsp;-91&nbsp;86&nbsp;64&nbsp;-75&nbsp;20&nbsp;26&nbsp;-4&nbsp;73&nbsp;0&nbsp;90&nbsp;51&nbsp;-28&nbsp;-3&nbsp;11&nbsp;-1&nbsp;10&nbsp;-95&nbsp;38&nbsp;39&nbsp;12&nbsp;38&nbsp;30&nbsp;-2&nbsp;-19&nbsp;-70&nbsp;70&nbsp;-48&nbsp;-62&nbsp;33&nbsp;-89&nbsp;17&nbsp;46&nbsp;-10&nbsp;33&nbsp;2&nbsp;52&nbsp;-11&nbsp;-16&nbsp;-88&nbsp;41&nbsp;71&nbsp;5&nbsp;-57&nbsp;17&nbsp;52&nbsp;-65&nbsp;-4&nbsp;62&nbsp;1&nbsp;-68&nbsp;-99&nbsp;46&nbsp;-2&nbsp;-74<br/>
+54&nbsp;-11&nbsp;-92&nbsp;80&nbsp;58&nbsp;-2&nbsp;-84&nbsp;57&nbsp;8&nbsp;-44&nbsp;30&nbsp;28&nbsp;57&nbsp;-83&nbsp;-80&nbsp;-11&nbsp;51&nbsp;-67&nbsp;20&nbsp;-85&nbsp;-15&nbsp;27&nbsp;62&nbsp;-5&nbsp;-18&nbsp;77&nbsp;-66&nbsp;-1&nbsp;61&nbsp;65&nbsp;71&nbsp;99&nbsp;-79&nbsp;-86&nbsp;59&nbsp;-65&nbsp;-83&nbsp;94&nbsp;41&nbsp;-23&nbsp;-51&nbsp;72&nbsp;-98&nbsp;-91&nbsp;40&nbsp;87&nbsp;-38&nbsp;65&nbsp;-31&nbsp;-31&nbsp;-9&nbsp;37&nbsp;8&nbsp;-65&nbsp;2&nbsp;70&nbsp;0&nbsp;-59&nbsp;-46&nbsp;-2&nbsp;3&nbsp;4&nbsp;-78&nbsp;17&nbsp;-58&nbsp;-95&nbsp;60&nbsp;-64&nbsp;47&nbsp;-1&nbsp;-61&nbsp;70&nbsp;-44&nbsp;-33&nbsp;-48&nbsp;-33&nbsp;54&nbsp;82&nbsp;-63&nbsp;-10<br/>
+-47&nbsp;-60&nbsp;96&nbsp;-20&nbsp;-69&nbsp;-100&nbsp;22&nbsp;23&nbsp;-72&nbsp;-81&nbsp;-28&nbsp;74&nbsp;57&nbsp;29&nbsp;98&nbsp;93&nbsp;18&nbsp;54&nbsp;76&nbsp;73&nbsp;39&nbsp;-54&nbsp;-9&nbsp;92&nbsp;-2&nbsp;-3&nbsp;-31&nbsp;62&nbsp;-37&nbsp;55&nbsp;73&nbsp;57&nbsp;25&nbsp;1&nbsp;-88&nbsp;-32&nbsp;30&nbsp;-16&nbsp;-4&nbsp;-52&nbsp;-76&nbsp;-1&nbsp;-3&nbsp;59&nbsp;-63&nbsp;17&nbsp;-35&nbsp;2&nbsp;-97&nbsp;-43&nbsp;59&nbsp;44&nbsp;-99&nbsp;-82&nbsp;-38&nbsp;-62&nbsp;-6&nbsp;51&nbsp;-92&nbsp;-99&nbsp;55&nbsp;25&nbsp;47&nbsp;96&nbsp;29&nbsp;-98&nbsp;59&nbsp;57&nbsp;-98&nbsp;-9&nbsp;-12&nbsp;59&nbsp;-57&nbsp;29&nbsp;91&nbsp;34&nbsp;2&nbsp;-2&nbsp;-63&nbsp;-77<br/>
+62&nbsp;-62&nbsp;-93&nbsp;-80&nbsp;32&nbsp;84&nbsp;-91&nbsp;-92&nbsp;-65&nbsp;63&nbsp;90&nbsp;65&nbsp;-9&nbsp;-88&nbsp;77&nbsp;18&nbsp;-99&nbsp;70&nbsp;-22&nbsp;23&nbsp;36&nbsp;-5&nbsp;1&nbsp;-88&nbsp;-69&nbsp;13&nbsp;84&nbsp;-16&nbsp;-47&nbsp;37&nbsp;-27&nbsp;-25&nbsp;67&nbsp;68&nbsp;39&nbsp;-6&nbsp;-90&nbsp;-19&nbsp;-63&nbsp;-24&nbsp;-22&nbsp;98&nbsp;-24&nbsp;-60&nbsp;92&nbsp;-75&nbsp;49&nbsp;28&nbsp;43&nbsp;66&nbsp;0&nbsp;-8&nbsp;-73&nbsp;5&nbsp;68&nbsp;97&nbsp;-46&nbsp;-79&nbsp;-82&nbsp;62&nbsp;88&nbsp;-56&nbsp;74&nbsp;30&nbsp;79&nbsp;70&nbsp;95&nbsp;55&nbsp;31&nbsp;-17&nbsp;-40&nbsp;42&nbsp;-52&nbsp;96&nbsp;-53&nbsp;-95&nbsp;-76&nbsp;68&nbsp;65&nbsp;-89<br/>
+44&nbsp;-13&nbsp;55&nbsp;-11&nbsp;5&nbsp;-39&nbsp;-4&nbsp;35&nbsp;92&nbsp;-19&nbsp;58&nbsp;-75&nbsp;35&nbsp;87&nbsp;-62&nbsp;-23&nbsp;83&nbsp;96&nbsp;13&nbsp;95&nbsp;-80&nbsp;-89&nbsp;7&nbsp;76&nbsp;1&nbsp;-65&nbsp;27&nbsp;-93&nbsp;-70&nbsp;8&nbsp;81&nbsp;81&nbsp;30&nbsp;74&nbsp;34&nbsp;-23&nbsp;-78&nbsp;96&nbsp;-8&nbsp;-14&nbsp;72&nbsp;62&nbsp;75&nbsp;-95&nbsp;-55&nbsp;-48&nbsp;-22&nbsp;-42&nbsp;-93&nbsp;-60&nbsp;-8&nbsp;-43&nbsp;18&nbsp;48&nbsp;53&nbsp;2&nbsp;13&nbsp;100&nbsp;55&nbsp;-95&nbsp;38&nbsp;-79&nbsp;-75&nbsp;-19&nbsp;-81&nbsp;86&nbsp;62&nbsp;-93&nbsp;-64&nbsp;-46&nbsp;83&nbsp;-92&nbsp;-72&nbsp;53&nbsp;100&nbsp;-47&nbsp;-33&nbsp;12&nbsp;10&nbsp;68<br/>
+-72&nbsp;-32&nbsp;-61&nbsp;47&nbsp;-96&nbsp;-32&nbsp;-65&nbsp;-14&nbsp;34&nbsp;61&nbsp;3&nbsp;-25&nbsp;-5&nbsp;91&nbsp;-36&nbsp;43&nbsp;89&nbsp;75&nbsp;-24&nbsp;-86&nbsp;-68&nbsp;80&nbsp;6&nbsp;10&nbsp;-20&nbsp;-31&nbsp;-60&nbsp;-25&nbsp;-78&nbsp;-31&nbsp;23&nbsp;3&nbsp;-96&nbsp;-7&nbsp;58&nbsp;-13&nbsp;31&nbsp;-62&nbsp;-56&nbsp;-48&nbsp;13&nbsp;-72&nbsp;-45&nbsp;44&nbsp;-58&nbsp;-20&nbsp;76&nbsp;-60&nbsp;46&nbsp;50&nbsp;68&nbsp;-57&nbsp;-2&nbsp;-42&nbsp;-52&nbsp;65&nbsp;36&nbsp;29&nbsp;-94&nbsp;55&nbsp;-54&nbsp;-44&nbsp;-1&nbsp;49&nbsp;82&nbsp;-47&nbsp;69&nbsp;59&nbsp;78&nbsp;9&nbsp;67&nbsp;-79&nbsp;-26&nbsp;-57&nbsp;-100&nbsp;100&nbsp;40&nbsp;12&nbsp;37&nbsp;85<br/>
+55&nbsp;12&nbsp;-54&nbsp;43&nbsp;-53&nbsp;86&nbsp;-37&nbsp;-10&nbsp;16&nbsp;16&nbsp;-94&nbsp;32&nbsp;-97&nbsp;71&nbsp;-71&nbsp;-13&nbsp;55&nbsp;-58&nbsp;42&nbsp;-18&nbsp;79&nbsp;-21&nbsp;19&nbsp;69&nbsp;47&nbsp;-83&nbsp;53&nbsp;64&nbsp;-33&nbsp;19&nbsp;-46&nbsp;91&nbsp;87&nbsp;-12&nbsp;-11&nbsp;-60&nbsp;-68&nbsp;-82&nbsp;-78&nbsp;-51&nbsp;94&nbsp;-86&nbsp;-27&nbsp;16&nbsp;26&nbsp;11&nbsp;-91&nbsp;58&nbsp;-28&nbsp;-22&nbsp;67&nbsp;2&nbsp;-80&nbsp;-36&nbsp;-46&nbsp;79&nbsp;-35&nbsp;5&nbsp;86&nbsp;-91&nbsp;-49&nbsp;4&nbsp;-59&nbsp;-60&nbsp;-62&nbsp;20&nbsp;32&nbsp;-85&nbsp;61&nbsp;25&nbsp;-40&nbsp;45&nbsp;32&nbsp;11&nbsp;-17&nbsp;22&nbsp;43&nbsp;-23&nbsp;44&nbsp;20<br/>
+48&nbsp;-92&nbsp;-35&nbsp;16&nbsp;-6&nbsp;-88&nbsp;99&nbsp;74&nbsp;-48&nbsp;-97&nbsp;79&nbsp;-31&nbsp;14&nbsp;37&nbsp;74&nbsp;47&nbsp;60&nbsp;-45&nbsp;88&nbsp;-9&nbsp;-88&nbsp;-93&nbsp;8&nbsp;12&nbsp;65&nbsp;66&nbsp;67&nbsp;-51&nbsp;58&nbsp;-76&nbsp;53&nbsp;2&nbsp;-30&nbsp;-20&nbsp;-85&nbsp;3&nbsp;31&nbsp;18&nbsp;-69&nbsp;12&nbsp;-99&nbsp;-72&nbsp;-100&nbsp;9&nbsp;-77&nbsp;14&nbsp;91&nbsp;26&nbsp;-76&nbsp;-42&nbsp;-28&nbsp;-5&nbsp;65&nbsp;73&nbsp;55&nbsp;92&nbsp;94&nbsp;76&nbsp;-63&nbsp;44&nbsp;-2&nbsp;-53&nbsp;4&nbsp;81&nbsp;-74&nbsp;94&nbsp;52&nbsp;37&nbsp;94&nbsp;52&nbsp;-38&nbsp;11&nbsp;11&nbsp;-62&nbsp;-92&nbsp;-76&nbsp;24&nbsp;-43&nbsp;65&nbsp;-22<br/>
+-31&nbsp;-99&nbsp;76&nbsp;-30&nbsp;95&nbsp;0&nbsp;3&nbsp;26&nbsp;-86&nbsp;73&nbsp;-37&nbsp;5&nbsp;-92&nbsp;-19&nbsp;53&nbsp;91&nbsp;-78&nbsp;23&nbsp;98&nbsp;-84&nbsp;47&nbsp;-97&nbsp;50&nbsp;-39&nbsp;-65&nbsp;-53&nbsp;-24&nbsp;-71&nbsp;82&nbsp;-76&nbsp;-45&nbsp;-88&nbsp;-92&nbsp;33&nbsp;-65&nbsp;74&nbsp;-34&nbsp;66&nbsp;85&nbsp;-79&nbsp;-76&nbsp;68&nbsp;17&nbsp;100&nbsp;-47&nbsp;13&nbsp;-50&nbsp;-34&nbsp;93&nbsp;-71&nbsp;51&nbsp;-45&nbsp;-85&nbsp;58&nbsp;-98&nbsp;46&nbsp;56&nbsp;-69&nbsp;-7&nbsp;9&nbsp;-17&nbsp;-67&nbsp;13&nbsp;-47&nbsp;28&nbsp;70&nbsp;-40&nbsp;-92&nbsp;-62&nbsp;86&nbsp;36&nbsp;32&nbsp;-45&nbsp;-4&nbsp;-91&nbsp;41&nbsp;-90&nbsp;62&nbsp;23&nbsp;-68<br/>
+-98&nbsp;-34&nbsp;-58&nbsp;96&nbsp;-77&nbsp;3&nbsp;-4&nbsp;33&nbsp;64&nbsp;11&nbsp;11&nbsp;-63&nbsp;-1&nbsp;-74&nbsp;89&nbsp;35&nbsp;34&nbsp;-44&nbsp;50&nbsp;-17&nbsp;-34&nbsp;42&nbsp;-65&nbsp;43&nbsp;7&nbsp;94&nbsp;-3&nbsp;-67&nbsp;-16&nbsp;25&nbsp;42&nbsp;-25&nbsp;-73&nbsp;4&nbsp;-90&nbsp;-32&nbsp;57&nbsp;-20&nbsp;26&nbsp;82&nbsp;-59&nbsp;-44&nbsp;96&nbsp;43&nbsp;80&nbsp;-89&nbsp;100&nbsp;-30&nbsp;-46&nbsp;-6&nbsp;11&nbsp;-18&nbsp;34&nbsp;-56&nbsp;60&nbsp;-95&nbsp;-84&nbsp;-79&nbsp;-8&nbsp;-48&nbsp;90&nbsp;8&nbsp;62&nbsp;42&nbsp;46&nbsp;6&nbsp;-21&nbsp;17&nbsp;-79&nbsp;42&nbsp;91&nbsp;-63&nbsp;86&nbsp;-95&nbsp;60&nbsp;-94&nbsp;17&nbsp;9&nbsp;-12&nbsp;69<br/>
+1&nbsp;-51&nbsp;-63&nbsp;-20&nbsp;2&nbsp;15&nbsp;60&nbsp;4&nbsp;78&nbsp;89&nbsp;85&nbsp;62&nbsp;6&nbsp;-40&nbsp;8&nbsp;-67&nbsp;-9&nbsp;-57&nbsp;57&nbsp;70&nbsp;-50&nbsp;-60&nbsp;42&nbsp;94&nbsp;-67&nbsp;68&nbsp;-51&nbsp;29&nbsp;-17&nbsp;-84&nbsp;25&nbsp;-15&nbsp;-19&nbsp;82&nbsp;-6&nbsp;4&nbsp;-64&nbsp;-62&nbsp;-37&nbsp;53&nbsp;34&nbsp;-36&nbsp;-87&nbsp;7&nbsp;92&nbsp;-58&nbsp;87&nbsp;-63&nbsp;69&nbsp;45&nbsp;-79&nbsp;42&nbsp;-13&nbsp;-29&nbsp;24&nbsp;-98&nbsp;-82&nbsp;27&nbsp;-17&nbsp;21&nbsp;63&nbsp;17&nbsp;60&nbsp;-100&nbsp;-35&nbsp;-75&nbsp;10&nbsp;-69&nbsp;-6&nbsp;39&nbsp;-43&nbsp;-83&nbsp;-40&nbsp;70&nbsp;26&nbsp;-42&nbsp;92&nbsp;-81&nbsp;50&nbsp;1<br/>
+27&nbsp;31&nbsp;-10&nbsp;70&nbsp;-79&nbsp;-32&nbsp;-83&nbsp;-34&nbsp;33&nbsp;9&nbsp;59&nbsp;80&nbsp;-36&nbsp;72&nbsp;97&nbsp;78&nbsp;18&nbsp;18&nbsp;57&nbsp;-13&nbsp;89&nbsp;78&nbsp;-13&nbsp;33&nbsp;-61&nbsp;15&nbsp;19&nbsp;-1&nbsp;37&nbsp;-82&nbsp;-57&nbsp;-7&nbsp;-45&nbsp;-2&nbsp;-55&nbsp;39&nbsp;11&nbsp;-46&nbsp;72&nbsp;-65&nbsp;35&nbsp;-25&nbsp;84&nbsp;56&nbsp;-67&nbsp;63&nbsp;56&nbsp;93&nbsp;-100&nbsp;84&nbsp;91&nbsp;-57&nbsp;66&nbsp;-81&nbsp;-35&nbsp;62&nbsp;76&nbsp;12&nbsp;-21&nbsp;-17&nbsp;-3&nbsp;91&nbsp;2&nbsp;-66&nbsp;18&nbsp;5&nbsp;14&nbsp;11&nbsp;-22&nbsp;14&nbsp;100&nbsp;98&nbsp;49&nbsp;-19&nbsp;-88&nbsp;-58&nbsp;-100&nbsp;67&nbsp;-50&nbsp;-1<br/>
+96&nbsp;9&nbsp;35&nbsp;-47&nbsp;-36&nbsp;98&nbsp;-29&nbsp;64&nbsp;-4&nbsp;-19&nbsp;72&nbsp;99&nbsp;-2&nbsp;-35&nbsp;-98&nbsp;93&nbsp;-91&nbsp;-95&nbsp;48&nbsp;76&nbsp;55&nbsp;-10&nbsp;79&nbsp;-54&nbsp;-67&nbsp;41&nbsp;56&nbsp;-21&nbsp;-85&nbsp;38&nbsp;-37&nbsp;-25&nbsp;60&nbsp;78&nbsp;-80&nbsp;2&nbsp;97&nbsp;-12&nbsp;59&nbsp;71&nbsp;-48&nbsp;-53&nbsp;-50&nbsp;56&nbsp;-50&nbsp;47&nbsp;-96&nbsp;25&nbsp;-16&nbsp;-74&nbsp;-47&nbsp;-56&nbsp;-19&nbsp;-84&nbsp;58&nbsp;-23&nbsp;66&nbsp;44&nbsp;45&nbsp;31&nbsp;87&nbsp;91&nbsp;28&nbsp;-21&nbsp;32&nbsp;-70&nbsp;-64&nbsp;-27&nbsp;97&nbsp;-81&nbsp;-44&nbsp;-92&nbsp;81&nbsp;19&nbsp;35&nbsp;39&nbsp;38&nbsp;60&nbsp;95&nbsp;91<br/>
+37&nbsp;3&nbsp;27&nbsp;-25&nbsp;26&nbsp;-31&nbsp;-54&nbsp;40&nbsp;-55&nbsp;-54&nbsp;-44&nbsp;79&nbsp;36&nbsp;81&nbsp;-32&nbsp;-7&nbsp;34&nbsp;89&nbsp;-58&nbsp;-14&nbsp;62&nbsp;30&nbsp;-65&nbsp;65&nbsp;-9&nbsp;-22&nbsp;-18&nbsp;-62&nbsp;-3&nbsp;-64&nbsp;80&nbsp;52&nbsp;48&nbsp;90&nbsp;-74&nbsp;-32&nbsp;-11&nbsp;40&nbsp;-69&nbsp;-96&nbsp;6&nbsp;30&nbsp;-59&nbsp;-76&nbsp;-80&nbsp;-97&nbsp;-82&nbsp;-21&nbsp;-60&nbsp;59&nbsp;44&nbsp;42&nbsp;-52&nbsp;-81&nbsp;-31&nbsp;64&nbsp;-84&nbsp;94&nbsp;-91&nbsp;-18&nbsp;-14&nbsp;-45&nbsp;-70&nbsp;97&nbsp;-45&nbsp;84&nbsp;44&nbsp;80&nbsp;23&nbsp;44&nbsp;-84&nbsp;41&nbsp;-56&nbsp;55&nbsp;-40&nbsp;-50&nbsp;98&nbsp;17&nbsp;75&nbsp;-47<br/>
+95&nbsp;-8&nbsp;-38&nbsp;-9&nbsp;62&nbsp;-14&nbsp;-80&nbsp;15&nbsp;61&nbsp;-81&nbsp;0&nbsp;-41&nbsp;-97&nbsp;-92&nbsp;88&nbsp;-40&nbsp;-71&nbsp;2&nbsp;84&nbsp;78&nbsp;26&nbsp;-5&nbsp;-26&nbsp;-93&nbsp;50&nbsp;99&nbsp;-70&nbsp;11&nbsp;-77&nbsp;24&nbsp;19&nbsp;83&nbsp;-41&nbsp;72&nbsp;-51&nbsp;52&nbsp;20&nbsp;-79&nbsp;-59&nbsp;-71&nbsp;-98&nbsp;-73&nbsp;74&nbsp;3&nbsp;3&nbsp;-19&nbsp;53&nbsp;7&nbsp;44&nbsp;93&nbsp;39&nbsp;49&nbsp;-95&nbsp;-21&nbsp;-22&nbsp;-75&nbsp;66&nbsp;-74&nbsp;79&nbsp;-50&nbsp;-62&nbsp;74&nbsp;-5&nbsp;-70&nbsp;-34&nbsp;-81&nbsp;33&nbsp;18&nbsp;-25&nbsp;-31&nbsp;-45&nbsp;-10&nbsp;92&nbsp;19&nbsp;82&nbsp;-58&nbsp;40&nbsp;-26&nbsp;43&nbsp;85<br/>
+-96&nbsp;-25&nbsp;-11&nbsp;-83&nbsp;-55&nbsp;60&nbsp;-67&nbsp;-62&nbsp;50&nbsp;-91&nbsp;47&nbsp;-93&nbsp;21&nbsp;-95&nbsp;88&nbsp;86&nbsp;-23&nbsp;99&nbsp;88&nbsp;-59&nbsp;-11&nbsp;-69&nbsp;23&nbsp;-59&nbsp;82&nbsp;29&nbsp;57&nbsp;65&nbsp;-11&nbsp;63&nbsp;-68&nbsp;-36&nbsp;-2&nbsp;29&nbsp;92&nbsp;20&nbsp;-95&nbsp;-30&nbsp;-94&nbsp;86&nbsp;-18&nbsp;-59&nbsp;-55&nbsp;-2&nbsp;-100&nbsp;-78&nbsp;-94&nbsp;17&nbsp;-65&nbsp;55&nbsp;-33&nbsp;-21&nbsp;93&nbsp;-71&nbsp;-74&nbsp;79&nbsp;-90&nbsp;-86&nbsp;-27&nbsp;54&nbsp;75&nbsp;33&nbsp;33&nbsp;96&nbsp;29&nbsp;66&nbsp;-22&nbsp;-3&nbsp;-37&nbsp;-25&nbsp;2&nbsp;-63&nbsp;-33&nbsp;77&nbsp;-9&nbsp;2&nbsp;-20&nbsp;83&nbsp;17&nbsp;-99<br/>
+-81&nbsp;16&nbsp;76&nbsp;93&nbsp;-58&nbsp;59&nbsp;44&nbsp;-29&nbsp;73&nbsp;33&nbsp;51&nbsp;-28&nbsp;73&nbsp;-88&nbsp;43&nbsp;56&nbsp;80&nbsp;9&nbsp;34&nbsp;-94&nbsp;95&nbsp;78&nbsp;79&nbsp;33&nbsp;-3&nbsp;100&nbsp;-24&nbsp;17&nbsp;-28&nbsp;-96&nbsp;-86&nbsp;96&nbsp;-5&nbsp;-18&nbsp;23&nbsp;50&nbsp;33&nbsp;15&nbsp;16&nbsp;24&nbsp;-54&nbsp;-90&nbsp;-19&nbsp;-59&nbsp;-35&nbsp;76&nbsp;20&nbsp;56&nbsp;79&nbsp;-88&nbsp;-98&nbsp;21&nbsp;-97&nbsp;-2&nbsp;10&nbsp;-60&nbsp;-49&nbsp;78&nbsp;30&nbsp;-47&nbsp;-27&nbsp;-91&nbsp;-19&nbsp;-21&nbsp;11&nbsp;5&nbsp;14&nbsp;-64&nbsp;-17&nbsp;51&nbsp;55&nbsp;-45&nbsp;-32&nbsp;-61&nbsp;-50&nbsp;39&nbsp;-68&nbsp;-78&nbsp;-42&nbsp;55<br/>
+-14&nbsp;-56&nbsp;31&nbsp;-100&nbsp;-18&nbsp;61&nbsp;-27&nbsp;-81&nbsp;28&nbsp;-30&nbsp;96&nbsp;-52&nbsp;-8&nbsp;4&nbsp;-34&nbsp;29&nbsp;12&nbsp;57&nbsp;33&nbsp;-32&nbsp;57&nbsp;65&nbsp;77&nbsp;-98&nbsp;14&nbsp;-7&nbsp;-22&nbsp;-52&nbsp;-55&nbsp;-82&nbsp;69&nbsp;-79&nbsp;-75&nbsp;53&nbsp;-56&nbsp;-49&nbsp;-59&nbsp;73&nbsp;-91&nbsp;-17&nbsp;19&nbsp;34&nbsp;-20&nbsp;19&nbsp;80&nbsp;83&nbsp;47&nbsp;38&nbsp;-30&nbsp;-75&nbsp;19&nbsp;-3&nbsp;59&nbsp;12&nbsp;-80&nbsp;7&nbsp;-100&nbsp;-40&nbsp;-84&nbsp;-2&nbsp;-20&nbsp;-52&nbsp;34&nbsp;32&nbsp;-53&nbsp;23&nbsp;-87&nbsp;17&nbsp;80&nbsp;-19&nbsp;43&nbsp;5&nbsp;29&nbsp;45&nbsp;25&nbsp;-69&nbsp;2&nbsp;-83&nbsp;43&nbsp;100<br/>
+33&nbsp;-60&nbsp;58&nbsp;-21&nbsp;74&nbsp;68&nbsp;-54&nbsp;-1&nbsp;25&nbsp;59&nbsp;23&nbsp;-1&nbsp;48&nbsp;3&nbsp;-88&nbsp;-5&nbsp;23&nbsp;55&nbsp;46&nbsp;-7&nbsp;-60&nbsp;25&nbsp;98&nbsp;-77&nbsp;-20&nbsp;1&nbsp;-66&nbsp;-85&nbsp;12&nbsp;100&nbsp;41&nbsp;90&nbsp;70&nbsp;-42&nbsp;81&nbsp;-99&nbsp;30&nbsp;81&nbsp;-25&nbsp;29&nbsp;33&nbsp;-55&nbsp;-58&nbsp;-70&nbsp;-15&nbsp;-87&nbsp;16&nbsp;14&nbsp;-22&nbsp;-38&nbsp;55&nbsp;24&nbsp;-5&nbsp;-67&nbsp;79&nbsp;-39&nbsp;-55&nbsp;-8&nbsp;95&nbsp;13&nbsp;1&nbsp;81&nbsp;-64&nbsp;60&nbsp;28&nbsp;-80&nbsp;7&nbsp;-3&nbsp;52&nbsp;64&nbsp;94&nbsp;71&nbsp;7&nbsp;-4&nbsp;54&nbsp;-14&nbsp;29&nbsp;50&nbsp;32&nbsp;26<br/>
+59&nbsp;95&nbsp;35&nbsp;4&nbsp;41&nbsp;-83&nbsp;-46&nbsp;-18&nbsp;75&nbsp;-6&nbsp;-8&nbsp;-95&nbsp;41&nbsp;84&nbsp;-53&nbsp;99&nbsp;55&nbsp;-21&nbsp;18&nbsp;-39&nbsp;-6&nbsp;39&nbsp;99&nbsp;-99&nbsp;72&nbsp;-27&nbsp;-20&nbsp;-63&nbsp;88&nbsp;-7&nbsp;63&nbsp;-24&nbsp;69&nbsp;-43&nbsp;-15&nbsp;5&nbsp;-27&nbsp;-41&nbsp;-77&nbsp;11&nbsp;-100&nbsp;-32&nbsp;89&nbsp;77&nbsp;-22&nbsp;35&nbsp;-2&nbsp;-88&nbsp;-19&nbsp;47&nbsp;-22&nbsp;-75&nbsp;58&nbsp;-81&nbsp;-29&nbsp;86&nbsp;42&nbsp;-14&nbsp;-52&nbsp;-47&nbsp;-3&nbsp;26&nbsp;-22&nbsp;78&nbsp;24&nbsp;15&nbsp;-34&nbsp;21&nbsp;31&nbsp;40&nbsp;79&nbsp;-51&nbsp;87&nbsp;-52&nbsp;-20&nbsp;52&nbsp;29&nbsp;-13&nbsp;-85&nbsp;-91<br/>
+-49&nbsp;92&nbsp;-71&nbsp;-30&nbsp;51&nbsp;-83&nbsp;99&nbsp;-20&nbsp;-60&nbsp;-48&nbsp;84&nbsp;-24&nbsp;1&nbsp;-73&nbsp;-83&nbsp;-44&nbsp;70&nbsp;-32&nbsp;1&nbsp;53&nbsp;31&nbsp;-6&nbsp;78&nbsp;-30&nbsp;37&nbsp;-81&nbsp;49&nbsp;-48&nbsp;-100&nbsp;94&nbsp;50&nbsp;56&nbsp;-19&nbsp;-54&nbsp;-72&nbsp;0&nbsp;96&nbsp;97&nbsp;-43&nbsp;57&nbsp;-28&nbsp;-22&nbsp;-4&nbsp;99&nbsp;13&nbsp;-29&nbsp;5&nbsp;55&nbsp;-39&nbsp;24&nbsp;-60&nbsp;71&nbsp;-87&nbsp;5&nbsp;-33&nbsp;1&nbsp;-20&nbsp;51&nbsp;80&nbsp;30&nbsp;-42&nbsp;31&nbsp;31&nbsp;-88&nbsp;-96&nbsp;-81&nbsp;-71&nbsp;93&nbsp;88&nbsp;66&nbsp;-29&nbsp;-25&nbsp;80&nbsp;92&nbsp;-59&nbsp;-29&nbsp;54&nbsp;-74&nbsp;-5&nbsp;25<br/>
+34&nbsp;76&nbsp;27&nbsp;-35&nbsp;-24&nbsp;36&nbsp;48&nbsp;-15&nbsp;67&nbsp;-43&nbsp;81&nbsp;-61&nbsp;75&nbsp;-65&nbsp;37&nbsp;-43&nbsp;14&nbsp;-50&nbsp;1&nbsp;-30&nbsp;-81&nbsp;-21&nbsp;31&nbsp;44&nbsp;36&nbsp;-48&nbsp;82&nbsp;-76&nbsp;31&nbsp;19&nbsp;67&nbsp;74&nbsp;53&nbsp;-39&nbsp;-88&nbsp;50&nbsp;51&nbsp;16&nbsp;22&nbsp;-27&nbsp;-40&nbsp;76&nbsp;-97&nbsp;-72&nbsp;24&nbsp;72&nbsp;-28&nbsp;36&nbsp;-14&nbsp;-33&nbsp;-37&nbsp;-63&nbsp;-43&nbsp;7&nbsp;-21&nbsp;-59&nbsp;91&nbsp;-37&nbsp;-59&nbsp;69&nbsp;32&nbsp;49&nbsp;2&nbsp;2&nbsp;-52&nbsp;88&nbsp;31&nbsp;54&nbsp;-78&nbsp;-93&nbsp;99&nbsp;46&nbsp;-9&nbsp;34&nbsp;-72&nbsp;14&nbsp;64&nbsp;39&nbsp;85&nbsp;88<br/>
+76&nbsp;12&nbsp;60&nbsp;61&nbsp;77&nbsp;62&nbsp;66&nbsp;-16&nbsp;82&nbsp;98&nbsp;-100&nbsp;-53&nbsp;50&nbsp;74&nbsp;-81&nbsp;-54&nbsp;89&nbsp;-70&nbsp;97&nbsp;-99&nbsp;-23&nbsp;28&nbsp;-31&nbsp;-39&nbsp;40&nbsp;-48&nbsp;86&nbsp;-18&nbsp;-74&nbsp;-85&nbsp;-45&nbsp;-10&nbsp;81&nbsp;48&nbsp;62&nbsp;72&nbsp;73&nbsp;-71&nbsp;-81&nbsp;-44&nbsp;50&nbsp;-79&nbsp;-83&nbsp;23&nbsp;-4&nbsp;-83&nbsp;-93&nbsp;63&nbsp;18&nbsp;57&nbsp;10&nbsp;56&nbsp;-1&nbsp;-2&nbsp;-28&nbsp;32&nbsp;-18&nbsp;-59&nbsp;-89&nbsp;44&nbsp;75&nbsp;1&nbsp;39&nbsp;-27&nbsp;36&nbsp;58&nbsp;30&nbsp;32&nbsp;-64&nbsp;-78&nbsp;82&nbsp;54&nbsp;-97&nbsp;-32&nbsp;34&nbsp;95&nbsp;-82&nbsp;17&nbsp;88&nbsp;-16<br/>
+83&nbsp;0&nbsp;-66&nbsp;-34&nbsp;-83&nbsp;-77&nbsp;29&nbsp;-38&nbsp;-60&nbsp;-38&nbsp;-84&nbsp;90&nbsp;-78&nbsp;-14&nbsp;-62&nbsp;-87&nbsp;-42&nbsp;26&nbsp;-43&nbsp;27&nbsp;-96&nbsp;95&nbsp;54&nbsp;51&nbsp;-46&nbsp;88&nbsp;-85&nbsp;-55&nbsp;-6&nbsp;-82&nbsp;68&nbsp;6&nbsp;69&nbsp;41&nbsp;-44&nbsp;22&nbsp;-26&nbsp;75&nbsp;0&nbsp;-25&nbsp;48&nbsp;67&nbsp;84&nbsp;75&nbsp;81&nbsp;-89&nbsp;83&nbsp;-100&nbsp;-90&nbsp;-1&nbsp;-96&nbsp;34&nbsp;-46&nbsp;11&nbsp;0&nbsp;-94&nbsp;-6&nbsp;-62&nbsp;-64&nbsp;-25&nbsp;41&nbsp;41&nbsp;-61&nbsp;-59&nbsp;57&nbsp;53&nbsp;5&nbsp;77&nbsp;-30&nbsp;-33&nbsp;-29&nbsp;100&nbsp;-29&nbsp;11&nbsp;82&nbsp;41&nbsp;61&nbsp;64&nbsp;-44&nbsp;74<br/>
+-83&nbsp;32&nbsp;88&nbsp;-69&nbsp;87&nbsp;-23&nbsp;27&nbsp;78&nbsp;34&nbsp;-5&nbsp;95&nbsp;-7&nbsp;0&nbsp;-79&nbsp;90&nbsp;3&nbsp;-68&nbsp;-63&nbsp;-79&nbsp;9&nbsp;-96&nbsp;81&nbsp;92&nbsp;-53&nbsp;31&nbsp;-54&nbsp;82&nbsp;71&nbsp;79&nbsp;48&nbsp;-43&nbsp;80&nbsp;67&nbsp;70&nbsp;-56&nbsp;-23&nbsp;-11&nbsp;-22&nbsp;17&nbsp;61&nbsp;-68&nbsp;83&nbsp;28&nbsp;100&nbsp;90&nbsp;9&nbsp;73&nbsp;32&nbsp;-24&nbsp;-39&nbsp;43&nbsp;51&nbsp;61&nbsp;-59&nbsp;77&nbsp;-23&nbsp;46&nbsp;96&nbsp;65&nbsp;-15&nbsp;-82&nbsp;82&nbsp;-7&nbsp;12&nbsp;30&nbsp;72&nbsp;93&nbsp;-16&nbsp;-20&nbsp;-72&nbsp;64&nbsp;60&nbsp;99&nbsp;26&nbsp;-81&nbsp;-22&nbsp;47&nbsp;-68&nbsp;-49&nbsp;79<br/>
+-67&nbsp;-4&nbsp;-68&nbsp;-93&nbsp;-56&nbsp;-25&nbsp;62&nbsp;-52&nbsp;-74&nbsp;-23&nbsp;5&nbsp;-3&nbsp;-73&nbsp;76&nbsp;-57&nbsp;-68&nbsp;59&nbsp;-6&nbsp;83&nbsp;99&nbsp;66&nbsp;-84&nbsp;6&nbsp;32&nbsp;12&nbsp;-52&nbsp;-45&nbsp;77&nbsp;-57&nbsp;-45&nbsp;-82&nbsp;16&nbsp;19&nbsp;62&nbsp;-99&nbsp;-4&nbsp;4&nbsp;28&nbsp;-19&nbsp;-22&nbsp;66&nbsp;-80&nbsp;-74&nbsp;12&nbsp;61&nbsp;-72&nbsp;11&nbsp;8&nbsp;-24&nbsp;-29&nbsp;-63&nbsp;-36&nbsp;2&nbsp;95&nbsp;70&nbsp;27&nbsp;22&nbsp;-95&nbsp;10&nbsp;-70&nbsp;14&nbsp;14&nbsp;-47&nbsp;54&nbsp;33&nbsp;33&nbsp;4&nbsp;65&nbsp;-44&nbsp;34&nbsp;19&nbsp;28&nbsp;90&nbsp;-84&nbsp;-26&nbsp;75&nbsp;83&nbsp;81&nbsp;-16&nbsp;96<br/>
+-24&nbsp;-50&nbsp;-14&nbsp;86&nbsp;27&nbsp;18&nbsp;-45&nbsp;1&nbsp;70&nbsp;43&nbsp;-54&nbsp;-29&nbsp;86&nbsp;51&nbsp;-14&nbsp;-26&nbsp;37&nbsp;-23&nbsp;-83&nbsp;22&nbsp;-34&nbsp;43&nbsp;71&nbsp;-55&nbsp;-51&nbsp;-97&nbsp;37&nbsp;-70&nbsp;-65&nbsp;-98&nbsp;74&nbsp;-49&nbsp;44&nbsp;0&nbsp;1&nbsp;-25&nbsp;70&nbsp;39&nbsp;42&nbsp;11&nbsp;-33&nbsp;-47&nbsp;-25&nbsp;-71&nbsp;-98&nbsp;7&nbsp;18&nbsp;84&nbsp;-64&nbsp;100&nbsp;76&nbsp;3&nbsp;61&nbsp;71&nbsp;82&nbsp;14&nbsp;66&nbsp;93&nbsp;-73&nbsp;79&nbsp;-44&nbsp;54&nbsp;57&nbsp;56&nbsp;54&nbsp;66&nbsp;-16&nbsp;32&nbsp;-18&nbsp;-4&nbsp;-44&nbsp;-82&nbsp;13&nbsp;69&nbsp;-32&nbsp;55&nbsp;-69&nbsp;22&nbsp;71&nbsp;-51<br/>
+74&nbsp;-30&nbsp;70&nbsp;-39&nbsp;-41&nbsp;23&nbsp;9&nbsp;-29&nbsp;-31&nbsp;61&nbsp;65&nbsp;87&nbsp;-59&nbsp;-37&nbsp;-13&nbsp;94&nbsp;-60&nbsp;-35&nbsp;-79&nbsp;-87&nbsp;-77&nbsp;-29&nbsp;27&nbsp;9&nbsp;-66&nbsp;5&nbsp;-86&nbsp;-13&nbsp;82&nbsp;28&nbsp;-62&nbsp;-53&nbsp;3&nbsp;48&nbsp;63&nbsp;-39&nbsp;97&nbsp;-73&nbsp;86&nbsp;-23&nbsp;-6&nbsp;1&nbsp;13&nbsp;37&nbsp;30&nbsp;87&nbsp;44&nbsp;-18&nbsp;-47&nbsp;28&nbsp;-23&nbsp;1&nbsp;11&nbsp;-29&nbsp;71&nbsp;59&nbsp;87&nbsp;-34&nbsp;-59&nbsp;52&nbsp;-15&nbsp;8&nbsp;59&nbsp;87&nbsp;80&nbsp;-64&nbsp;-95&nbsp;-3&nbsp;79&nbsp;25&nbsp;-25&nbsp;26&nbsp;-37&nbsp;-92&nbsp;-21&nbsp;95&nbsp;-77&nbsp;-85&nbsp;19&nbsp;25<br/>
+-76&nbsp;-58&nbsp;41&nbsp;-80&nbsp;97&nbsp;-19&nbsp;56&nbsp;-46&nbsp;-10&nbsp;76&nbsp;-61&nbsp;-80&nbsp;39&nbsp;-27&nbsp;-44&nbsp;13&nbsp;-2&nbsp;47&nbsp;99&nbsp;-18&nbsp;5&nbsp;-56&nbsp;10&nbsp;-7&nbsp;-42&nbsp;83&nbsp;-41&nbsp;-6&nbsp;-13&nbsp;-79&nbsp;-51&nbsp;-21&nbsp;64&nbsp;35&nbsp;64&nbsp;28&nbsp;-42&nbsp;39&nbsp;28&nbsp;-39&nbsp;9&nbsp;51&nbsp;38&nbsp;-53&nbsp;10&nbsp;74&nbsp;-62&nbsp;-23&nbsp;-64&nbsp;-82&nbsp;72&nbsp;39&nbsp;48&nbsp;-72&nbsp;-16&nbsp;22&nbsp;-7&nbsp;72&nbsp;-95&nbsp;98&nbsp;-20&nbsp;80&nbsp;92&nbsp;94&nbsp;-18&nbsp;-49&nbsp;18&nbsp;-64&nbsp;32&nbsp;-54&nbsp;-93&nbsp;64&nbsp;-68&nbsp;87&nbsp;-18&nbsp;4&nbsp;-3&nbsp;-97&nbsp;76&nbsp;-78<br/>
+-83&nbsp;91&nbsp;-72&nbsp;-29&nbsp;72&nbsp;45&nbsp;96&nbsp;0&nbsp;-59&nbsp;33&nbsp;9&nbsp;-13&nbsp;-54&nbsp;-38&nbsp;-30&nbsp;-29&nbsp;4&nbsp;24&nbsp;39&nbsp;39&nbsp;-3&nbsp;65&nbsp;80&nbsp;36&nbsp;-89&nbsp;-66&nbsp;-40&nbsp;87&nbsp;-51&nbsp;38&nbsp;-45&nbsp;71&nbsp;0&nbsp;-85&nbsp;-71&nbsp;-54&nbsp;-9&nbsp;87&nbsp;-3&nbsp;13&nbsp;-23&nbsp;34&nbsp;10&nbsp;-10&nbsp;-10&nbsp;-32&nbsp;-71&nbsp;-96&nbsp;10&nbsp;37&nbsp;-3&nbsp;-96&nbsp;-94&nbsp;30&nbsp;-7&nbsp;63&nbsp;6&nbsp;35&nbsp;42&nbsp;-53&nbsp;24&nbsp;-71&nbsp;-59&nbsp;-55&nbsp;-39&nbsp;-94&nbsp;-24&nbsp;61&nbsp;-22&nbsp;0&nbsp;-55&nbsp;-60&nbsp;-54&nbsp;-35&nbsp;47&nbsp;26&nbsp;-6&nbsp;-56&nbsp;-55&nbsp;-98<br/>
+-65&nbsp;95&nbsp;52&nbsp;-10&nbsp;-46&nbsp;91&nbsp;1&nbsp;-76&nbsp;-66&nbsp;22&nbsp;-42&nbsp;82&nbsp;1&nbsp;-82&nbsp;82&nbsp;36&nbsp;-82&nbsp;20&nbsp;34&nbsp;38&nbsp;4&nbsp;-8&nbsp;-32&nbsp;-59&nbsp;22&nbsp;26&nbsp;4&nbsp;10&nbsp;-85&nbsp;-17&nbsp;-4&nbsp;-28&nbsp;66&nbsp;76&nbsp;29&nbsp;46&nbsp;47&nbsp;6&nbsp;-9&nbsp;-74&nbsp;-76&nbsp;19&nbsp;45&nbsp;82&nbsp;-45&nbsp;-55&nbsp;30&nbsp;48&nbsp;-75&nbsp;-91&nbsp;33&nbsp;-96&nbsp;-93&nbsp;35&nbsp;55&nbsp;-55&nbsp;-53&nbsp;17&nbsp;-78&nbsp;2&nbsp;-6&nbsp;-42&nbsp;38&nbsp;75&nbsp;7&nbsp;-49&nbsp;-96&nbsp;-31&nbsp;-79&nbsp;11&nbsp;16&nbsp;-26&nbsp;-17&nbsp;-15&nbsp;-39&nbsp;-1&nbsp;81&nbsp;-84&nbsp;-15&nbsp;-28<br/>
+30&nbsp;-74&nbsp;-26&nbsp;62&nbsp;-52&nbsp;13&nbsp;-91&nbsp;-52&nbsp;3&nbsp;-92&nbsp;10&nbsp;91&nbsp;17&nbsp;-41&nbsp;60&nbsp;85&nbsp;-50&nbsp;26&nbsp;39&nbsp;76&nbsp;64&nbsp;79&nbsp;-3&nbsp;-89&nbsp;-95&nbsp;47&nbsp;22&nbsp;-91&nbsp;50&nbsp;33&nbsp;-31&nbsp;-99&nbsp;59&nbsp;31&nbsp;-84&nbsp;-84&nbsp;51&nbsp;26&nbsp;-34&nbsp;43&nbsp;42&nbsp;51&nbsp;-90&nbsp;26&nbsp;57&nbsp;66&nbsp;-71&nbsp;51&nbsp;-73&nbsp;-5&nbsp;-69&nbsp;50&nbsp;39&nbsp;47&nbsp;56&nbsp;62&nbsp;-99&nbsp;4&nbsp;-55&nbsp;1&nbsp;-88&nbsp;-35&nbsp;-2&nbsp;39&nbsp;25&nbsp;-10&nbsp;32&nbsp;74&nbsp;40&nbsp;68&nbsp;-22&nbsp;-52&nbsp;43&nbsp;98&nbsp;-19&nbsp;23&nbsp;27&nbsp;37&nbsp;25&nbsp;-33<br/>
+-92&nbsp;-34&nbsp;-15&nbsp;20&nbsp;-40&nbsp;25&nbsp;-14&nbsp;36&nbsp;-73&nbsp;44&nbsp;22&nbsp;-16&nbsp;-23&nbsp;-73&nbsp;61&nbsp;-54&nbsp;-27&nbsp;-64&nbsp;-63&nbsp;-71&nbsp;26&nbsp;-20&nbsp;-48&nbsp;-49&nbsp;100&nbsp;13&nbsp;-77&nbsp;82&nbsp;17&nbsp;-60&nbsp;-85&nbsp;-87&nbsp;39&nbsp;57&nbsp;77&nbsp;-60&nbsp;85&nbsp;55&nbsp;-76&nbsp;64&nbsp;-25&nbsp;67&nbsp;-51&nbsp;60&nbsp;3&nbsp;-54&nbsp;-21&nbsp;-53&nbsp;-75&nbsp;-26&nbsp;-9&nbsp;-51&nbsp;-74&nbsp;4&nbsp;-10&nbsp;83&nbsp;-64&nbsp;-57&nbsp;-67&nbsp;-20&nbsp;89&nbsp;-1&nbsp;-98&nbsp;56&nbsp;-35&nbsp;87&nbsp;86&nbsp;23&nbsp;82&nbsp;29&nbsp;-79&nbsp;-54&nbsp;0&nbsp;-3&nbsp;-87&nbsp;-41&nbsp;31&nbsp;23&nbsp;-19&nbsp;-21<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            [96,&nbsp;98,&nbsp;100,&nbsp;96,&nbsp;97,&nbsp;98,&nbsp;99,&nbsp;99,&nbsp;99,&nbsp;100,&nbsp;99,&nbsp;99,&nbsp;95,&nbsp;100,&nbsp;98,&nbsp;99,&nbsp;97,&nbsp;99,&nbsp;99,&nbsp;99,&nbsp;97,&nbsp;95,&nbsp;99,&nbsp;99,&nbsp;100,&nbsp;100,&nbsp;99,&nbsp;100,&nbsp;88,&nbsp;100,&nbsp;99,&nbsp;99,&nbsp;99,&nbsp;100,&nbsp;100,&nbsp;96,&nbsp;98,&nbsp;97,&nbsp;96,&nbsp;100,&nbsp;98,&nbsp;98,&nbsp;100,&nbsp;100,&nbsp;96,&nbsp;100,&nbsp;100,&nbsp;93,&nbsp;99,&nbsp;100,&nbsp;98,&nbsp;99,&nbsp;100,&nbsp;100,&nbsp;98,&nbsp;97,&nbsp;96,&nbsp;100,&nbsp;100,&nbsp;100,&nbsp;94,&nbsp;97,&nbsp;97,&nbsp;98,&nbsp;100,&nbsp;94,&nbsp;97,&nbsp;93,&nbsp;99,&nbsp;93,&nbsp;100,&nbsp;100,&nbsp;99,&nbsp;98,&nbsp;100,&nbsp;100,&nbsp;100,&nbsp;98,&nbsp;100,&nbsp;100]<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+
+        <div style="height: 30px"></div>
+
+        <table id="grad1" class="tableLegend tableSummary"
+          <tbody>
+            <tr>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #9F9; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">ok</td>
+                </tr>
+              </table>
+              </td>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #FFBF00; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">napaka</td>
+                </tr>
+              </table>
+              </td>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #FF9; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">napaka med izvajanjem</td>
+                </tr>
+              </table>
+              </td>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #C00000; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">se ne prevede</td>
+                </tr>
+              </table>
+              </td>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #B9F; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">timeout (1000 ms)</td>
+                </tr>
+              </table>
+              </td>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #D0E0F0; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">rezultat izrisa</td>
+                </tr>
+              </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <a name="bottom"></a>
+        </div>
+    </body>
+    <!-- java class tester version "1.5.12" -->
+    <!-- 25.7.2024 21:11.9 -->
+    <!-- Nal, 192.168.214.204 -->
+</html>

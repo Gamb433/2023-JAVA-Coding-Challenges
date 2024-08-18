@@ -1,0 +1,1610 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <title>Prikaz rezultatov testiranja</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <style>
+            .tableBase { border-collapse: collapse; }
+            .tableBase > tbody > tr > td { border: 1px solid black; padding: 7px;}
+            .tableResults { table-layout: fixed; border-spacing: 0px; border-collapse: separate; }
+            table#nasredini { margin-left:auto; margin-right:auto; }
+            table tbody td.hoverOk {background-color:#9F9; border: 1px solid #63B563; width: 15px; color: black; text-align: center; }
+            .hoverOk:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #63B563; }
+            .hoverOk:hover td { background: transparent; }
+            .hoverOk > a:link, .hoverOk > a:visited, .hoverOk > a:hover, .hoverOk > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverErr {background-color:#FFBF00; border: 1px solid #CB9800; width: 15px; color: black; text-align: center; }
+            .hoverErr:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #CB9800; }
+            .hoverErr:hover td { background: transparent; }
+            .hoverErr > a:link, .hoverErr > a:visited, .hoverErr > a:hover, .hoverErr > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverRuntime {background-color:#FF9; border: 1px solid #D8D87E; width: 15px; color: black; text-align: center; }
+            .hoverRuntime:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #D8D87E; }
+            .hoverRuntime:hover td { background: transparent; }
+            .hoverRuntime > a:link, .hoverRuntime > a:visited, .hoverRuntime > a:hover, .hoverRuntime > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverCompile {background-color:#C00000; border: 1px solid #710B0B; width: 15px; color: black; text-align: center; }
+            .hoverCompile:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #710B0B; }
+            .hoverCompile:hover td { background: transparent; }
+            .hoverCompile > a:link, .hoverCompile > a:visited, .hoverCompile > a:hover, .hoverCompile > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverMissing {background-color:#F0F0F0; border: 1px solid #ABABAB; width: 15px; color: black; text-align: center; }
+            .hoverMissing:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #ABABAB; }
+            .hoverMissing:hover td { background: transparent; }
+            .hoverMissing > a:link, .hoverMissing > a:visited, .hoverMissing > a:hover, .hoverMissing > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverTimeout {background-color:#B9F; border: 1px solid #9070CE; width: 15px; color: black; text-align: center; }
+            .hoverTimeout:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #9070CE; }
+            .hoverTimeout:hover td { background: transparent; }
+            .hoverTimeout > a:link, .hoverTimeout > a:visited, .hoverTimeout > a:hover, .hoverTimeout > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverImage {background-color:#D0E0F0; border: 1px solid #a6b3c0; width: 15px; color: black; text-align: center; }
+            .hoverImage:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #a6b3c0; }
+            .hoverImage:hover td { background: transparent; }
+            .hoverImage > a:link, .hoverImage > a:visited, .hoverImage > a:hover, .hoverImage > a:active { color: black; font-size: 0.9em; }
+            .tableCommon { border-collapse: collapse; }
+            .tableOK > tbody > tr > td { border: 1px solid #63B563; padding: 7px;}
+            .tableError > tbody > tr > td { border: 1px solid #CB9800; padding: 7px;}
+            .tableRuntime > tbody > tr > td { border: 1px solid #D8D87E; padding: 7px;}
+            .tableCompiler > tbody > tr > td { border: 1px solid #710B0B; padding: 7px;}
+            .tableMissing > tbody > tr > td { border: 1px solid #ABABAB; padding: 7px;}
+            .tableTimeout > tbody > tr > td { border: 1px solid #9070CE; padding: 7px;}
+            .tableImage > tbody > tr > td { border: 1px solid #a6b3c0; padding: 7px;}
+            .tableSummary { table-layout: fixed; }
+            .texttt { font-family: DejaVu Sans Mono, monospace; font-size: 0.8em; }
+            table.diff > tbody > tr > td { border: none; font-family: DejaVu Sans Mono, monospace}
+            .diff_add { color: green; font-family: DejaVu Sans Mono, monospace; }
+            .diff_sub { color: blue; font-family: DejaVu Sans Mono, monospace; }
+            .diff_chg { color: red; font-family: DejaVu Sans Mono, monospace; }
+            a { color: blue; text-decoration: none; height: 100%; width: 100%; vertical-align: middle; }
+            a:link { color: blue; text-decoration: none; }
+            a:link { color: blue; text-decoration: none; }
+            a:hover { color: blue; text-decoration: underline; }
+            body, td { font: normal normal 100%/1.0 DejaVu Sans, sans-serif; }
+            h1 { font-weight: bold; font-size: 150%; }
+            h2 { font-weight: normal; font-size: 125%; border-top: 1px solid black; border-bottom: 1px solid black; background: #DEF; padding: 5px; margin-top: 36px; margin-bottom: 36px}
+            .container{ margin: 0px auto; width: 70%; min-width: 700px; margin-top: 1.8cm; margin-bottom: 1.8cm; }
+            .rwordb{ color: blue; font-weight: bold; }
+            .rwordv{ color:#8000ff; font-weight: bold; }
+            .vcomment{ color: green; }
+            .bcomment{ color: green; }
+            .niz{ color:#a31515; }
+            .stevilo{ color:#ff8000; }
+            tab { padding-left: 4em; }
+            #grad1 {
+                background: -webkit-linear-gradient(left, #E0E0E0 , white);
+                background: -o-linear-gradient(right, #E0E0E0, white);
+                background: -moz-linear-gradient(right, #E0E0E0, white);
+                background: linear-gradient(to right, #E0E0E0 , white);
+            }
+            #grad2 {
+                background: -webkit-linear-gradient(left, #9F9 , white);
+                background: -o-linear-gradient(right, #9F9, white);
+                background: -moz-linear-gradient(right, #9F9, white);
+                background: linear-gradient(to right, #9F9 , white);
+            }
+            .capSlika { display:block; height: 25px; margin:0 auto; font-size: 1.0em; text-align: left; }
+            .dborder { padding: 0px; border: 1px solid #CACACA; }
+            .capText { display: block; margin:0 auto; font-size: 0.9em; text-align: left; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+        <a name="top"></a>
+        <h1 id="grad2" style="padding: 10px; border: 0px solid black; color: #000000;">Rezultati preverjanja <span style="color: #700000;">smucanje.java</span> (10/10)</h1>
+        <div style="height: 20px"></div>
+        <a name="summary"></a>
+        <h2>Povzetek rezultatov</h2>
+        <table id="nasredini" class="tableBase tableResults">
+            <tbody>
+                <tr>
+                <td class="hoverOk"><a href="#testcase1">1</a></td>
+                <td class="hoverOk"><a href="#testcase2">2</a></td>
+                <td class="hoverOk"><a href="#testcase3">3</a></td>
+                <td class="hoverOk"><a href="#testcase4">4</a></td>
+                <td class="hoverOk"><a href="#testcase5">5</a></td>
+                <td class="hoverOk"><a href="#testcase6">6</a></td>
+                <td class="hoverOk"><a href="#testcase7">7</a></td>
+                <td class="hoverOk"><a href="#testcase8">8</a></td>
+                <td class="hoverOk"><a href="#testcase9">9</a></td>
+                <td class="hoverOk"><a href="#testcase10">10</a></td>
+                </tr>
+                <tr></tr>
+            </tbody>
+        </table>
+        <div style="height: 20px"></div>
+        <h2>Rezultati</h2>
+        <a name="testcase1"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 1</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            5<br/>
+70&nbsp;65<br/>
+40&nbsp;0<br/>
+55&nbsp;59<br/>
+0<br/>
+50&nbsp;72<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            3<br/>114<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase2"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 2</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            3<br/>
+0<br/>
+70&nbsp;0<br/>
+0<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            NIHCE<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase3"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 3</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            5<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            NIHCE<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase4"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 4</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            1<br/>
+7&nbsp;3<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            1<br/>10<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase5"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 5</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            1<br/>
+7&nbsp;0<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            NIHCE<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase6"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 6</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            50<br/>
+8047&nbsp;2931<br/>
+0<br/>
+3980&nbsp;2966<br/>
+2906&nbsp;7998<br/>
+3106&nbsp;9429<br/>
+3347&nbsp;5528<br/>
+5565&nbsp;3885<br/>
+6911&nbsp;810<br/>
+3476&nbsp;3665<br/>
+0<br/>
+5185&nbsp;9752<br/>
+779&nbsp;5844<br/>
+8927&nbsp;0<br/>
+9657&nbsp;7140<br/>
+2205&nbsp;0<br/>
+9195&nbsp;6039<br/>
+5592&nbsp;9799<br/>
+5548&nbsp;0<br/>
+2219&nbsp;5378<br/>
+2932&nbsp;2533<br/>
+2818&nbsp;0<br/>
+9543&nbsp;4655<br/>
+8853&nbsp;2787<br/>
+1411&nbsp;9862<br/>
+4467&nbsp;5363<br/>
+3533&nbsp;8581<br/>
+979&nbsp;9000<br/>
+9616&nbsp;8546<br/>
+0<br/>
+6445&nbsp;3460<br/>
+3042&nbsp;2403<br/>
+6558&nbsp;3966<br/>
+2164&nbsp;5138<br/>
+5603&nbsp;3190<br/>
+0<br/>
+8426&nbsp;2200<br/>
+0<br/>
+3379&nbsp;9397<br/>
+6998&nbsp;261<br/>
+418&nbsp;9621<br/>
+6828&nbsp;2626<br/>
+2270&nbsp;3813<br/>
+3680&nbsp;9316<br/>
+0<br/>
+4200&nbsp;242<br/>
+9384&nbsp;0<br/>
+3598&nbsp;0<br/>
+7656&nbsp;2893<br/>
+8693&nbsp;3883<br/>
+4089&nbsp;0<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            45<br/>4442<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase7"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 7</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            100<br/>
+8610&nbsp;1798<br/>
+8764&nbsp;615<br/>
+8548&nbsp;1917<br/>
+7476&nbsp;7176<br/>
+4658&nbsp;5891<br/>
+8664&nbsp;0<br/>
+7776&nbsp;3652<br/>
+5450&nbsp;9504<br/>
+9329&nbsp;2289<br/>
+7173&nbsp;2365<br/>
+0<br/>
+7420&nbsp;4593<br/>
+4417&nbsp;8489<br/>
+4791&nbsp;1271<br/>
+2025&nbsp;1395<br/>
+2841&nbsp;5903<br/>
+2612&nbsp;6944<br/>
+8218&nbsp;3903<br/>
+1386&nbsp;0<br/>
+7610&nbsp;0<br/>
+1115&nbsp;1281<br/>
+8433&nbsp;4380<br/>
+1898&nbsp;6929<br/>
+3162&nbsp;0<br/>
+5053&nbsp;8843<br/>
+7526&nbsp;0<br/>
+7306&nbsp;9487<br/>
+1751&nbsp;9767<br/>
+3259&nbsp;2255<br/>
+8429&nbsp;6409<br/>
+2502&nbsp;0<br/>
+2653&nbsp;1683<br/>
+7487&nbsp;0<br/>
+1267&nbsp;4476<br/>
+3587&nbsp;3040<br/>
+1664&nbsp;1327<br/>
+4698&nbsp;7449<br/>
+0<br/>
+7228&nbsp;3175<br/>
+250&nbsp;3029<br/>
+0<br/>
+6700&nbsp;9788<br/>
+4387&nbsp;4479<br/>
+4279&nbsp;7593<br/>
+0<br/>
+0<br/>
+9376&nbsp;4261<br/>
+657&nbsp;4614<br/>
+4506&nbsp;6151<br/>
+8776&nbsp;5937<br/>
+397&nbsp;5219<br/>
+3542&nbsp;2544<br/>
+5052&nbsp;2421<br/>
+4898&nbsp;5926<br/>
+6873&nbsp;6036<br/>
+3207&nbsp;8706<br/>
+9324&nbsp;3787<br/>
+8324&nbsp;2708<br/>
+4885&nbsp;272<br/>
+5459&nbsp;3539<br/>
+6803&nbsp;0<br/>
+5617&nbsp;7854<br/>
+5288&nbsp;7981<br/>
+5188&nbsp;585<br/>
+8965&nbsp;7247<br/>
+5346&nbsp;6065<br/>
+3699&nbsp;8629<br/>
+0<br/>
+6112&nbsp;9946<br/>
+7138&nbsp;3917<br/>
+1024&nbsp;553<br/>
+0<br/>
+74&nbsp;9272<br/>
+191&nbsp;2116<br/>
+1904&nbsp;8497<br/>
+2972&nbsp;8518<br/>
+231&nbsp;9022<br/>
+8091&nbsp;6344<br/>
+9861&nbsp;6330<br/>
+4232&nbsp;2118<br/>
+8905&nbsp;7211<br/>
+2724&nbsp;9098<br/>
+1838&nbsp;1366<br/>
+4067&nbsp;456<br/>
+549&nbsp;3458<br/>
+5394&nbsp;6889<br/>
+9777&nbsp;7292<br/>
+1399&nbsp;7597<br/>
+1741&nbsp;1457<br/>
+3955&nbsp;9969<br/>
+1504&nbsp;1625<br/>
+1409&nbsp;8835<br/>
+0<br/>
+0<br/>
+4925&nbsp;5304<br/>
+502&nbsp;0<br/>
+6777&nbsp;531<br/>
+4025&nbsp;8541<br/>
+5646&nbsp;9949<br/>
+300&nbsp;9443<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            71<br/>1577<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase8"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 8</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            200<br/>
+5950&nbsp;1641<br/>
+0<br/>
+0<br/>
+7796&nbsp;0<br/>
+8795&nbsp;0<br/>
+7374&nbsp;9920<br/>
+5188&nbsp;0<br/>
+6600&nbsp;0<br/>
+7521&nbsp;0<br/>
+7174&nbsp;1009<br/>
+7055&nbsp;0<br/>
+609&nbsp;0<br/>
+0<br/>
+0<br/>
+5866&nbsp;7826<br/>
+5891&nbsp;0<br/>
+897&nbsp;0<br/>
+5637&nbsp;1464<br/>
+3226&nbsp;0<br/>
+5444&nbsp;0<br/>
+9179&nbsp;4044<br/>
+0<br/>
+0<br/>
+4099&nbsp;670<br/>
+6170&nbsp;0<br/>
+7242&nbsp;6796<br/>
+0<br/>
+850&nbsp;0<br/>
+967&nbsp;0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+6874&nbsp;8075<br/>
+636&nbsp;8387<br/>
+9094&nbsp;6496<br/>
+2152&nbsp;4059<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+2434&nbsp;0<br/>
+4130&nbsp;7751<br/>
+0<br/>
+4455&nbsp;393<br/>
+0<br/>
+3742&nbsp;7441<br/>
+0<br/>
+8579&nbsp;7280<br/>
+0<br/>
+4934&nbsp;233<br/>
+772&nbsp;0<br/>
+0<br/>
+0<br/>
+6693&nbsp;0<br/>
+5134&nbsp;5483<br/>
+9549&nbsp;0<br/>
+1000&nbsp;0<br/>
+4660&nbsp;7364<br/>
+8737&nbsp;7338<br/>
+0<br/>
+0<br/>
+0<br/>
+8638&nbsp;0<br/>
+2686&nbsp;4282<br/>
+8426&nbsp;2812<br/>
+7822&nbsp;0<br/>
+0<br/>
+4396&nbsp;8443<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+4795&nbsp;1359<br/>
+7467&nbsp;1114<br/>
+9945&nbsp;0<br/>
+4655&nbsp;5076<br/>
+0<br/>
+5847&nbsp;564<br/>
+6671&nbsp;0<br/>
+0<br/>
+4471&nbsp;7620<br/>
+9311&nbsp;8193<br/>
+7555&nbsp;3961<br/>
+2897&nbsp;1972<br/>
+0<br/>
+2664&nbsp;0<br/>
+0<br/>
+2042&nbsp;2603<br/>
+0<br/>
+7941&nbsp;0<br/>
+0<br/>
+2811&nbsp;8640<br/>
+7271&nbsp;8037<br/>
+7014&nbsp;2692<br/>
+231&nbsp;3394<br/>
+3763&nbsp;9561<br/>
+9714&nbsp;0<br/>
+4288&nbsp;4647<br/>
+2439&nbsp;6545<br/>
+444&nbsp;1989<br/>
+9598&nbsp;1801<br/>
+3373&nbsp;8499<br/>
+8870&nbsp;7465<br/>
+3300&nbsp;4336<br/>
+5910&nbsp;7442<br/>
+1940&nbsp;9990<br/>
+0<br/>
+4174&nbsp;8188<br/>
+4180&nbsp;333<br/>
+0<br/>
+9096&nbsp;3961<br/>
+3764&nbsp;0<br/>
+0<br/>
+4987&nbsp;0<br/>
+0<br/>
+0<br/>
+6609&nbsp;2877<br/>
+9647&nbsp;0<br/>
+4352&nbsp;1341<br/>
+0<br/>
+7934&nbsp;0<br/>
+0<br/>
+8230&nbsp;0<br/>
+9096&nbsp;3001<br/>
+4228&nbsp;0<br/>
+6196&nbsp;7494<br/>
+1326&nbsp;4703<br/>
+7171&nbsp;0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+9124&nbsp;7644<br/>
+6179&nbsp;5275<br/>
+0<br/>
+5585&nbsp;3545<br/>
+0<br/>
+0<br/>
+9701&nbsp;0<br/>
+1810&nbsp;1442<br/>
+0<br/>
+0<br/>
+0<br/>
+1530&nbsp;1154<br/>
+6000&nbsp;0<br/>
+3534&nbsp;0<br/>
+0<br/>
+4919&nbsp;0<br/>
+0<br/>
+5529&nbsp;0<br/>
+0<br/>
+7879&nbsp;9513<br/>
+3394&nbsp;6711<br/>
+243&nbsp;7972<br/>
+1167&nbsp;0<br/>
+0<br/>
+0<br/>
+2575&nbsp;0<br/>
+0<br/>
+4044&nbsp;2516<br/>
+374&nbsp;0<br/>
+0<br/>
+0<br/>
+7085&nbsp;9086<br/>
+0<br/>
+0<br/>
+1865&nbsp;6548<br/>
+8941&nbsp;0<br/>
+4094&nbsp;0<br/>
+0<br/>
+8744&nbsp;0<br/>
+3754&nbsp;2468<br/>
+7096&nbsp;9287<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+9090&nbsp;0<br/>
+3820&nbsp;0<br/>
+4341&nbsp;9004<br/>
+4446&nbsp;7041<br/>
+1866&nbsp;3320<br/>
+0<br/>
+4406&nbsp;7244<br/>
+3187&nbsp;9043<br/>
+6436&nbsp;0<br/>
+0<br/>
+9207&nbsp;0<br/>
+4458&nbsp;0<br/>
+4769&nbsp;9316<br/>
+0<br/>
+1508&nbsp;5166<br/>
+5318&nbsp;1555<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            105<br/>2433<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase9"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 9</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            300<br/>
+6092&nbsp;6623<br/>
+548&nbsp;0<br/>
+7758&nbsp;0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+9420&nbsp;0<br/>
+0<br/>
+0<br/>
+0<br/>
+1050&nbsp;9187<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+2487&nbsp;0<br/>
+0<br/>
+0<br/>
+3708&nbsp;0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+2318&nbsp;4346<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+4205&nbsp;0<br/>
+4328&nbsp;0<br/>
+0<br/>
+4569&nbsp;3826<br/>
+0<br/>
+0<br/>
+4685&nbsp;7091<br/>
+0<br/>
+0<br/>
+374&nbsp;7983<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+4771&nbsp;8141<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+132&nbsp;0<br/>
+0<br/>
+8450&nbsp;0<br/>
+0<br/>
+6441&nbsp;0<br/>
+0<br/>
+7142&nbsp;0<br/>
+1888&nbsp;0<br/>
+4445&nbsp;0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+8187&nbsp;7033<br/>
+9841&nbsp;0<br/>
+0<br/>
+738&nbsp;8791<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+8861&nbsp;0<br/>
+8082&nbsp;0<br/>
+0<br/>
+9769&nbsp;0<br/>
+0<br/>
+0<br/>
+1936&nbsp;0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+8940&nbsp;0<br/>
+0<br/>
+1155&nbsp;0<br/>
+0<br/>
+441&nbsp;1171<br/>
+0<br/>
+0<br/>
+25&nbsp;0<br/>
+0<br/>
+1812&nbsp;0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+4916&nbsp;0<br/>
+3657&nbsp;3983<br/>
+0<br/>
+8580&nbsp;0<br/>
+0<br/>
+9976&nbsp;0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+2121&nbsp;0<br/>
+0<br/>
+0<br/>
+4437&nbsp;0<br/>
+0<br/>
+0<br/>
+0<br/>
+7576&nbsp;6704<br/>
+0<br/>
+0<br/>
+3106&nbsp;0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+5113&nbsp;0<br/>
+7911&nbsp;8367<br/>
+5917&nbsp;0<br/>
+1610&nbsp;7681<br/>
+0<br/>
+0<br/>
+0<br/>
+9322&nbsp;0<br/>
+7751&nbsp;0<br/>
+0<br/>
+7490&nbsp;908<br/>
+0<br/>
+7151&nbsp;0<br/>
+0<br/>
+0<br/>
+8554&nbsp;0<br/>
+0<br/>
+0<br/>
+925&nbsp;7514<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+501&nbsp;0<br/>
+9282&nbsp;0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+3541&nbsp;9349<br/>
+2073&nbsp;6468<br/>
+8682&nbsp;0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+6930&nbsp;5997<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+8893&nbsp;0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+3752&nbsp;0<br/>
+0<br/>
+4132&nbsp;0<br/>
+9000&nbsp;5215<br/>
+0<br/>
+0<br/>
+5059&nbsp;0<br/>
+0<br/>
+0<br/>
+0<br/>
+4896&nbsp;0<br/>
+9452&nbsp;0<br/>
+0<br/>
+0<br/>
+3968&nbsp;4093<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+2799&nbsp;0<br/>
+3430&nbsp;0<br/>
+0<br/>
+8555&nbsp;0<br/>
+0<br/>
+0<br/>
+0<br/>
+3377&nbsp;0<br/>
+0<br/>
+8851&nbsp;865<br/>
+5450&nbsp;0<br/>
+0<br/>
+497&nbsp;398<br/>
+7330&nbsp;0<br/>
+0<br/>
+7510&nbsp;9791<br/>
+0<br/>
+8142&nbsp;7137<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+1332&nbsp;0<br/>
+0<br/>
+2317&nbsp;0<br/>
+0<br/>
+0<br/>
+6112&nbsp;0<br/>
+370&nbsp;0<br/>
+8281&nbsp;6447<br/>
+0<br/>
+0<br/>
+0<br/>
+3842&nbsp;0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+919&nbsp;0<br/>
+0<br/>
+0<br/>
+3592&nbsp;0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            265<br/>895<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase10"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 10</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            500<br/>
+0<br/>
+7236&nbsp;2283<br/>
+4475&nbsp;9049<br/>
+4140&nbsp;3233<br/>
+9023&nbsp;6069<br/>
+7175&nbsp;2217<br/>
+0<br/>
+7204&nbsp;7086<br/>
+8937&nbsp;8147<br/>
+3178&nbsp;3928<br/>
+8954&nbsp;8134<br/>
+1827&nbsp;6845<br/>
+4030&nbsp;0<br/>
+1458&nbsp;1737<br/>
+1546&nbsp;3690<br/>
+2767&nbsp;8332<br/>
+9689&nbsp;9340<br/>
+8775&nbsp;4844<br/>
+9395&nbsp;9589<br/>
+2987&nbsp;5311<br/>
+9662&nbsp;0<br/>
+3975&nbsp;1858<br/>
+836&nbsp;0<br/>
+0<br/>
+1886&nbsp;0<br/>
+5110&nbsp;0<br/>
+2759&nbsp;0<br/>
+6492&nbsp;4263<br/>
+1557&nbsp;1264<br/>
+6693&nbsp;4560<br/>
+1731&nbsp;0<br/>
+5958&nbsp;7720<br/>
+1047&nbsp;0<br/>
+5595&nbsp;3629<br/>
+4609&nbsp;1400<br/>
+2790&nbsp;7271<br/>
+0<br/>
+8872&nbsp;602<br/>
+6478&nbsp;2952<br/>
+525&nbsp;0<br/>
+2373&nbsp;5473<br/>
+2778&nbsp;8847<br/>
+1964&nbsp;0<br/>
+1218&nbsp;1162<br/>
+2896&nbsp;1444<br/>
+8814&nbsp;9366<br/>
+0<br/>
+0<br/>
+719&nbsp;2441<br/>
+6109&nbsp;4538<br/>
+653&nbsp;5274<br/>
+7935&nbsp;8760<br/>
+2824&nbsp;7557<br/>
+4121&nbsp;2604<br/>
+8112&nbsp;9455<br/>
+7902&nbsp;3836<br/>
+82&nbsp;0<br/>
+5357&nbsp;2645<br/>
+4829&nbsp;557<br/>
+610&nbsp;1265<br/>
+4980&nbsp;3816<br/>
+7802&nbsp;5665<br/>
+4112&nbsp;0<br/>
+3682&nbsp;404<br/>
+8285&nbsp;3985<br/>
+7440&nbsp;9115<br/>
+5238&nbsp;1734<br/>
+2163&nbsp;5408<br/>
+3344&nbsp;0<br/>
+3327&nbsp;0<br/>
+6117&nbsp;9186<br/>
+8643&nbsp;1431<br/>
+0<br/>
+5692&nbsp;2035<br/>
+0<br/>
+6115&nbsp;4358<br/>
+4552&nbsp;2182<br/>
+0<br/>
+4360&nbsp;2099<br/>
+31&nbsp;5051<br/>
+2138&nbsp;0<br/>
+0<br/>
+3050&nbsp;2474<br/>
+4853&nbsp;4260<br/>
+0<br/>
+2327&nbsp;8994<br/>
+7319&nbsp;0<br/>
+4435&nbsp;3069<br/>
+564&nbsp;7846<br/>
+9201&nbsp;7693<br/>
+319&nbsp;4294<br/>
+9483&nbsp;4923<br/>
+0<br/>
+8945&nbsp;0<br/>
+745&nbsp;0<br/>
+8361&nbsp;4285<br/>
+0<br/>
+1725&nbsp;4539<br/>
+0<br/>
+6302&nbsp;1232<br/>
+3885&nbsp;8506<br/>
+0<br/>
+9760&nbsp;4441<br/>
+5608&nbsp;3459<br/>
+3370&nbsp;8949<br/>
+56&nbsp;0<br/>
+9138&nbsp;6081<br/>
+0<br/>
+0<br/>
+2866&nbsp;3047<br/>
+3249&nbsp;0<br/>
+3633&nbsp;5418<br/>
+8218&nbsp;0<br/>
+8296&nbsp;8648<br/>
+7879&nbsp;7410<br/>
+6921&nbsp;0<br/>
+8679&nbsp;6833<br/>
+2460&nbsp;7568<br/>
+2022&nbsp;0<br/>
+5025&nbsp;0<br/>
+0<br/>
+7124&nbsp;5103<br/>
+8748&nbsp;0<br/>
+5241&nbsp;8134<br/>
+1923&nbsp;9441<br/>
+2793&nbsp;0<br/>
+9107&nbsp;5273<br/>
+0<br/>
+5535&nbsp;5231<br/>
+3689&nbsp;4426<br/>
+7981&nbsp;3588<br/>
+721&nbsp;8520<br/>
+0<br/>
+4071&nbsp;3565<br/>
+2704&nbsp;8321<br/>
+8910&nbsp;5896<br/>
+0<br/>
+240&nbsp;3425<br/>
+1253&nbsp;4981<br/>
+3723&nbsp;0<br/>
+0<br/>
+9455&nbsp;4824<br/>
+8757&nbsp;7275<br/>
+0<br/>
+4128&nbsp;0<br/>
+1873&nbsp;2290<br/>
+8919&nbsp;9133<br/>
+7984&nbsp;4890<br/>
+0<br/>
+9447&nbsp;0<br/>
+0<br/>
+0<br/>
+6647&nbsp;4817<br/>
+3846&nbsp;6501<br/>
+8602&nbsp;990<br/>
+4865&nbsp;0<br/>
+0<br/>
+1659&nbsp;0<br/>
+2636&nbsp;3173<br/>
+9927&nbsp;8377<br/>
+0<br/>
+1409&nbsp;9755<br/>
+6897&nbsp;0<br/>
+4047&nbsp;1545<br/>
+7523&nbsp;95<br/>
+7837&nbsp;8046<br/>
+0<br/>
+6471&nbsp;4893<br/>
+2567&nbsp;2604<br/>
+3187&nbsp;8771<br/>
+1755&nbsp;1<br/>
+5353&nbsp;0<br/>
+8179&nbsp;7452<br/>
+6626&nbsp;9918<br/>
+8320&nbsp;9764<br/>
+3619&nbsp;6877<br/>
+0<br/>
+0<br/>
+6458&nbsp;5346<br/>
+6710&nbsp;5494<br/>
+6482&nbsp;0<br/>
+7707&nbsp;0<br/>
+4334&nbsp;5629<br/>
+8387&nbsp;4601<br/>
+8759&nbsp;564<br/>
+6493&nbsp;3129<br/>
+908&nbsp;0<br/>
+9467&nbsp;0<br/>
+9178&nbsp;1755<br/>
+0<br/>
+6117&nbsp;4831<br/>
+0<br/>
+1321&nbsp;1186<br/>
+7853&nbsp;1941<br/>
+0<br/>
+0<br/>
+2440&nbsp;6606<br/>
+1230&nbsp;6554<br/>
+651&nbsp;2384<br/>
+5563&nbsp;7430<br/>
+8702&nbsp;622<br/>
+3015&nbsp;8902<br/>
+529&nbsp;2799<br/>
+7487&nbsp;3682<br/>
+31&nbsp;8446<br/>
+8385&nbsp;3445<br/>
+0<br/>
+7555&nbsp;9126<br/>
+7930&nbsp;3392<br/>
+9417&nbsp;6715<br/>
+9719&nbsp;485<br/>
+9805&nbsp;2315<br/>
+3104&nbsp;5554<br/>
+4651&nbsp;4947<br/>
+8410&nbsp;4614<br/>
+9377&nbsp;2666<br/>
+6817&nbsp;2380<br/>
+1343&nbsp;0<br/>
+2921&nbsp;237<br/>
+0<br/>
+1745&nbsp;3330<br/>
+477&nbsp;7022<br/>
+2730&nbsp;363<br/>
+9569&nbsp;264<br/>
+6252&nbsp;412<br/>
+2757&nbsp;0<br/>
+949&nbsp;143<br/>
+9586&nbsp;7904<br/>
+4373&nbsp;6295<br/>
+0<br/>
+1373&nbsp;0<br/>
+9912&nbsp;8091<br/>
+6477&nbsp;0<br/>
+9750&nbsp;8889<br/>
+809&nbsp;0<br/>
+7168&nbsp;4423<br/>
+1170&nbsp;5034<br/>
+8839&nbsp;3155<br/>
+626&nbsp;2526<br/>
+3860&nbsp;0<br/>
+0<br/>
+1614&nbsp;3586<br/>
+0<br/>
+2264&nbsp;9819<br/>
+0<br/>
+0<br/>
+9007&nbsp;9021<br/>
+4180&nbsp;2733<br/>
+8195&nbsp;5683<br/>
+0<br/>
+1545&nbsp;227<br/>
+5276&nbsp;8189<br/>
+9409&nbsp;1482<br/>
+3864&nbsp;5957<br/>
+0<br/>
+1333&nbsp;6197<br/>
+1647&nbsp;4794<br/>
+2390&nbsp;7434<br/>
+9687&nbsp;3727<br/>
+6448&nbsp;6430<br/>
+4101&nbsp;0<br/>
+8829&nbsp;7904<br/>
+0<br/>
+9939&nbsp;6497<br/>
+0<br/>
+4369&nbsp;0<br/>
+1647&nbsp;7947<br/>
+9971&nbsp;8040<br/>
+7746&nbsp;0<br/>
+4146&nbsp;6252<br/>
+1560&nbsp;0<br/>
+0<br/>
+1015&nbsp;6804<br/>
+5896&nbsp;8116<br/>
+4364&nbsp;4303<br/>
+0<br/>
+8995&nbsp;1146<br/>
+5653&nbsp;3958<br/>
+6406&nbsp;6585<br/>
+2544&nbsp;5993<br/>
+2626&nbsp;8663<br/>
+1297&nbsp;9819<br/>
+0<br/>
+3153&nbsp;2461<br/>
+0<br/>
+0<br/>
+307&nbsp;709<br/>
+1587&nbsp;0<br/>
+3238&nbsp;4881<br/>
+518&nbsp;7768<br/>
+4421&nbsp;2208<br/>
+9678&nbsp;9086<br/>
+9922&nbsp;710<br/>
+6617&nbsp;9411<br/>
+7472&nbsp;0<br/>
+0<br/>
+930&nbsp;7927<br/>
+5541&nbsp;7245<br/>
+4915&nbsp;0<br/>
+8632&nbsp;8483<br/>
+8199&nbsp;5119<br/>
+0<br/>
+4096&nbsp;5232<br/>
+5721&nbsp;2725<br/>
+7430&nbsp;643<br/>
+5516&nbsp;1734<br/>
+3125&nbsp;6398<br/>
+2916&nbsp;3583<br/>
+7119&nbsp;0<br/>
+5282&nbsp;2168<br/>
+0<br/>
+8474&nbsp;2725<br/>
+0<br/>
+4748&nbsp;1868<br/>
+3408&nbsp;7369<br/>
+4520&nbsp;0<br/>
+4017&nbsp;0<br/>
+7519&nbsp;9518<br/>
+1380&nbsp;0<br/>
+4743&nbsp;5225<br/>
+639&nbsp;5153<br/>
+1859&nbsp;0<br/>
+1321&nbsp;662<br/>
+8819&nbsp;6643<br/>
+0<br/>
+6782&nbsp;0<br/>
+4660&nbsp;8658<br/>
+9413&nbsp;3985<br/>
+0<br/>
+5373&nbsp;3916<br/>
+3085&nbsp;8190<br/>
+9420&nbsp;1739<br/>
+6278&nbsp;2635<br/>
+5983&nbsp;1688<br/>
+3992&nbsp;1576<br/>
+0<br/>
+8671&nbsp;6775<br/>
+8119&nbsp;9638<br/>
+8004&nbsp;5074<br/>
+92&nbsp;2797<br/>
+8253&nbsp;0<br/>
+973&nbsp;455<br/>
+0<br/>
+8758&nbsp;3452<br/>
+0<br/>
+0<br/>
+6428&nbsp;0<br/>
+6785&nbsp;5434<br/>
+29&nbsp;0<br/>
+98&nbsp;0<br/>
+8679&nbsp;3685<br/>
+4637&nbsp;0<br/>
+4179&nbsp;2672<br/>
+4666&nbsp;3019<br/>
+9101&nbsp;0<br/>
+6867&nbsp;8589<br/>
+5562&nbsp;7686<br/>
+1511&nbsp;3931<br/>
+1839&nbsp;0<br/>
+5084&nbsp;1347<br/>
+3403&nbsp;1458<br/>
+0<br/>
+2886&nbsp;1613<br/>
+4088&nbsp;5325<br/>
+5006&nbsp;6617<br/>
+9773&nbsp;2782<br/>
+8113&nbsp;1346<br/>
+4808&nbsp;8179<br/>
+0<br/>
+4984&nbsp;0<br/>
+3339&nbsp;0<br/>
+6558&nbsp;4446<br/>
+1997&nbsp;0<br/>
+0<br/>
+9950&nbsp;9964<br/>
+3810&nbsp;1859<br/>
+3395&nbsp;0<br/>
+0<br/>
+4120&nbsp;0<br/>
+344&nbsp;1156<br/>
+7957&nbsp;3458<br/>
+7940&nbsp;2939<br/>
+0<br/>
+7125&nbsp;3604<br/>
+5143&nbsp;2634<br/>
+0<br/>
+0<br/>
+0<br/>
+6151&nbsp;8976<br/>
+3439&nbsp;3709<br/>
+3351&nbsp;0<br/>
+1996&nbsp;4438<br/>
+0<br/>
+7072&nbsp;5299<br/>
+7597&nbsp;4426<br/>
+1142&nbsp;9058<br/>
+2451&nbsp;4308<br/>
+9847&nbsp;8788<br/>
+8035&nbsp;0<br/>
+9810&nbsp;8532<br/>
+6124&nbsp;5709<br/>
+7103&nbsp;1784<br/>
+35&nbsp;1306<br/>
+671&nbsp;9722<br/>
+3079&nbsp;1332<br/>
+1827&nbsp;8795<br/>
+1205&nbsp;173<br/>
+4944&nbsp;6222<br/>
+3242&nbsp;0<br/>
+915&nbsp;6056<br/>
+0<br/>
+2461&nbsp;6225<br/>
+9807&nbsp;8137<br/>
+4693&nbsp;9917<br/>
+3703&nbsp;8587<br/>
+7213&nbsp;0<br/>
+7992&nbsp;3258<br/>
+7651&nbsp;600<br/>
+0<br/>
+0<br/>
+5275&nbsp;0<br/>
+8811&nbsp;0<br/>
+5934&nbsp;1139<br/>
+178&nbsp;0<br/>
+2487&nbsp;0<br/>
+5837&nbsp;148<br/>
+2493&nbsp;0<br/>
+3959&nbsp;0<br/>
+8285&nbsp;0<br/>
+2602&nbsp;0<br/>
+2146&nbsp;1565<br/>
+1827&nbsp;3538<br/>
+571&nbsp;0<br/>
+0<br/>
+5433&nbsp;0<br/>
+7440&nbsp;0<br/>
+8528&nbsp;6160<br/>
+2809&nbsp;6742<br/>
+6215&nbsp;4257<br/>
+0<br/>
+4661&nbsp;9261<br/>
+8868&nbsp;1983<br/>
+9734&nbsp;0<br/>
+0<br/>
+5359&nbsp;9585<br/>
+0<br/>
+9157&nbsp;1617<br/>
+9176&nbsp;0<br/>
+4158&nbsp;8116<br/>
+0<br/>
+4443&nbsp;3144<br/>
+7391&nbsp;1804<br/>
+6155&nbsp;9018<br/>
+3447&nbsp;4453<br/>
+294&nbsp;7002<br/>
+2086&nbsp;7017<br/>
+4970&nbsp;9334<br/>
+7136&nbsp;3758<br/>
+2816&nbsp;6841<br/>
+5201&nbsp;6066<br/>
+8538&nbsp;9192<br/>
+5772&nbsp;4584<br/>
+0<br/>
+1384&nbsp;8265<br/>
+3254&nbsp;5208<br/>
+8756&nbsp;1729<br/>
+1706&nbsp;0<br/>
+694&nbsp;4880<br/>
+1065&nbsp;9648<br/>
+8445&nbsp;0<br/>
+5285&nbsp;8721<br/>
+3476&nbsp;0<br/>
+8509&nbsp;1844<br/>
+1470&nbsp;9245<br/>
+8829&nbsp;0<br/>
+5161&nbsp;0<br/>
+4106&nbsp;7779<br/>
+5630&nbsp;4007<br/>
+1726&nbsp;7636<br/>
+5047&nbsp;7527<br/>
+0<br/>
+0<br/>
+9628&nbsp;0<br/>
+5217&nbsp;6372<br/>
+0<br/>
+8917&nbsp;6281<br/>
+8840&nbsp;8058<br/>
+8042&nbsp;7308<br/>
+4859&nbsp;927<br/>
+1390&nbsp;0<br/>
+3555&nbsp;0<br/>
+0<br/>
+2626&nbsp;6393<br/>
+6415&nbsp;0<br/>
+4856&nbsp;6347<br/>
+2172&nbsp;813<br/>
+0<br/>
+4494&nbsp;4103<br/>
+5850&nbsp;9092<br/>
+2946&nbsp;9047<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            287<br/>1016<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+
+        <div style="height: 30px"></div>
+
+        <table id="grad1" class="tableLegend tableSummary"
+          <tbody>
+            <tr>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #9F9; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">ok</td>
+                </tr>
+              </table>
+              </td>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #FFBF00; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">napaka</td>
+                </tr>
+              </table>
+              </td>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #FF9; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">napaka med izvajanjem</td>
+                </tr>
+              </table>
+              </td>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #C00000; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">se ne prevede</td>
+                </tr>
+              </table>
+              </td>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #B9F; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">timeout (1000 ms)</td>
+                </tr>
+              </table>
+              </td>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #D0E0F0; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">rezultat izrisa</td>
+                </tr>
+              </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <a name="bottom"></a>
+        </div>
+    </body>
+    <!-- java class tester version "1.5.12" -->
+    <!-- 9.7.2024 14:43.40 -->
+    <!-- Nal, 192.168.63.205 -->
+</html>

@@ -1,0 +1,32 @@
+Vnesite število vrstic: Vnesite elemente matrike:
+Maksimalni elementi po stolpcih:
+Stolpec 0: -1086
+Stolpec 1: -1127
+Stolpec 2: -1602
+Stolpec 3: -1014
+Stolpec 4: -1136
+Stolpec 5: -1937
+Stolpec 6: -1934
+Stolpec 7: -1202
+Stolpec 8: -1651
+Stolpec 9: -1092
+Stolpec 10: -1918
+Stolpec 11: -1256
+Stolpec 12: -2161
+Stolpec 13: -3618
+Stolpec 14: -1247
+Stolpec 15: -2461
+Stolpec 16: -1046
+Stolpec 17: -2424
+Stolpec 18: -1164
+Stolpec 19: -1145
+Stolpec 20: -2237
+Stolpec 21: -2240
+Stolpec 22: -1721
+Stolpec 23: -1957
+Stolpec 24: -3620
+Stolpec 25: -1276
+Stolpec 26: -3594
+Stolpec 27: -6885
+Stolpec 28: -2587
+Stolpec 29: -2192

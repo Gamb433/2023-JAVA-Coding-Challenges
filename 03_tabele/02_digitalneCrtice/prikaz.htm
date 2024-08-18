@@ -1,0 +1,455 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <title>Prikaz rezultatov testiranja</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <style>
+            .tableBase { border-collapse: collapse; }
+            .tableBase > tbody > tr > td { border: 1px solid black; padding: 7px;}
+            .tableResults { table-layout: fixed; border-spacing: 0px; border-collapse: separate; }
+            table#nasredini { margin-left:auto; margin-right:auto; }
+            table tbody td.hoverOk {background-color:#9F9; border: 1px solid #63B563; width: 15px; color: black; text-align: center; }
+            .hoverOk:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #63B563; }
+            .hoverOk:hover td { background: transparent; }
+            .hoverOk > a:link, .hoverOk > a:visited, .hoverOk > a:hover, .hoverOk > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverErr {background-color:#FFBF00; border: 1px solid #CB9800; width: 15px; color: black; text-align: center; }
+            .hoverErr:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #CB9800; }
+            .hoverErr:hover td { background: transparent; }
+            .hoverErr > a:link, .hoverErr > a:visited, .hoverErr > a:hover, .hoverErr > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverRuntime {background-color:#FF9; border: 1px solid #D8D87E; width: 15px; color: black; text-align: center; }
+            .hoverRuntime:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #D8D87E; }
+            .hoverRuntime:hover td { background: transparent; }
+            .hoverRuntime > a:link, .hoverRuntime > a:visited, .hoverRuntime > a:hover, .hoverRuntime > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverCompile {background-color:#C00000; border: 1px solid #710B0B; width: 15px; color: black; text-align: center; }
+            .hoverCompile:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #710B0B; }
+            .hoverCompile:hover td { background: transparent; }
+            .hoverCompile > a:link, .hoverCompile > a:visited, .hoverCompile > a:hover, .hoverCompile > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverMissing {background-color:#F0F0F0; border: 1px solid #ABABAB; width: 15px; color: black; text-align: center; }
+            .hoverMissing:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #ABABAB; }
+            .hoverMissing:hover td { background: transparent; }
+            .hoverMissing > a:link, .hoverMissing > a:visited, .hoverMissing > a:hover, .hoverMissing > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverTimeout {background-color:#B9F; border: 1px solid #9070CE; width: 15px; color: black; text-align: center; }
+            .hoverTimeout:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #9070CE; }
+            .hoverTimeout:hover td { background: transparent; }
+            .hoverTimeout > a:link, .hoverTimeout > a:visited, .hoverTimeout > a:hover, .hoverTimeout > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverImage {background-color:#D0E0F0; border: 1px solid #a6b3c0; width: 15px; color: black; text-align: center; }
+            .hoverImage:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #a6b3c0; }
+            .hoverImage:hover td { background: transparent; }
+            .hoverImage > a:link, .hoverImage > a:visited, .hoverImage > a:hover, .hoverImage > a:active { color: black; font-size: 0.9em; }
+            .tableCommon { border-collapse: collapse; }
+            .tableOK > tbody > tr > td { border: 1px solid #63B563; padding: 7px;}
+            .tableError > tbody > tr > td { border: 1px solid #CB9800; padding: 7px;}
+            .tableRuntime > tbody > tr > td { border: 1px solid #D8D87E; padding: 7px;}
+            .tableCompiler > tbody > tr > td { border: 1px solid #710B0B; padding: 7px;}
+            .tableMissing > tbody > tr > td { border: 1px solid #ABABAB; padding: 7px;}
+            .tableTimeout > tbody > tr > td { border: 1px solid #9070CE; padding: 7px;}
+            .tableImage > tbody > tr > td { border: 1px solid #a6b3c0; padding: 7px;}
+            .tableSummary { table-layout: fixed; }
+            .texttt { font-family: DejaVu Sans Mono, monospace; font-size: 0.8em; }
+            table.diff > tbody > tr > td { border: none; font-family: DejaVu Sans Mono, monospace}
+            .diff_add { color: green; font-family: DejaVu Sans Mono, monospace; }
+            .diff_sub { color: blue; font-family: DejaVu Sans Mono, monospace; }
+            .diff_chg { color: red; font-family: DejaVu Sans Mono, monospace; }
+            a { color: blue; text-decoration: none; height: 100%; width: 100%; vertical-align: middle; }
+            a:link { color: blue; text-decoration: none; }
+            a:link { color: blue; text-decoration: none; }
+            a:hover { color: blue; text-decoration: underline; }
+            body, td { font: normal normal 100%/1.0 DejaVu Sans, sans-serif; }
+            h1 { font-weight: bold; font-size: 150%; }
+            h2 { font-weight: normal; font-size: 125%; border-top: 1px solid black; border-bottom: 1px solid black; background: #DEF; padding: 5px; margin-top: 36px; margin-bottom: 36px}
+            .container{ margin: 0px auto; width: 70%; min-width: 700px; margin-top: 1.8cm; margin-bottom: 1.8cm; }
+            .rwordb{ color: blue; font-weight: bold; }
+            .rwordv{ color:#8000ff; font-weight: bold; }
+            .vcomment{ color: green; }
+            .bcomment{ color: green; }
+            .niz{ color:#a31515; }
+            .stevilo{ color:#ff8000; }
+            tab { padding-left: 4em; }
+            #grad1 {
+                background: -webkit-linear-gradient(left, #E0E0E0 , white);
+                background: -o-linear-gradient(right, #E0E0E0, white);
+                background: -moz-linear-gradient(right, #E0E0E0, white);
+                background: linear-gradient(to right, #E0E0E0 , white);
+            }
+            #grad2 {
+                background: -webkit-linear-gradient(left, #9F9 , white);
+                background: -o-linear-gradient(right, #9F9, white);
+                background: -moz-linear-gradient(right, #9F9, white);
+                background: linear-gradient(to right, #9F9 , white);
+            }
+            .capSlika { display:block; height: 25px; margin:0 auto; font-size: 1.0em; text-align: left; }
+            .dborder { padding: 0px; border: 1px solid #CACACA; }
+            .capText { display: block; margin:0 auto; font-size: 0.9em; text-align: left; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+        <a name="top"></a>
+        <h1 id="grad2" style="padding: 10px; border: 0px solid black; color: #000000;">Rezultati preverjanja <span style="color: #700000;">digitalneCrtice.java</span> (10/10)</h1>
+        <div style="height: 20px"></div>
+        <a name="summary"></a>
+        <h2>Povzetek rezultatov</h2>
+        <table id="nasredini" class="tableBase tableResults">
+            <tbody>
+                <tr>
+                <td class="hoverOk"><a href="#testcase1">1</a></td>
+                <td class="hoverOk"><a href="#testcase2">2</a></td>
+                <td class="hoverOk"><a href="#testcase3">3</a></td>
+                <td class="hoverOk"><a href="#testcase4">4</a></td>
+                <td class="hoverOk"><a href="#testcase5">5</a></td>
+                <td class="hoverOk"><a href="#testcase6">6</a></td>
+                <td class="hoverOk"><a href="#testcase7">7</a></td>
+                <td class="hoverOk"><a href="#testcase8">8</a></td>
+                <td class="hoverOk"><a href="#testcase9">9</a></td>
+                <td class="hoverOk"><a href="#testcase10">10</a></td>
+                </tr>
+                <tr></tr>
+            </tbody>
+        </table>
+        <div style="height: 20px"></div>
+        <h2>Rezultati</h2>
+        <a name="testcase1"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 1</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            8<br/>
+4567&nbsp;888&nbsp;1113111&nbsp;90&nbsp;2352&nbsp;211&nbsp;9&nbsp;63<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            888<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase2"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 2</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            3<br/>
+35&nbsp;61&nbsp;127<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            35<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase3"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 3</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            1<br/>
+75<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            75<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase4"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 4</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            5<br/>
+150&nbsp;150&nbsp;150&nbsp;150&nbsp;150<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            150<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase5"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 5</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            10<br/>
+168&nbsp;379&nbsp;869&nbsp;896&nbsp;631&nbsp;919&nbsp;770&nbsp;395&nbsp;133&nbsp;134<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            869<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase6"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 6</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            50<br/>
+3204&nbsp;3226&nbsp;7906&nbsp;4468&nbsp;6726&nbsp;289&nbsp;8662&nbsp;1803&nbsp;6571&nbsp;2689&nbsp;2573&nbsp;6534&nbsp;2251&nbsp;2778&nbsp;7059&nbsp;8693&nbsp;3916&nbsp;2227&nbsp;3414&nbsp;9417&nbsp;8359&nbsp;1743&nbsp;4843&nbsp;3981&nbsp;1155&nbsp;6148&nbsp;3979&nbsp;8263&nbsp;6607&nbsp;3023&nbsp;9229&nbsp;8050&nbsp;3403&nbsp;8843&nbsp;5371&nbsp;5150&nbsp;3007&nbsp;829&nbsp;3965&nbsp;4035&nbsp;2726&nbsp;369&nbsp;3311&nbsp;5645&nbsp;700&nbsp;8376&nbsp;1166&nbsp;6959&nbsp;7113&nbsp;6316<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            8662<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase7"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 7</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            100<br/>
+86745&nbsp;84250&nbsp;88813&nbsp;21775&nbsp;25256&nbsp;15325&nbsp;11193&nbsp;3350&nbsp;62755&nbsp;91140&nbsp;94377&nbsp;33136&nbsp;36649&nbsp;65304&nbsp;50032&nbsp;4824&nbsp;17475&nbsp;48193&nbsp;12363&nbsp;39311&nbsp;663&nbsp;77014&nbsp;72393&nbsp;44838&nbsp;44942&nbsp;86833&nbsp;43671&nbsp;74794&nbsp;74802&nbsp;51385&nbsp;82931&nbsp;37761&nbsp;84318&nbsp;47531&nbsp;72822&nbsp;49282&nbsp;21408&nbsp;73642&nbsp;90711&nbsp;11422&nbsp;96346&nbsp;74991&nbsp;4588&nbsp;62873&nbsp;65687&nbsp;44070&nbsp;56502&nbsp;35761&nbsp;83074&nbsp;75010&nbsp;52422&nbsp;56233&nbsp;70793&nbsp;74200&nbsp;82105&nbsp;81991&nbsp;59904&nbsp;81628&nbsp;35843&nbsp;42093&nbsp;83019&nbsp;13498&nbsp;77925&nbsp;37448&nbsp;41194&nbsp;5827&nbsp;74747&nbsp;36385&nbsp;10939&nbsp;82887&nbsp;30030&nbsp;65059&nbsp;59352&nbsp;85164&nbsp;59105&nbsp;12722&nbsp;40028&nbsp;10355&nbsp;56306&nbsp;52179&nbsp;97774&nbsp;90095&nbsp;11812&nbsp;10053&nbsp;23796&nbsp;37816&nbsp;90327&nbsp;80587&nbsp;13645&nbsp;89308&nbsp;20684&nbsp;9987&nbsp;71334&nbsp;68137&nbsp;77059&nbsp;20986&nbsp;50569&nbsp;35398&nbsp;17300&nbsp;47451<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            89308<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase8"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 8</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            200<br/>
+637382&nbsp;696910&nbsp;576579&nbsp;378102&nbsp;416591&nbsp;130580&nbsp;608015&nbsp;840301&nbsp;363513&nbsp;349093&nbsp;632274&nbsp;738565&nbsp;57658&nbsp;53825&nbsp;215003&nbsp;861272&nbsp;575269&nbsp;318148&nbsp;510955&nbsp;246459&nbsp;670378&nbsp;819619&nbsp;867363&nbsp;466886&nbsp;309308&nbsp;2171&nbsp;148548&nbsp;72174&nbsp;317486&nbsp;89164&nbsp;644515&nbsp;329578&nbsp;108439&nbsp;259510&nbsp;502464&nbsp;119927&nbsp;229774&nbsp;920444&nbsp;466713&nbsp;830529&nbsp;545553&nbsp;425298&nbsp;917595&nbsp;343794&nbsp;742001&nbsp;850194&nbsp;57480&nbsp;171538&nbsp;270886&nbsp;845665&nbsp;952591&nbsp;895543&nbsp;189409&nbsp;951956&nbsp;580232&nbsp;365291&nbsp;908224&nbsp;73804&nbsp;308217&nbsp;909274&nbsp;82153&nbsp;262062&nbsp;502391&nbsp;637963&nbsp;101060&nbsp;604759&nbsp;586097&nbsp;500843&nbsp;212671&nbsp;594147&nbsp;572630&nbsp;373166&nbsp;792854&nbsp;379339&nbsp;368920&nbsp;555540&nbsp;263366&nbsp;131410&nbsp;206740&nbsp;690534&nbsp;124214&nbsp;992430&nbsp;530836&nbsp;879166&nbsp;580240&nbsp;224522&nbsp;248471&nbsp;328857&nbsp;803959&nbsp;342196&nbsp;749803&nbsp;536183&nbsp;278637&nbsp;283213&nbsp;132810&nbsp;973865&nbsp;990282&nbsp;773600&nbsp;388189&nbsp;593924&nbsp;32430&nbsp;497411&nbsp;434488&nbsp;631961&nbsp;861685&nbsp;480593&nbsp;321867&nbsp;263279&nbsp;392803&nbsp;950909&nbsp;331928&nbsp;84067&nbsp;220620&nbsp;234913&nbsp;973616&nbsp;991687&nbsp;960765&nbsp;119858&nbsp;442189&nbsp;750052&nbsp;494873&nbsp;443005&nbsp;810064&nbsp;180457&nbsp;538748&nbsp;36424&nbsp;365926&nbsp;755931&nbsp;239469&nbsp;915819&nbsp;171465&nbsp;348713&nbsp;680579&nbsp;566597&nbsp;146652&nbsp;359051&nbsp;779339&nbsp;125677&nbsp;345195&nbsp;938375&nbsp;242700&nbsp;892642&nbsp;707576&nbsp;222817&nbsp;284988&nbsp;371772&nbsp;266575&nbsp;192076&nbsp;438368&nbsp;995034&nbsp;340434&nbsp;372555&nbsp;183663&nbsp;411262&nbsp;156384&nbsp;338984&nbsp;419853&nbsp;955053&nbsp;283102&nbsp;47839&nbsp;172523&nbsp;563889&nbsp;819459&nbsp;30693&nbsp;567148&nbsp;12903&nbsp;372229&nbsp;730651&nbsp;422471&nbsp;501283&nbsp;354197&nbsp;390525&nbsp;237801&nbsp;902463&nbsp;213302&nbsp;529885&nbsp;93481&nbsp;576759&nbsp;61636&nbsp;69895&nbsp;782339&nbsp;698485&nbsp;188755&nbsp;801735&nbsp;768990&nbsp;488789&nbsp;828081&nbsp;593505&nbsp;880403&nbsp;473256&nbsp;73387&nbsp;955180&nbsp;318703&nbsp;73806&nbsp;833855&nbsp;21853&nbsp;282064&nbsp;436352&nbsp;675263&nbsp;362266<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            466886<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase9"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 9</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            400<br/>
+9946688&nbsp;8082651&nbsp;4295500&nbsp;6506053&nbsp;8875411&nbsp;2810628&nbsp;3753344&nbsp;5577300&nbsp;6603133&nbsp;9289048&nbsp;8699102&nbsp;8024822&nbsp;7038071&nbsp;1197645&nbsp;1416414&nbsp;2283804&nbsp;9273209&nbsp;8649833&nbsp;1879128&nbsp;773731&nbsp;8722620&nbsp;4995552&nbsp;4878836&nbsp;8480593&nbsp;2130685&nbsp;9435870&nbsp;6573634&nbsp;8888644&nbsp;4797370&nbsp;2998818&nbsp;4456495&nbsp;3425585&nbsp;8970697&nbsp;7029639&nbsp;7149669&nbsp;9060487&nbsp;2633572&nbsp;6044122&nbsp;5115899&nbsp;6440755&nbsp;9671630&nbsp;6060656&nbsp;3400476&nbsp;6505225&nbsp;5238518&nbsp;7484686&nbsp;9251248&nbsp;9248645&nbsp;7592329&nbsp;9140510&nbsp;4885539&nbsp;3237679&nbsp;9518145&nbsp;8159761&nbsp;8612732&nbsp;3331299&nbsp;8721124&nbsp;5098685&nbsp;5204865&nbsp;4111413&nbsp;9160086&nbsp;1759092&nbsp;2202118&nbsp;7351534&nbsp;8687381&nbsp;3263662&nbsp;320818&nbsp;9650252&nbsp;3739872&nbsp;9657164&nbsp;7863760&nbsp;3599446&nbsp;9042758&nbsp;6631927&nbsp;4329053&nbsp;2182883&nbsp;5940632&nbsp;7284744&nbsp;329567&nbsp;3900874&nbsp;9476349&nbsp;1191669&nbsp;7449729&nbsp;9694711&nbsp;29383&nbsp;2362301&nbsp;8188541&nbsp;1806118&nbsp;106504&nbsp;3656818&nbsp;7526565&nbsp;7581040&nbsp;4259139&nbsp;7261917&nbsp;5355623&nbsp;5586196&nbsp;3767151&nbsp;9424241&nbsp;3439896&nbsp;4771787&nbsp;5744841&nbsp;8335549&nbsp;2834218&nbsp;6083859&nbsp;6491363&nbsp;7309858&nbsp;1651208&nbsp;3669448&nbsp;6667964&nbsp;5325464&nbsp;6447057&nbsp;2667384&nbsp;2704801&nbsp;1404783&nbsp;8167630&nbsp;4876756&nbsp;6122394&nbsp;829769&nbsp;7584712&nbsp;1642027&nbsp;1898595&nbsp;1100488&nbsp;5781648&nbsp;2350541&nbsp;6834689&nbsp;2995185&nbsp;524654&nbsp;6854256&nbsp;1493127&nbsp;4429999&nbsp;6065359&nbsp;4457638&nbsp;8904091&nbsp;8639911&nbsp;9432707&nbsp;5309328&nbsp;3318129&nbsp;9086410&nbsp;7651502&nbsp;197527&nbsp;6931957&nbsp;3525997&nbsp;7296887&nbsp;1089892&nbsp;5474633&nbsp;9484550&nbsp;790983&nbsp;2993956&nbsp;6742020&nbsp;3867894&nbsp;675065&nbsp;4343868&nbsp;9583594&nbsp;4827404&nbsp;234915&nbsp;9874288&nbsp;9513543&nbsp;8136579&nbsp;5756941&nbsp;7174624&nbsp;1527776&nbsp;1665597&nbsp;9022806&nbsp;6010033&nbsp;6236843&nbsp;2480874&nbsp;1470643&nbsp;7654214&nbsp;325697&nbsp;645189&nbsp;9485509&nbsp;2102142&nbsp;7843538&nbsp;5262753&nbsp;8845260&nbsp;5665658&nbsp;8379068&nbsp;2310802&nbsp;467983&nbsp;3883677&nbsp;913828&nbsp;7842567&nbsp;3949920&nbsp;41649&nbsp;4068134&nbsp;726967&nbsp;3729858&nbsp;7784440&nbsp;5853716&nbsp;1835260&nbsp;2604540&nbsp;5213669&nbsp;930361&nbsp;5143732&nbsp;2440247&nbsp;2335135&nbsp;5685029&nbsp;5444191&nbsp;1479708&nbsp;1654620&nbsp;2330190&nbsp;2692369&nbsp;3145851&nbsp;9043246&nbsp;7990920&nbsp;2561727&nbsp;8881077&nbsp;5244963&nbsp;6019091&nbsp;9942718&nbsp;9336726&nbsp;1057463&nbsp;237832&nbsp;7445869&nbsp;5055097&nbsp;5047895&nbsp;163430&nbsp;5822980&nbsp;1264141&nbsp;5289167&nbsp;3963985&nbsp;7103408&nbsp;6302921&nbsp;2312435&nbsp;3673989&nbsp;9234963&nbsp;9652862&nbsp;6214167&nbsp;2877280&nbsp;693166&nbsp;5406718&nbsp;6464985&nbsp;8889068&nbsp;9718111&nbsp;1478715&nbsp;2922940&nbsp;9993652&nbsp;4933413&nbsp;7462848&nbsp;8804070&nbsp;2133793&nbsp;6508286&nbsp;3959855&nbsp;457380&nbsp;2438328&nbsp;4587091&nbsp;2883128&nbsp;7449563&nbsp;2700365&nbsp;2645411&nbsp;2360796&nbsp;3820940&nbsp;6947087&nbsp;3720122&nbsp;2103967&nbsp;975478&nbsp;1888007&nbsp;2147232&nbsp;6063128&nbsp;8525698&nbsp;4570249&nbsp;7974142&nbsp;8631375&nbsp;2959432&nbsp;161522&nbsp;238769&nbsp;6535159&nbsp;9125576&nbsp;1642406&nbsp;3294687&nbsp;1645745&nbsp;6211811&nbsp;2302151&nbsp;1119946&nbsp;7706433&nbsp;2021432&nbsp;9637777&nbsp;6961771&nbsp;7118395&nbsp;8147033&nbsp;5599798&nbsp;8170094&nbsp;314578&nbsp;5372961&nbsp;1227208&nbsp;469397&nbsp;5636251&nbsp;9338967&nbsp;8807153&nbsp;1506792&nbsp;1099588&nbsp;9257534&nbsp;7947121&nbsp;2491574&nbsp;5648086&nbsp;9762771&nbsp;809633&nbsp;8134658&nbsp;8056396&nbsp;9833333&nbsp;6942035&nbsp;3911439&nbsp;755578&nbsp;1455554&nbsp;175373&nbsp;7336939&nbsp;9765708&nbsp;5229384&nbsp;857462&nbsp;5440453&nbsp;1861717&nbsp;6038869&nbsp;3326535&nbsp;9609121&nbsp;8611634&nbsp;786504&nbsp;8402662&nbsp;1425279&nbsp;1211197&nbsp;6123310&nbsp;6708920&nbsp;5833925&nbsp;9061602&nbsp;6663612&nbsp;7601182&nbsp;1347310&nbsp;6714320&nbsp;7276301&nbsp;2752129&nbsp;3967598&nbsp;9976925&nbsp;4532370&nbsp;2190793&nbsp;5869910&nbsp;8783708&nbsp;2734030&nbsp;9081884&nbsp;3440155&nbsp;5948574&nbsp;3411898&nbsp;7271659&nbsp;71268&nbsp;5692956&nbsp;1422160&nbsp;6879950&nbsp;6541830&nbsp;1756796&nbsp;1890592&nbsp;3113455&nbsp;9433487&nbsp;8855262&nbsp;488950&nbsp;4671203&nbsp;592716&nbsp;8637294&nbsp;6029006&nbsp;6823820&nbsp;9290086&nbsp;7142680&nbsp;7293688&nbsp;1155894&nbsp;6508675&nbsp;2117989&nbsp;2935445&nbsp;3822171&nbsp;8852647&nbsp;1964059&nbsp;51294&nbsp;5491385&nbsp;2782888&nbsp;6703203&nbsp;4101515&nbsp;6671039&nbsp;7834633&nbsp;3950942&nbsp;6598751&nbsp;4160378&nbsp;9695752&nbsp;1284398&nbsp;8934741&nbsp;9505514&nbsp;6841274&nbsp;5668469&nbsp;5227627&nbsp;6087000&nbsp;2844044&nbsp;9038037&nbsp;2271259&nbsp;2669317&nbsp;5540597&nbsp;6612094&nbsp;2222200&nbsp;1330350&nbsp;4790860&nbsp;1137018&nbsp;2732604&nbsp;675777&nbsp;1540538&nbsp;212137&nbsp;4083453<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            8889068<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase10"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 10</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            800<br/>
+73816087&nbsp;25479213&nbsp;12201865&nbsp;26066921&nbsp;53722055&nbsp;13791359&nbsp;73951295&nbsp;56046702&nbsp;95809346&nbsp;64056339&nbsp;96198704&nbsp;78131614&nbsp;5275576&nbsp;62146253&nbsp;96821890&nbsp;39933001&nbsp;61485547&nbsp;38948041&nbsp;41384845&nbsp;76503170&nbsp;6141490&nbsp;59857782&nbsp;21640396&nbsp;42489085&nbsp;20428620&nbsp;72889647&nbsp;71965770&nbsp;20818238&nbsp;22919975&nbsp;32121306&nbsp;44912321&nbsp;89040353&nbsp;46233225&nbsp;5991945&nbsp;42909218&nbsp;53518507&nbsp;55149233&nbsp;37367122&nbsp;51666777&nbsp;39740134&nbsp;68499779&nbsp;25773487&nbsp;19649045&nbsp;73911010&nbsp;52602753&nbsp;97314668&nbsp;69029047&nbsp;77213431&nbsp;67852887&nbsp;82918274&nbsp;95078386&nbsp;90801408&nbsp;77539662&nbsp;65772609&nbsp;91350880&nbsp;20356893&nbsp;48767234&nbsp;38772133&nbsp;9247385&nbsp;93755946&nbsp;21745995&nbsp;63928749&nbsp;69255828&nbsp;36628957&nbsp;41857769&nbsp;27962162&nbsp;42114400&nbsp;43026926&nbsp;13701612&nbsp;13919689&nbsp;66558802&nbsp;19116189&nbsp;89072950&nbsp;6653167&nbsp;39541135&nbsp;49103181&nbsp;29112678&nbsp;44569161&nbsp;15514245&nbsp;83834968&nbsp;85065007&nbsp;35213703&nbsp;72337424&nbsp;80395049&nbsp;56457555&nbsp;94893063&nbsp;30261311&nbsp;64791919&nbsp;65981039&nbsp;15939391&nbsp;47715273&nbsp;74723084&nbsp;98397491&nbsp;82042402&nbsp;69082919&nbsp;55075123&nbsp;61318021&nbsp;2490604&nbsp;42781026&nbsp;6848446&nbsp;82790262&nbsp;30994200&nbsp;49170392&nbsp;10071437&nbsp;78516886&nbsp;87956119&nbsp;86292106&nbsp;21904659&nbsp;7724646&nbsp;22618709&nbsp;6609149&nbsp;86884634&nbsp;69649274&nbsp;99222205&nbsp;11047018&nbsp;23398436&nbsp;15905889&nbsp;12423814&nbsp;74065561&nbsp;30288392&nbsp;85099277&nbsp;69057952&nbsp;60752888&nbsp;92890716&nbsp;88868536&nbsp;96942677&nbsp;93385926&nbsp;39329081&nbsp;55578353&nbsp;98156056&nbsp;22831430&nbsp;80524545&nbsp;71920528&nbsp;96470399&nbsp;602689&nbsp;77892241&nbsp;35010687&nbsp;51366101&nbsp;53131899&nbsp;65724609&nbsp;48458729&nbsp;81734698&nbsp;19939944&nbsp;40386523&nbsp;40625288&nbsp;40978426&nbsp;230801&nbsp;19756372&nbsp;83065731&nbsp;62722701&nbsp;30651800&nbsp;61275501&nbsp;16462470&nbsp;78570829&nbsp;8970126&nbsp;11559863&nbsp;69306949&nbsp;43412105&nbsp;63996185&nbsp;9058780&nbsp;78272723&nbsp;86743204&nbsp;881530&nbsp;40189399&nbsp;55959816&nbsp;27381678&nbsp;82977095&nbsp;10651970&nbsp;674911&nbsp;55044558&nbsp;39006072&nbsp;47573431&nbsp;43364309&nbsp;95216447&nbsp;76887050&nbsp;10345790&nbsp;68897975&nbsp;72863995&nbsp;1177821&nbsp;45504806&nbsp;72446793&nbsp;61282612&nbsp;18925661&nbsp;44919485&nbsp;20941294&nbsp;33919573&nbsp;43875513&nbsp;32462776&nbsp;27904499&nbsp;25482463&nbsp;49731615&nbsp;34316871&nbsp;90617164&nbsp;65256462&nbsp;4954702&nbsp;41701828&nbsp;165416&nbsp;61556278&nbsp;65498200&nbsp;52051980&nbsp;25448179&nbsp;47420746&nbsp;75182250&nbsp;28050943&nbsp;30666265&nbsp;71219906&nbsp;77258117&nbsp;58882080&nbsp;55941400&nbsp;48369185&nbsp;84810539&nbsp;90699339&nbsp;23457782&nbsp;59436165&nbsp;83199536&nbsp;81662699&nbsp;65226503&nbsp;49045875&nbsp;42037464&nbsp;86974516&nbsp;80057579&nbsp;72862264&nbsp;10789574&nbsp;91126631&nbsp;7559086&nbsp;45638006&nbsp;13963318&nbsp;72899861&nbsp;55251613&nbsp;24912453&nbsp;60455747&nbsp;21407398&nbsp;59709313&nbsp;82492613&nbsp;35566716&nbsp;28967965&nbsp;47223224&nbsp;38443948&nbsp;21318586&nbsp;94674524&nbsp;78963192&nbsp;35313650&nbsp;24914504&nbsp;82648476&nbsp;30366447&nbsp;31352411&nbsp;50796734&nbsp;40210922&nbsp;60264924&nbsp;96011639&nbsp;20218572&nbsp;97037762&nbsp;67140228&nbsp;84998459&nbsp;22558444&nbsp;75987913&nbsp;9743044&nbsp;43464732&nbsp;5658809&nbsp;79895957&nbsp;7623150&nbsp;59219128&nbsp;97005136&nbsp;65612686&nbsp;79822645&nbsp;63000763&nbsp;69410519&nbsp;68238927&nbsp;38270107&nbsp;33044658&nbsp;53630174&nbsp;65800635&nbsp;51400067&nbsp;61998980&nbsp;26133755&nbsp;38051685&nbsp;4085197&nbsp;72517825&nbsp;32820518&nbsp;89229004&nbsp;7336204&nbsp;97296404&nbsp;72744240&nbsp;70965479&nbsp;37062025&nbsp;17872501&nbsp;88292207&nbsp;76241728&nbsp;72664999&nbsp;40978029&nbsp;36147233&nbsp;1746243&nbsp;50492492&nbsp;5005893&nbsp;79371806&nbsp;11116964&nbsp;6843194&nbsp;92856832&nbsp;99238032&nbsp;29757324&nbsp;24293888&nbsp;96785870&nbsp;1496460&nbsp;23322304&nbsp;46713401&nbsp;63131019&nbsp;45879393&nbsp;9654252&nbsp;42889797&nbsp;87020879&nbsp;92195966&nbsp;7168303&nbsp;38038668&nbsp;37005781&nbsp;13816376&nbsp;49178184&nbsp;55746238&nbsp;13816349&nbsp;46033949&nbsp;87203257&nbsp;36395417&nbsp;44931361&nbsp;71532738&nbsp;31907058&nbsp;79841483&nbsp;40039740&nbsp;3789118&nbsp;71869267&nbsp;98735321&nbsp;52647343&nbsp;98509431&nbsp;15702238&nbsp;51346789&nbsp;62424116&nbsp;73530109&nbsp;85355472&nbsp;92795955&nbsp;53317413&nbsp;4741993&nbsp;36474561&nbsp;33551317&nbsp;58843737&nbsp;76439036&nbsp;69813384&nbsp;95725528&nbsp;75548134&nbsp;4534296&nbsp;68623592&nbsp;38397270&nbsp;93828968&nbsp;11549577&nbsp;63955008&nbsp;4615926&nbsp;25612645&nbsp;89864680&nbsp;81286790&nbsp;78885763&nbsp;67014569&nbsp;68949615&nbsp;64514085&nbsp;88186384&nbsp;54142255&nbsp;69406419&nbsp;51327013&nbsp;61096246&nbsp;99086257&nbsp;4904586&nbsp;66347406&nbsp;43951468&nbsp;37307078&nbsp;80222025&nbsp;11157922&nbsp;90036077&nbsp;25082178&nbsp;34722754&nbsp;17416985&nbsp;90800938&nbsp;64754100&nbsp;32130998&nbsp;52799072&nbsp;32683864&nbsp;28047404&nbsp;64709489&nbsp;88227503&nbsp;45874261&nbsp;87571296&nbsp;10806835&nbsp;21860412&nbsp;63807620&nbsp;9464736&nbsp;44875617&nbsp;77066624&nbsp;96161106&nbsp;94283898&nbsp;3273839&nbsp;8371791&nbsp;53447405&nbsp;48450804&nbsp;82523370&nbsp;57825909&nbsp;36510225&nbsp;9145902&nbsp;36793859&nbsp;2367044&nbsp;43410911&nbsp;95882860&nbsp;11138588&nbsp;85629653&nbsp;19104997&nbsp;35446383&nbsp;56138822&nbsp;74761960&nbsp;71740770&nbsp;81877764&nbsp;85692745&nbsp;52978645&nbsp;72083782&nbsp;1231951&nbsp;84995994&nbsp;93605583&nbsp;1744966&nbsp;10913973&nbsp;14672779&nbsp;37617769&nbsp;36060186&nbsp;16157758&nbsp;77259411&nbsp;78689453&nbsp;33655808&nbsp;76575690&nbsp;3334364&nbsp;82078752&nbsp;44671508&nbsp;65405034&nbsp;21205963&nbsp;66055979&nbsp;9131531&nbsp;90663596&nbsp;43319302&nbsp;93197931&nbsp;35244998&nbsp;36709779&nbsp;10536527&nbsp;64005723&nbsp;51905733&nbsp;78865519&nbsp;1339546&nbsp;92587258&nbsp;99989071&nbsp;45881078&nbsp;24343476&nbsp;18791311&nbsp;66973299&nbsp;30759243&nbsp;37410491&nbsp;1404651&nbsp;4865243&nbsp;43038878&nbsp;21160232&nbsp;79141561&nbsp;75763578&nbsp;30993886&nbsp;41667561&nbsp;50515566&nbsp;20112652&nbsp;61041836&nbsp;47367706&nbsp;9548800&nbsp;43991806&nbsp;31846267&nbsp;98779215&nbsp;41088924&nbsp;20304748&nbsp;2004674&nbsp;88518951&nbsp;86017625&nbsp;98591098&nbsp;61678792&nbsp;33530291&nbsp;26229913&nbsp;10895963&nbsp;29126702&nbsp;77719426&nbsp;83411228&nbsp;84984251&nbsp;45877550&nbsp;91067003&nbsp;98756490&nbsp;74921431&nbsp;55203463&nbsp;57005575&nbsp;36144297&nbsp;16841778&nbsp;91794858&nbsp;27388285&nbsp;346703&nbsp;8590601&nbsp;93360093&nbsp;70928946&nbsp;49987146&nbsp;11027592&nbsp;98178471&nbsp;3516858&nbsp;14812479&nbsp;55899909&nbsp;48096106&nbsp;31027774&nbsp;47463483&nbsp;38028245&nbsp;43259494&nbsp;85566987&nbsp;18521276&nbsp;62673961&nbsp;21039006&nbsp;35958653&nbsp;22089229&nbsp;32461967&nbsp;86570476&nbsp;61122698&nbsp;45315144&nbsp;80668128&nbsp;76414762&nbsp;25658067&nbsp;10598514&nbsp;83156760&nbsp;65322826&nbsp;37702086&nbsp;63719694&nbsp;46128638&nbsp;22139365&nbsp;1825179&nbsp;9692995&nbsp;53479569&nbsp;58911693&nbsp;29679159&nbsp;82041673&nbsp;30177927&nbsp;82716498&nbsp;93158360&nbsp;90557515&nbsp;12830901&nbsp;63673618&nbsp;92713004&nbsp;57580133&nbsp;36106814&nbsp;84355131&nbsp;2444941&nbsp;82874786&nbsp;95481556&nbsp;80238846&nbsp;23990104&nbsp;75731378&nbsp;81662549&nbsp;81823773&nbsp;41988934&nbsp;98083709&nbsp;61772470&nbsp;30009086&nbsp;15879857&nbsp;7917196&nbsp;74165045&nbsp;49931658&nbsp;51120442&nbsp;28912882&nbsp;27887887&nbsp;31872028&nbsp;84107064&nbsp;56039204&nbsp;14962979&nbsp;84309459&nbsp;93934805&nbsp;40290095&nbsp;2321652&nbsp;19294970&nbsp;71281399&nbsp;75288469&nbsp;31703171&nbsp;69070206&nbsp;76277951&nbsp;10645276&nbsp;95992394&nbsp;95604823&nbsp;67935737&nbsp;4710047&nbsp;50568912&nbsp;75624284&nbsp;51989957&nbsp;50027145&nbsp;9473007&nbsp;78706492&nbsp;22869609&nbsp;97624690&nbsp;7953083&nbsp;62887868&nbsp;63954138&nbsp;79903948&nbsp;36657492&nbsp;23559130&nbsp;40189967&nbsp;24973168&nbsp;23541183&nbsp;93417524&nbsp;73789564&nbsp;19287645&nbsp;50069277&nbsp;80411983&nbsp;35497868&nbsp;70629130&nbsp;60005152&nbsp;31874637&nbsp;61454306&nbsp;30022173&nbsp;3946768&nbsp;57925659&nbsp;52402855&nbsp;10117758&nbsp;26136835&nbsp;84054953&nbsp;7489411&nbsp;91401562&nbsp;40912037&nbsp;31537624&nbsp;26273563&nbsp;17246566&nbsp;46936017&nbsp;80908021&nbsp;73610874&nbsp;62614660&nbsp;25866350&nbsp;37317834&nbsp;77844350&nbsp;46592639&nbsp;23270939&nbsp;60672915&nbsp;93592444&nbsp;1619700&nbsp;19495685&nbsp;26747625&nbsp;64265784&nbsp;74835641&nbsp;94149909&nbsp;88423801&nbsp;9892997&nbsp;84022357&nbsp;82716722&nbsp;61674107&nbsp;11610864&nbsp;28155670&nbsp;68829147&nbsp;99221989&nbsp;40568768&nbsp;51063155&nbsp;85730150&nbsp;20546917&nbsp;38758193&nbsp;11872348&nbsp;91967936&nbsp;91002176&nbsp;31589418&nbsp;32213608&nbsp;85231225&nbsp;90148504&nbsp;59072723&nbsp;78823869&nbsp;86469925&nbsp;33366695&nbsp;70929237&nbsp;3317724&nbsp;36084458&nbsp;6874873&nbsp;14491729&nbsp;38405709&nbsp;34671326&nbsp;21078206&nbsp;84100096&nbsp;18911962&nbsp;83107549&nbsp;8101037&nbsp;32284640&nbsp;37672768&nbsp;38420110&nbsp;91472516&nbsp;57719989&nbsp;76752919&nbsp;89115188&nbsp;81913638&nbsp;37346338&nbsp;72501929&nbsp;68341622&nbsp;24780778&nbsp;39022576&nbsp;87041374&nbsp;59290254&nbsp;60785547&nbsp;90569184&nbsp;13882070&nbsp;18946944&nbsp;94762847&nbsp;48947527&nbsp;67985279&nbsp;9397034&nbsp;62395605&nbsp;37135192&nbsp;33376432&nbsp;60363000&nbsp;9464625&nbsp;38192957&nbsp;82699952&nbsp;61348836&nbsp;30282374&nbsp;42839481&nbsp;37378652&nbsp;25050858&nbsp;70959502&nbsp;36544574&nbsp;76420917&nbsp;84560281&nbsp;41897699&nbsp;4253903&nbsp;29193723&nbsp;11367530&nbsp;61108993&nbsp;79041080&nbsp;72663555&nbsp;46655409&nbsp;5748542&nbsp;16300608&nbsp;81691447&nbsp;54709629&nbsp;24871525&nbsp;31430863&nbsp;61910709&nbsp;4327500&nbsp;3070221&nbsp;23587885&nbsp;27414195&nbsp;31383144&nbsp;70454059&nbsp;79332997&nbsp;16154861&nbsp;82007150&nbsp;92382620&nbsp;33912768&nbsp;10304502&nbsp;225451&nbsp;30008639&nbsp;16609281&nbsp;85252538&nbsp;22199681&nbsp;49628175&nbsp;1622674&nbsp;79762178&nbsp;11320064&nbsp;2468954&nbsp;43846200&nbsp;83273874&nbsp;73809935&nbsp;76866393&nbsp;46360370&nbsp;87725377&nbsp;95247327&nbsp;92762090&nbsp;33832525&nbsp;31039960&nbsp;97051955&nbsp;68408433&nbsp;22848515&nbsp;50659124&nbsp;63951932&nbsp;63829655&nbsp;25772066&nbsp;80668197&nbsp;33498702&nbsp;39622475&nbsp;75894088&nbsp;97082430&nbsp;15020291&nbsp;49221214&nbsp;87823003&nbsp;18070445&nbsp;30995984&nbsp;98411365&nbsp;86257950&nbsp;70198907&nbsp;40865127&nbsp;86091323&nbsp;52469308&nbsp;6233779&nbsp;70316639&nbsp;74874346&nbsp;48097932&nbsp;62557524&nbsp;43387&nbsp;91774180&nbsp;7165163&nbsp;23789881&nbsp;96737809&nbsp;24516420&nbsp;78318674&nbsp;57129308<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            88868536<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+
+        <div style="height: 30px"></div>
+
+        <table id="grad1" class="tableLegend tableSummary"
+          <tbody>
+            <tr>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #9F9; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">ok</td>
+                </tr>
+              </table>
+              </td>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #FFBF00; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">napaka</td>
+                </tr>
+              </table>
+              </td>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #FF9; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">napaka med izvajanjem</td>
+                </tr>
+              </table>
+              </td>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #C00000; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">se ne prevede</td>
+                </tr>
+              </table>
+              </td>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #B9F; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">timeout (1000 ms)</td>
+                </tr>
+              </table>
+              </td>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #D0E0F0; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">rezultat izrisa</td>
+                </tr>
+              </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <a name="bottom"></a>
+        </div>
+    </body>
+    <!-- java class tester version "1.5.12" -->
+    <!-- 22.7.2024 20:59.14 -->
+    <!-- Nal, 192.168.49.205 -->
+</html>

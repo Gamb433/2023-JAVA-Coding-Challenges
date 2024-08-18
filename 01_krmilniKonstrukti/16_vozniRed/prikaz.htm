@@ -1,0 +1,445 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <title>Prikaz rezultatov testiranja</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <style>
+            .tableBase { border-collapse: collapse; }
+            .tableBase > tbody > tr > td { border: 1px solid black; padding: 7px;}
+            .tableResults { table-layout: fixed; border-spacing: 0px; border-collapse: separate; }
+            table#nasredini { margin-left:auto; margin-right:auto; }
+            table tbody td.hoverOk {background-color:#9F9; border: 1px solid #63B563; width: 15px; color: black; text-align: center; }
+            .hoverOk:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #63B563; }
+            .hoverOk:hover td { background: transparent; }
+            .hoverOk > a:link, .hoverOk > a:visited, .hoverOk > a:hover, .hoverOk > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverErr {background-color:#FFBF00; border: 1px solid #CB9800; width: 15px; color: black; text-align: center; }
+            .hoverErr:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #CB9800; }
+            .hoverErr:hover td { background: transparent; }
+            .hoverErr > a:link, .hoverErr > a:visited, .hoverErr > a:hover, .hoverErr > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverRuntime {background-color:#FF9; border: 1px solid #D8D87E; width: 15px; color: black; text-align: center; }
+            .hoverRuntime:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #D8D87E; }
+            .hoverRuntime:hover td { background: transparent; }
+            .hoverRuntime > a:link, .hoverRuntime > a:visited, .hoverRuntime > a:hover, .hoverRuntime > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverCompile {background-color:#C00000; border: 1px solid #710B0B; width: 15px; color: black; text-align: center; }
+            .hoverCompile:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #710B0B; }
+            .hoverCompile:hover td { background: transparent; }
+            .hoverCompile > a:link, .hoverCompile > a:visited, .hoverCompile > a:hover, .hoverCompile > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverMissing {background-color:#F0F0F0; border: 1px solid #ABABAB; width: 15px; color: black; text-align: center; }
+            .hoverMissing:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #ABABAB; }
+            .hoverMissing:hover td { background: transparent; }
+            .hoverMissing > a:link, .hoverMissing > a:visited, .hoverMissing > a:hover, .hoverMissing > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverTimeout {background-color:#B9F; border: 1px solid #9070CE; width: 15px; color: black; text-align: center; }
+            .hoverTimeout:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #9070CE; }
+            .hoverTimeout:hover td { background: transparent; }
+            .hoverTimeout > a:link, .hoverTimeout > a:visited, .hoverTimeout > a:hover, .hoverTimeout > a:active { color: black; font-size: 0.9em; }
+            table tbody td.hoverImage {background-color:#D0E0F0; border: 1px solid #a6b3c0; width: 15px; color: black; text-align: center; }
+            .hoverImage:hover { background-color: #FAFAF0; !important; color: #000; border: 1px solid #a6b3c0; }
+            .hoverImage:hover td { background: transparent; }
+            .hoverImage > a:link, .hoverImage > a:visited, .hoverImage > a:hover, .hoverImage > a:active { color: black; font-size: 0.9em; }
+            .tableCommon { border-collapse: collapse; }
+            .tableOK > tbody > tr > td { border: 1px solid #63B563; padding: 7px;}
+            .tableError > tbody > tr > td { border: 1px solid #CB9800; padding: 7px;}
+            .tableRuntime > tbody > tr > td { border: 1px solid #D8D87E; padding: 7px;}
+            .tableCompiler > tbody > tr > td { border: 1px solid #710B0B; padding: 7px;}
+            .tableMissing > tbody > tr > td { border: 1px solid #ABABAB; padding: 7px;}
+            .tableTimeout > tbody > tr > td { border: 1px solid #9070CE; padding: 7px;}
+            .tableImage > tbody > tr > td { border: 1px solid #a6b3c0; padding: 7px;}
+            .tableSummary { table-layout: fixed; }
+            .texttt { font-family: DejaVu Sans Mono, monospace; font-size: 0.8em; }
+            table.diff > tbody > tr > td { border: none; font-family: DejaVu Sans Mono, monospace}
+            .diff_add { color: green; font-family: DejaVu Sans Mono, monospace; }
+            .diff_sub { color: blue; font-family: DejaVu Sans Mono, monospace; }
+            .diff_chg { color: red; font-family: DejaVu Sans Mono, monospace; }
+            a { color: blue; text-decoration: none; height: 100%; width: 100%; vertical-align: middle; }
+            a:link { color: blue; text-decoration: none; }
+            a:link { color: blue; text-decoration: none; }
+            a:hover { color: blue; text-decoration: underline; }
+            body, td { font: normal normal 100%/1.0 DejaVu Sans, sans-serif; }
+            h1 { font-weight: bold; font-size: 150%; }
+            h2 { font-weight: normal; font-size: 125%; border-top: 1px solid black; border-bottom: 1px solid black; background: #DEF; padding: 5px; margin-top: 36px; margin-bottom: 36px}
+            .container{ margin: 0px auto; width: 70%; min-width: 700px; margin-top: 1.8cm; margin-bottom: 1.8cm; }
+            .rwordb{ color: blue; font-weight: bold; }
+            .rwordv{ color:#8000ff; font-weight: bold; }
+            .vcomment{ color: green; }
+            .bcomment{ color: green; }
+            .niz{ color:#a31515; }
+            .stevilo{ color:#ff8000; }
+            tab { padding-left: 4em; }
+            #grad1 {
+                background: -webkit-linear-gradient(left, #E0E0E0 , white);
+                background: -o-linear-gradient(right, #E0E0E0, white);
+                background: -moz-linear-gradient(right, #E0E0E0, white);
+                background: linear-gradient(to right, #E0E0E0 , white);
+            }
+            #grad2 {
+                background: -webkit-linear-gradient(left, #9F9 , white);
+                background: -o-linear-gradient(right, #9F9, white);
+                background: -moz-linear-gradient(right, #9F9, white);
+                background: linear-gradient(to right, #9F9 , white);
+            }
+            .capSlika { display:block; height: 25px; margin:0 auto; font-size: 1.0em; text-align: left; }
+            .dborder { padding: 0px; border: 1px solid #CACACA; }
+            .capText { display: block; margin:0 auto; font-size: 0.9em; text-align: left; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+        <a name="top"></a>
+        <h1 id="grad2" style="padding: 10px; border: 0px solid black; color: #000000;">Rezultati preverjanja <span style="color: #700000;">vozniRed.java</span> (10/10)</h1>
+        <div style="height: 20px"></div>
+        <a name="summary"></a>
+        <h2>Povzetek rezultatov</h2>
+        <table id="nasredini" class="tableBase tableResults">
+            <tbody>
+                <tr>
+                <td class="hoverOk"><a href="#testcase1">1</a></td>
+                <td class="hoverOk"><a href="#testcase2">2</a></td>
+                <td class="hoverOk"><a href="#testcase3">3</a></td>
+                <td class="hoverOk"><a href="#testcase4">4</a></td>
+                <td class="hoverOk"><a href="#testcase5">5</a></td>
+                <td class="hoverOk"><a href="#testcase6">6</a></td>
+                <td class="hoverOk"><a href="#testcase7">7</a></td>
+                <td class="hoverOk"><a href="#testcase8">8</a></td>
+                <td class="hoverOk"><a href="#testcase9">9</a></td>
+                <td class="hoverOk"><a href="#testcase10">10</a></td>
+                </tr>
+                <tr></tr>
+            </tbody>
+        </table>
+        <div style="height: 20px"></div>
+        <h2>Rezultati</h2>
+        <a name="testcase1"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 1</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            10&nbsp;0&nbsp;15&nbsp;0&nbsp;30<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            10:00<br/>10:30<br/>11:00<br/>11:30<br/>12:00<br/>12:30<br/>13:00<br/>13:30<br/>14:00<br/>14:30<br/>15:00<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase2"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 2</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            8&nbsp;50&nbsp;14&nbsp;10&nbsp;35<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            08:50<br/>09:25<br/>10:00<br/>10:35<br/>11:10<br/>11:45<br/>12:20<br/>12:55<br/>13:30<br/>14:05<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase3"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 3</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            5&nbsp;55&nbsp;23&nbsp;59&nbsp;142<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            05:55<br/>08:17<br/>10:39<br/>13:01<br/>15:23<br/>17:45<br/>20:07<br/>22:29<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase4"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 4</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            0&nbsp;0&nbsp;23&nbsp;59&nbsp;1<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            00:00<br/>00:01<br/>00:02<br/>00:03<br/>00:04<br/>00:05<br/>00:06<br/>00:07<br/>00:08<br/>00:09<br/>00:10<br/>00:11<br/>00:12<br/>00:13<br/>00:14<br/>00:15<br/>00:16<br/>00:17<br/>00:18<br/>00:19<br/>00:20<br/>00:21<br/>00:22<br/>00:23<br/>00:24<br/>00:25<br/>00:26<br/>00:27<br/>00:28<br/>00:29<br/>00:30<br/>00:31<br/>00:32<br/>00:33<br/>00:34<br/>00:35<br/>00:36<br/>00:37<br/>00:38<br/>00:39<br/>00:40<br/>00:41<br/>00:42<br/>00:43<br/>00:44<br/>00:45<br/>00:46<br/>00:47<br/>00:48<br/>00:49<br/>00:50<br/>00:51<br/>00:52<br/>00:53<br/>00:54<br/>00:55<br/>00:56<br/>00:57<br/>00:58<br/>00:59<br/>01:00<br/>01:01<br/>01:02<br/>01:03<br/>01:04<br/>01:05<br/>01:06<br/>01:07<br/>01:08<br/>01:09<br/>01:10<br/>01:11<br/>01:12<br/>01:13<br/>01:14<br/>01:15<br/>01:16<br/>01:17<br/>01:18<br/>01:19<br/>01:20<br/>01:21<br/>01:22<br/>01:23<br/>01:24<br/>01:25<br/>01:26<br/>01:27<br/>01:28<br/>01:29<br/>01:30<br/>01:31<br/>01:32<br/>01:33<br/>01:34<br/>01:35<br/>01:36<br/>01:37<br/>01:38<br/>01:39<br/>01:40<br/>01:41<br/>01:42<br/>01:43<br/>01:44<br/>01:45<br/>01:46<br/>01:47<br/>01:48<br/>01:49<br/>01:50<br/>01:51<br/>01:52<br/>01:53<br/>01:54<br/>01:55<br/>01:56<br/>01:57<br/>01:58<br/>01:59<br/>02:00<br/>02:01<br/>02:02<br/>02:03<br/>02:04<br/>02:05<br/>02:06<br/>02:07<br/>02:08<br/>02:09<br/>02:10<br/>02:11<br/>02:12<br/>02:13<br/>02:14<br/>02:15<br/>02:16<br/>02:17<br/>02:18<br/>02:19<br/>02:20<br/>02:21<br/>02:22<br/>02:23<br/>02:24<br/>02:25<br/>02:26<br/>02:27<br/>02:28<br/>02:29<br/>02:30<br/>02:31<br/>02:32<br/>02:33<br/>02:34<br/>02:35<br/>02:36<br/>02:37<br/>02:38<br/>02:39<br/>02:40<br/>02:41<br/>02:42<br/>02:43<br/>02:44<br/>02:45<br/>02:46<br/>02:47<br/>02:48<br/>02:49<br/>02:50<br/>02:51<br/>02:52<br/>02:53<br/>02:54<br/>02:55<br/>02:56<br/>02:57<br/>02:58<br/>02:59<br/>03:00<br/>03:01<br/>03:02<br/>03:03<br/>03:04<br/>03:05<br/>03:06<br/>03:07<br/>03:08<br/>03:09<br/>03:10<br/>03:11<br/>03:12<br/>03:13<br/>03:14<br/>03:15<br/>03:16<br/>03:17<br/>03:18<br/>03:19<br/>03:20<br/>03:21<br/>03:22<br/>03:23<br/>03:24<br/>03:25<br/>03:26<br/>03:27<br/>03:28<br/>03:29<br/>03:30<br/>03:31<br/>03:32<br/>03:33<br/>03:34<br/>03:35<br/>03:36<br/>03:37<br/>03:38<br/>03:39<br/>03:40<br/>03:41<br/>03:42<br/>03:43<br/>03:44<br/>03:45<br/>03:46<br/>03:47<br/>03:48<br/>03:49<br/>03:50<br/>03:51<br/>03:52<br/>03:53<br/>03:54<br/>03:55<br/>03:56<br/>03:57<br/>03:58<br/>03:59<br/>04:00<br/>04:01<br/>04:02<br/>04:03<br/>04:04<br/>04:05<br/>04:06<br/>04:07<br/>04:08<br/>04:09<br/>04:10<br/>04:11<br/>04:12<br/>04:13<br/>04:14<br/>04:15<br/>04:16<br/>04:17<br/>04:18<br/>04:19<br/>04:20<br/>04:21<br/>04:22<br/>04:23<br/>04:24<br/>04:25<br/>04:26<br/>04:27<br/>04:28<br/>04:29<br/>04:30<br/>04:31<br/>04:32<br/>04:33<br/>04:34<br/>04:35<br/>04:36<br/>04:37<br/>04:38<br/>04:39<br/>04:40<br/>04:41<br/>04:42<br/>04:43<br/>04:44<br/>04:45<br/>04:46<br/>04:47<br/>04:48<br/>04:49<br/>04:50<br/>04:51<br/>04:52<br/>04:53<br/>04:54<br/>04:55<br/>04:56<br/>04:57<br/>04:58<br/>04:59<br/>05:00<br/>05:01<br/>05:02<br/>05:03<br/>05:04<br/>05:05<br/>05:06<br/>05:07<br/>05:08<br/>05:09<br/>05:10<br/>05:11<br/>05:12<br/>05:13<br/>05:14<br/>05:15<br/>05:16<br/>05:17<br/>05:18<br/>05:19<br/>05:20<br/>05:21<br/>05:22<br/>05:23<br/>05:24<br/>05:25<br/>05:26<br/>05:27<br/>05:28<br/>05:29<br/>05:30<br/>05:31<br/>05:32<br/>05:33<br/>05:34<br/>05:35<br/>05:36<br/>05:37<br/>05:38<br/>05:39<br/>05:40<br/>05:41<br/>05:42<br/>05:43<br/>05:44<br/>05:45<br/>05:46<br/>05:47<br/>05:48<br/>05:49<br/>05:50<br/>05:51<br/>05:52<br/>05:53<br/>05:54<br/>05:55<br/>05:56<br/>05:57<br/>05:58<br/>05:59<br/>06:00<br/>06:01<br/>06:02<br/>06:03<br/>06:04<br/>06:05<br/>06:06<br/>06:07<br/>06:08<br/>06:09<br/>06:10<br/>06:11<br/>06:12<br/>06:13<br/>06:14<br/>06:15<br/>06:16<br/>06:17<br/>06:18<br/>06:19<br/>06:20<br/>06:21<br/>06:22<br/>06:23<br/>06:24<br/>06:25<br/>06:26<br/>06:27<br/>06:28<br/>06:29<br/>06:30<br/>06:31<br/>06:32<br/>06:33<br/>06:34<br/>06:35<br/>06:36<br/>06:37<br/>06:38<br/>06:39<br/>06:40<br/>06:41<br/>06:42<br/>06:43<br/>06:44<br/>06:45<br/>06:46<br/>06:47<br/>06:48<br/>06:49<br/>06:50<br/>06:51<br/>06:52<br/>06:53<br/>06:54<br/>06:55<br/>06:56<br/>06:57<br/>06:58<br/>06:59<br/>07:00<br/>07:01<br/>07:02<br/>07:03<br/>07:04<br/>07:05<br/>07:06<br/>07:07<br/>07:08<br/>07:09<br/>07:10<br/>07:11<br/>07:12<br/>07:13<br/>07:14<br/>07:15<br/>07:16<br/>07:17<br/>07:18<br/>07:19<br/>07:20<br/>07:21<br/>07:22<br/>07:23<br/>07:24<br/>07:25<br/>07:26<br/>07:27<br/>07:28<br/>07:29<br/>07:30<br/>07:31<br/>07:32<br/>07:33<br/>07:34<br/>07:35<br/>07:36<br/>07:37<br/>07:38<br/>07:39<br/>07:40<br/>07:41<br/>07:42<br/>07:43<br/>07:44<br/>07:45<br/>07:46<br/>07:47<br/>07:48<br/>07:49<br/>07:50<br/>07:51<br/>07:52<br/>07:53<br/>07:54<br/>07:55<br/>07:56<br/>07:57<br/>07:58<br/>07:59<br/>08:00<br/>08:01<br/>08:02<br/>08:03<br/>08:04<br/>08:05<br/>08:06<br/>08:07<br/>08:08<br/>08:09<br/>08:10<br/>08:11<br/>08:12<br/>08:13<br/>08:14<br/>08:15<br/>08:16<br/>08:17<br/>08:18<br/>08:19<br/>08:20<br/>08:21<br/>08:22<br/>08:23<br/>08:24<br/>08:25<br/>08:26<br/>08:27<br/>08:28<br/>08:29<br/>08:30<br/>08:31<br/>08:32<br/>08:33<br/>08:34<br/>08:35<br/>08:36<br/>08:37<br/>08:38<br/>08:39<br/>08:40<br/>08:41<br/>08:42<br/>08:43<br/>08:44<br/>08:45<br/>08:46<br/>08:47<br/>08:48<br/>08:49<br/>08:50<br/>08:51<br/>08:52<br/>08:53<br/>08:54<br/>08:55<br/>08:56<br/>08:57<br/>08:58<br/>08:59<br/>09:00<br/>09:01<br/>09:02<br/>09:03<br/>09:04<br/>09:05<br/>09:06<br/>09:07<br/>09:08<br/>09:09<br/>09:10<br/>09:11<br/>09:12<br/>09:13<br/>09:14<br/>09:15<br/>09:16<br/>09:17<br/>09:18<br/>09:19<br/>09:20<br/>09:21<br/>09:22<br/>09:23<br/>09:24<br/>09:25<br/>09:26<br/>09:27<br/>09:28<br/>09:29<br/>09:30<br/>09:31<br/>09:32<br/>09:33<br/>09:34<br/>09:35<br/>09:36<br/>09:37<br/>09:38<br/>09:39<br/>09:40<br/>09:41<br/>09:42<br/>09:43<br/>09:44<br/>09:45<br/>09:46<br/>09:47<br/>09:48<br/>09:49<br/>09:50<br/>09:51<br/>09:52<br/>09:53<br/>09:54<br/>09:55<br/>09:56<br/>09:57<br/>09:58<br/>09:59<br/>10:00<br/>10:01<br/>10:02<br/>10:03<br/>10:04<br/>10:05<br/>10:06<br/>10:07<br/>10:08<br/>10:09<br/>10:10<br/>10:11<br/>10:12<br/>10:13<br/>10:14<br/>10:15<br/>10:16<br/>10:17<br/>10:18<br/>10:19<br/>10:20<br/>10:21<br/>10:22<br/>10:23<br/>10:24<br/>10:25<br/>10:26<br/>10:27<br/>10:28<br/>10:29<br/>10:30<br/>10:31<br/>10:32<br/>10:33<br/>10:34<br/>10:35<br/>10:36<br/>10:37<br/>10:38<br/>10:39<br/>10:40<br/>10:41<br/>10:42<br/>10:43<br/>10:44<br/>10:45<br/>10:46<br/>10:47<br/>10:48<br/>10:49<br/>10:50<br/>10:51<br/>10:52<br/>10:53<br/>10:54<br/>10:55<br/>10:56<br/>10:57<br/>10:58<br/>10:59<br/>11:00<br/>11:01<br/>11:02<br/>11:03<br/>11:04<br/>11:05<br/>11:06<br/>11:07<br/>11:08<br/>11:09<br/>11:10<br/>11:11<br/>11:12<br/>11:13<br/>11:14<br/>11:15<br/>11:16<br/>11:17<br/>11:18<br/>11:19<br/>11:20<br/>11:21<br/>11:22<br/>11:23<br/>11:24<br/>11:25<br/>11:26<br/>11:27<br/>11:28<br/>11:29<br/>11:30<br/>11:31<br/>11:32<br/>11:33<br/>11:34<br/>11:35<br/>11:36<br/>11:37<br/>11:38<br/>11:39<br/>11:40<br/>11:41<br/>11:42<br/>11:43<br/>11:44<br/>11:45<br/>11:46<br/>11:47<br/>11:48<br/>11:49<br/>11:50<br/>11:51<br/>11:52<br/>11:53<br/>11:54<br/>11:55<br/>11:56<br/>11:57<br/>11:58<br/>11:59<br/>12:00<br/>12:01<br/>12:02<br/>12:03<br/>12:04<br/>12:05<br/>12:06<br/>12:07<br/>12:08<br/>12:09<br/>12:10<br/>12:11<br/>12:12<br/>12:13<br/>12:14<br/>12:15<br/>12:16<br/>12:17<br/>12:18<br/>12:19<br/>12:20<br/>12:21<br/>12:22<br/>12:23<br/>12:24<br/>12:25<br/>12:26<br/>12:27<br/>12:28<br/>12:29<br/>12:30<br/>12:31<br/>12:32<br/>12:33<br/>12:34<br/>12:35<br/>12:36<br/>12:37<br/>12:38<br/>12:39<br/>12:40<br/>12:41<br/>12:42<br/>12:43<br/>12:44<br/>12:45<br/>12:46<br/>12:47<br/>12:48<br/>12:49<br/>12:50<br/>12:51<br/>12:52<br/>12:53<br/>12:54<br/>12:55<br/>12:56<br/>12:57<br/>12:58<br/>12:59<br/>13:00<br/>13:01<br/>13:02<br/>13:03<br/>13:04<br/>13:05<br/>13:06<br/>13:07<br/>13:08<br/>13:09<br/>13:10<br/>13:11<br/>13:12<br/>13:13<br/>13:14<br/>13:15<br/>13:16<br/>13:17<br/>13:18<br/>13:19<br/>13:20<br/>13:21<br/>13:22<br/>13:23<br/>13:24<br/>13:25<br/>13:26<br/>13:27<br/>13:28<br/>13:29<br/>13:30<br/>13:31<br/>13:32<br/>13:33<br/>13:34<br/>13:35<br/>13:36<br/>13:37<br/>13:38<br/>13:39<br/>13:40<br/>13:41<br/>13:42<br/>13:43<br/>13:44<br/>13:45<br/>13:46<br/>13:47<br/>13:48<br/>13:49<br/>13:50<br/>13:51<br/>13:52<br/>13:53<br/>13:54<br/>13:55<br/>13:56<br/>13:57<br/>13:58<br/>13:59<br/>14:00<br/>14:01<br/>14:02<br/>14:03<br/>14:04<br/>14:05<br/>14:06<br/>14:07<br/>14:08<br/>14:09<br/>14:10<br/>14:11<br/>14:12<br/>14:13<br/>14:14<br/>14:15<br/>14:16<br/>14:17<br/>14:18<br/>14:19<br/>14:20<br/>14:21<br/>14:22<br/>14:23<br/>14:24<br/>14:25<br/>14:26<br/>14:27<br/>14:28<br/>14:29<br/>14:30<br/>14:31<br/>14:32<br/>14:33<br/>14:34<br/>14:35<br/>14:36<br/>14:37<br/>14:38<br/>14:39<br/>14:40<br/>14:41<br/>14:42<br/>14:43<br/>14:44<br/>14:45<br/>14:46<br/>14:47<br/>14:48<br/>14:49<br/>14:50<br/>14:51<br/>14:52<br/>14:53<br/>14:54<br/>14:55<br/>14:56<br/>14:57<br/>14:58<br/>14:59<br/>15:00<br/>15:01<br/>15:02<br/>15:03<br/>15:04<br/>15:05<br/>15:06<br/>15:07<br/>15:08<br/>15:09<br/>15:10<br/>15:11<br/>15:12<br/>15:13<br/>15:14<br/>15:15<br/>15:16<br/>15:17<br/>15:18<br/>15:19<br/>15:20<br/>15:21<br/>15:22<br/>15:23<br/>15:24<br/>15:25<br/>15:26<br/>15:27<br/>15:28<br/>15:29<br/>15:30<br/>15:31<br/>15:32<br/>15:33<br/>15:34<br/>15:35<br/>15:36<br/>15:37<br/>15:38<br/>15:39<br/>15:40<br/>15:41<br/>15:42<br/>15:43<br/>15:44<br/>15:45<br/>15:46<br/>15:47<br/>15:48<br/>15:49<br/>15:50<br/>15:51<br/>15:52<br/>15:53<br/>15:54<br/>15:55<br/>15:56<br/>15:57<br/>15:58<br/>15:59<br/>16:00<br/>16:01<br/>16:02<br/>16:03<br/>16:04<br/>16:05<br/>16:06<br/>16:07<br/>16:08<br/>16:09<br/>16:10<br/>16:11<br/>16:12<br/>16:13<br/>16:14<br/>16:15<br/>16:16<br/>16:17<br/>16:18<br/>16:19<br/>16:20<br/>16:21<br/>16:22<br/>16:23<br/>16:24<br/>16:25<br/>16:26<br/>16:27<br/>16:28<br/>16:29<br/>16:30<br/>16:31<br/>16:32<br/>16:33<br/>16:34<br/>16:35<br/>16:36<br/>16:37<br/>16:38<br/>16:39<br/>16:40<br/>16:41<br/>16:42<br/>16:43<br/>16:44<br/>16:45<br/>16:46<br/>16:47<br/>16:48<br/>16:49<br/>16:50<br/>16:51<br/>16:52<br/>16:53<br/>16:54<br/>16:55<br/>16:56<br/>16:57<br/>16:58<br/>16:59<br/>17:00<br/>17:01<br/>17:02<br/>17:03<br/>17:04<br/>17:05<br/>17:06<br/>17:07<br/>17:08<br/>17:09<br/>17:10<br/>17:11<br/>17:12<br/>17:13<br/>17:14<br/>17:15<br/>17:16<br/>17:17<br/>17:18<br/>17:19<br/>17:20<br/>17:21<br/>17:22<br/>17:23<br/>17:24<br/>17:25<br/>17:26<br/>17:27<br/>17:28<br/>17:29<br/>17:30<br/>17:31<br/>17:32<br/>17:33<br/>17:34<br/>17:35<br/>17:36<br/>17:37<br/>17:38<br/>17:39<br/>17:40<br/>17:41<br/>17:42<br/>17:43<br/>17:44<br/>17:45<br/>17:46<br/>17:47<br/>17:48<br/>17:49<br/>17:50<br/>17:51<br/>17:52<br/>17:53<br/>17:54<br/>17:55<br/>17:56<br/>17:57<br/>17:58<br/>17:59<br/>18:00<br/>18:01<br/>18:02<br/>18:03<br/>18:04<br/>18:05<br/>18:06<br/>18:07<br/>18:08<br/>18:09<br/>18:10<br/>18:11<br/>18:12<br/>18:13<br/>18:14<br/>18:15<br/>18:16<br/>18:17<br/>18:18<br/>18:19<br/>18:20<br/>18:21<br/>18:22<br/>18:23<br/>18:24<br/>18:25<br/>18:26<br/>18:27<br/>18:28<br/>18:29<br/>18:30<br/>18:31<br/>18:32<br/>18:33<br/>18:34<br/>18:35<br/>18:36<br/>18:37<br/>18:38<br/>18:39<br/>18:40<br/>18:41<br/>18:42<br/>18:43<br/>18:44<br/>18:45<br/>18:46<br/>18:47<br/>18:48<br/>18:49<br/>18:50<br/>18:51<br/>18:52<br/>18:53<br/>18:54<br/>18:55<br/>18:56<br/>18:57<br/>18:58<br/>18:59<br/>19:00<br/>19:01<br/>19:02<br/>19:03<br/>19:04<br/>19:05<br/>19:06<br/>19:07<br/>19:08<br/>19:09<br/>19:10<br/>19:11<br/>19:12<br/>19:13<br/>19:14<br/>19:15<br/>19:16<br/>19:17<br/>19:18<br/>19:19<br/>19:20<br/>19:21<br/>19:22<br/>19:23<br/>19:24<br/>19:25<br/>19:26<br/>19:27<br/>19:28<br/>19:29<br/>19:30<br/>19:31<br/>19:32<br/>19:33<br/>19:34<br/>19:35<br/>19:36<br/>19:37<br/>19:38<br/>19:39<br/>19:40<br/>19:41<br/>19:42<br/>19:43<br/>19:44<br/>19:45<br/>19:46<br/>19:47<br/>19:48<br/>19:49<br/>19:50<br/>19:51<br/>19:52<br/>19:53<br/>19:54<br/>19:55<br/>19:56<br/>19:57<br/>19:58<br/>19:59<br/>20:00<br/>20:01<br/>20:02<br/>20:03<br/>20:04<br/>20:05<br/>20:06<br/>20:07<br/>20:08<br/>20:09<br/>20:10<br/>20:11<br/>20:12<br/>20:13<br/>20:14<br/>20:15<br/>20:16<br/>20:17<br/>20:18<br/>20:19<br/>20:20<br/>20:21<br/>20:22<br/>20:23<br/>20:24<br/>20:25<br/>20:26<br/>20:27<br/>20:28<br/>20:29<br/>20:30<br/>20:31<br/>20:32<br/>20:33<br/>20:34<br/>20:35<br/>20:36<br/>20:37<br/>20:38<br/>20:39<br/>20:40<br/>20:41<br/>20:42<br/>20:43<br/>20:44<br/>20:45<br/>20:46<br/>20:47<br/>20:48<br/>20:49<br/>20:50<br/>20:51<br/>20:52<br/>20:53<br/>20:54<br/>20:55<br/>20:56<br/>20:57<br/>20:58<br/>20:59<br/>21:00<br/>21:01<br/>21:02<br/>21:03<br/>21:04<br/>21:05<br/>21:06<br/>21:07<br/>21:08<br/>21:09<br/>21:10<br/>21:11<br/>21:12<br/>21:13<br/>21:14<br/>21:15<br/>21:16<br/>21:17<br/>21:18<br/>21:19<br/>21:20<br/>21:21<br/>21:22<br/>21:23<br/>21:24<br/>21:25<br/>21:26<br/>21:27<br/>21:28<br/>21:29<br/>21:30<br/>21:31<br/>21:32<br/>21:33<br/>21:34<br/>21:35<br/>21:36<br/>21:37<br/>21:38<br/>21:39<br/>21:40<br/>21:41<br/>21:42<br/>21:43<br/>21:44<br/>21:45<br/>21:46<br/>21:47<br/>21:48<br/>21:49<br/>21:50<br/>21:51<br/>21:52<br/>21:53<br/>21:54<br/>21:55<br/>21:56<br/>21:57<br/>21:58<br/>21:59<br/>22:00<br/>22:01<br/>22:02<br/>22:03<br/>22:04<br/>22:05<br/>22:06<br/>22:07<br/>22:08<br/>22:09<br/>22:10<br/>22:11<br/>22:12<br/>22:13<br/>22:14<br/>22:15<br/>22:16<br/>22:17<br/>22:18<br/>22:19<br/>22:20<br/>22:21<br/>22:22<br/>22:23<br/>22:24<br/>22:25<br/>22:26<br/>22:27<br/>22:28<br/>22:29<br/>22:30<br/>22:31<br/>22:32<br/>22:33<br/>22:34<br/>22:35<br/>22:36<br/>22:37<br/>22:38<br/>22:39<br/>22:40<br/>22:41<br/>22:42<br/>22:43<br/>22:44<br/>22:45<br/>22:46<br/>22:47<br/>22:48<br/>22:49<br/>22:50<br/>22:51<br/>22:52<br/>22:53<br/>22:54<br/>22:55<br/>22:56<br/>22:57<br/>22:58<br/>22:59<br/>23:00<br/>23:01<br/>23:02<br/>23:03<br/>23:04<br/>23:05<br/>23:06<br/>23:07<br/>23:08<br/>23:09<br/>23:10<br/>23:11<br/>23:12<br/>23:13<br/>23:14<br/>23:15<br/>23:16<br/>23:17<br/>23:18<br/>23:19<br/>23:20<br/>23:21<br/>23:22<br/>23:23<br/>23:24<br/>23:25<br/>23:26<br/>23:27<br/>23:28<br/>23:29<br/>23:30<br/>23:31<br/>23:32<br/>23:33<br/>23:34<br/>23:35<br/>23:36<br/>23:37<br/>23:38<br/>23:39<br/>23:40<br/>23:41<br/>23:42<br/>23:43<br/>23:44<br/>23:45<br/>23:46<br/>23:47<br/>23:48<br/>23:49<br/>23:50<br/>23:51<br/>23:52<br/>23:53<br/>23:54<br/>23:55<br/>23:56<br/>23:57<br/>23:58<br/>23:59<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase5"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 5</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            0&nbsp;0&nbsp;23&nbsp;59&nbsp;1439<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            00:00<br/>23:59<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase6"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 6</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            0&nbsp;0&nbsp;23&nbsp;59&nbsp;1440<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            00:00<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase7"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 7</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            4&nbsp;43&nbsp;23&nbsp;15&nbsp;26<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            04:43<br/>05:09<br/>05:35<br/>06:01<br/>06:27<br/>06:53<br/>07:19<br/>07:45<br/>08:11<br/>08:37<br/>09:03<br/>09:29<br/>09:55<br/>10:21<br/>10:47<br/>11:13<br/>11:39<br/>12:05<br/>12:31<br/>12:57<br/>13:23<br/>13:49<br/>14:15<br/>14:41<br/>15:07<br/>15:33<br/>15:59<br/>16:25<br/>16:51<br/>17:17<br/>17:43<br/>18:09<br/>18:35<br/>19:01<br/>19:27<br/>19:53<br/>20:19<br/>20:45<br/>21:11<br/>21:37<br/>22:03<br/>22:29<br/>22:55<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase8"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 8</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            4&nbsp;43&nbsp;23&nbsp;15&nbsp;237<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            04:43<br/>08:40<br/>12:37<br/>16:34<br/>20:31<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase9"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 9</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            7&nbsp;50&nbsp;22&nbsp;14&nbsp;144<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            07:50<br/>10:14<br/>12:38<br/>15:02<br/>17:26<br/>19:50<br/>22:14<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+        <a name="testcase10"></a>
+        <div style="border: 1px solid #63B563">
+            <table class="tableOK tableCommon" style="width: 100%; border: 3px solid #9F9;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="background-color: #9F9; color: black;">Testni primer 10</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px;">Vhod</td>
+                        <td class="texttt">
+                            15&nbsp;10&nbsp;15&nbsp;11&nbsp;30<br/>
+<br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Izhod programa</td>
+                        <td class="texttt">
+                            15:10<br/><br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 15px"></div>
+<div style="font-size: 0.8em;">[ <a href="#top">&uparrow;</a> | <a href="#bottom">&downarrow;</a> | 
+<a href="#summary">Povzetek</a> | 
+<a href="#testcase1">Rezultati</a> ]</div><div style="height: 30px"></div>
+
+        <div style="height: 30px"></div>
+
+        <table id="grad1" class="tableLegend tableSummary"
+          <tbody>
+            <tr>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #9F9; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">ok</td>
+                </tr>
+              </table>
+              </td>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #FFBF00; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">napaka</td>
+                </tr>
+              </table>
+              </td>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #FF9; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">napaka med izvajanjem</td>
+                </tr>
+              </table>
+              </td>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #C00000; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">se ne prevede</td>
+                </tr>
+              </table>
+              </td>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #B9F; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">timeout (1000 ms)</td>
+                </tr>
+              </table>
+              </td>
+              <td style="color: black;">
+              <table class="tableLegend">
+                <tr>
+	              <td style="background-color: #D0E0F0; color: black; width: 10px; text-align: center; border: 1px solid black; padding: 2px;"></td>
+	              <td style="font-size: 0.7em; padding: 3px;">rezultat izrisa</td>
+                </tr>
+              </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <a name="bottom"></a>
+        </div>
+    </body>
+    <!-- java class tester version "1.5.12" -->
+    <!-- 9.7.2024 15:48.4 -->
+    <!-- Nal, 192.168.63.205 -->
+</html>
